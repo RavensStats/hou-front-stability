@@ -1,0 +1,4 @@
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N60_m1_k1600_nu0.0005_d30.npz: dim 240, N 60, m 1, k 1600.0, nu 0.0005, field degree 30; approximate omega = -1.845671e+04 +5.041512e+04i
+  enclosure call returned in 0.4s: <class 'tuple'>
+  CERTIFIED: exactly one eigenvalue of every pencil in the enclosed family lies in the disc |omega - (-1.845670615e+04 +5.041512289e+04i)| <= 2.113e-08
+  hence Im omega in [5.041512289e+04, 5.041512289e+04]  -> growth (T-t) in [0.805531, 0.805531] > 0

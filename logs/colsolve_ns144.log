@@ -1,0 +1,101 @@
+  k =   800.0 (k R =  11.02): leading Im omega = +2.2948e+04 (Re -1.2754e+03); next +1.975e+04, +1.425e+04, +1.194e+04; leading mode at r/R = 1.133, support [1.105, 1.169] R
+  k =  1600.0 (k R =  22.04): leading Im omega = +3.7994e+04 (Re -1.0083e+05); next +2.954e+04, +2.551e+04, +1.835e+04; leading mode at r/R = 1.142, support [1.105, 1.169] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.9596e+04 (Re -3.0544e+05); next +4.177e+04, +3.560e+04, +2.728e+04; leading mode at r/R = 1.142, support [1.118, 1.169] R
+--- rmax 3R
+  k =   800.0 (k R =  11.02): leading Im omega = +3.5571e+04 (Re -1.9511e+04); next +3.216e+04, +2.958e+04, +2.567e+04; leading mode at r/R = 1.221, support [1.159, 1.288] R
+  k =  1600.0 (k R =  22.04): leading Im omega = +6.2709e+04 (Re -1.8401e+05); next +4.357e+04, +3.361e+04, +2.827e+04; leading mode at r/R = 2.938, support [2.935, 2.961] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +5.0245e+04 (Re -3.0037e+05); next +4.942e+04, +3.552e+04, +3.281e+04; leading mode at r/R = 2.944, support [2.940, 2.940] R
+--- viscous 5e-4, N 200
+  k =   400.0 (k R =   5.51): leading Im omega = +1.3183e+04 (Re +4.6294e+04); next +9.406e+03, +5.249e+03, +3.913e+03; leading mode at r/R = 0.942, support [0.830, 1.078] R
+  k =   800.0 (k R =  11.02): leading Im omega = +2.1343e+04 (Re -3.7158e+02); next +1.672e+04, +8.405e+03, +8.303e+03; leading mode at r/R = 1.133, support [1.105, 1.195] R
+  k =  1600.0 (k R =  22.04): leading Im omega = +3.5175e+04 (Re -9.9634e+04); next +2.462e+04, +1.811e+04, +1.368e+04; leading mode at r/R = 1.144, support [1.105, 1.182] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.2512e+04 (Re -3.0339e+05); next +2.893e+04, +2.678e+04, +1.492e+04; leading mode at r/R = 1.143, support [1.118, 1.169] R
+  k =  6400.0 (k R =  88.15): leading Im omega = +3.1656e+04 (Re -7.1423e+05); next +1.976e+04, +3.121e+03, -4.961e+02; leading mode at r/R = 1.139, support [1.118, 1.156] R
+--- spline field, rmax 2R, viscous
+  k =  1600.0 (k R =  22.04): leading Im omega = +1.9566e+04 (Re +6.9620e+04); next +9.529e+03, +2.137e+03, -1.720e+03; leading mode at r/R = 1.928, support [1.862, 1.983] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +2.0213e+04 (Re +1.0593e+05); next +1.179e+04, +4.165e+03, -3.229e+03; leading mode at r/R = 1.936, support [1.895, 1.969] R
+--- spline field, rmax 3R, viscous
+  k =  1600.0 (k R =  22.04): leading Im omega = +2.5209e+04 (Re +6.2272e+04); next +1.829e+04, +1.287e+04, +1.124e+04; leading mode at r/R = 2.024, support [1.954, 2.093] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +2.0655e+04 (Re +1.0135e+05); next +1.579e+04, +1.106e+04, +9.139e+03; leading mode at r/R = 1.977, support [1.930, 2.025] R
+--- poly deg 20, rmax 2R, viscous, fine k
+  k =  2000.0 (k R =  27.55): leading Im omega = +3.8817e+04 (Re -1.5029e+05); next +2.663e+04, +2.171e+04, +1.466e+04; leading mode at r/R = 1.144, support [1.105, 1.182] R
+  k =  2400.0 (k R =  33.06): leading Im omega = +4.1016e+04 (Re -2.0118e+05); next +2.779e+04, +2.446e+04, +1.467e+04; leading mode at r/R = 1.144, support [1.118, 1.169] R
+  k =  2800.0 (k R =  38.56): leading Im omega = +4.2154e+04 (Re -2.5222e+05); next +2.831e+04, +2.635e+04, +1.444e+04; leading mode at r/R = 1.144, support [1.118, 1.169] R
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.2512e+04 (Re -3.0339e+05); next +2.893e+04, +2.678e+04, +1.492e+04; leading mode at r/R = 1.143, support [1.118, 1.169] R
+  k =  3600.0 (k R =  49.58): leading Im omega = +4.2294e+04 (Re -3.5465e+05); next +2.946e+04, +2.603e+04, +1.466e+04; leading mode at r/R = 1.142, support [1.118, 1.169] R
+  k =  4000.0 (k R =  55.09): leading Im omega = +4.1640e+04 (Re -4.0599e+05); next +2.954e+04, +2.452e+04, +1.387e+04; leading mode at r/R = 1.142, support [1.118, 1.156] R
+  k =  4800.0 (k R =  66.11): leading Im omega = +3.9330e+04 (Re -5.0875e+05); next +2.824e+04, +1.938e+04, +1.128e+04; leading mode at r/R = 1.141, support [1.118, 1.156] R
+--- spline, column through the 2D mode's front height z=0.002, viscous
+  max Omega 6.7990e+04 (at r/R 1.078), max |W| 4.1419e+02
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0401e+04 (Re -1.8452e+04); next +3.990e+04, +3.244e+04, +2.684e+04; leading mode at r/R = 1.365, support [1.281, 1.431] R; fastest modes centred inside 1.5 R: +5.040e+04, +3.990e+04
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.9044e+04 (Re -8.6012e+04); next +4.010e+04, +3.305e+04, +2.546e+04; leading mode at r/R = 1.338, support [1.293, 1.386] R; fastest modes centred inside 1.5 R: +4.904e+04, +4.010e+04
+  k =  4800.0 (k R =  66.11): leading Im omega = +4.3024e+04 (Re -1.5504e+05); next +3.490e+04, +2.634e+04, +2.341e+04; leading mode at r/R = 1.325, support [1.293, 1.363] R; fastest modes centred inside 1.5 R: +4.302e+04, +3.490e+04
+--- spline, swirl-max column, viscous, near-front modes
+  k =  1600.0 (k R =  22.04): leading Im omega = +1.9566e+04 (Re +6.9620e+04); next +9.529e+03, +2.137e+03, -1.720e+03; leading mode at r/R = 1.928, support [1.862, 1.983] R; fastest modes centred inside 1.5 R: -1.753e+03, -1.973e+03
+  k =  3200.0 (k R =  44.07): leading Im omega = +2.0213e+04 (Re +1.0593e+05); next +1.179e+04, +4.165e+03, -3.229e+03; leading mode at r/R = 1.936, support [1.895, 1.969] R; fastest modes centred inside 1.5 R: -6.110e+03, -6.884e+03
+--- front column z=0.002, spline, viscous, N 300, k scan
+  k =   800.0 (k R =  11.02): leading Im omega = +4.5254e+04 (Re +1.3395e+04); next +3.231e+04, +2.502e+04, +2.010e+04; leading mode at r/R = 1.391, support [1.263, 1.483] R; fastest modes centred inside 1.5 R: +4.525e+04, +3.231e+04
+  k =  1200.0 (k R =  16.53): leading Im omega = +4.8883e+04 (Re -2.2367e+03); next +3.747e+04, +3.018e+04, +2.505e+04; leading mode at r/R = 1.376, support [1.279, 1.454] R; fastest modes centred inside 1.5 R: +4.888e+04, +3.747e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0395e+04 (Re -1.8453e+04); next +3.988e+04, +3.246e+04, +2.685e+04; leading mode at r/R = 1.365, support [1.287, 1.433] R; fastest modes centred inside 1.5 R: +5.039e+04, +3.988e+04
+  k =  2000.0 (k R =  27.55): leading Im omega = +5.0822e+04 (Re -3.5040e+04); next +4.091e+04, +3.338e+04, +2.739e+04; leading mode at r/R = 1.356, support [1.287, 1.418] R; fastest modes centred inside 1.5 R: +5.082e+04, +4.091e+04
+  k =  2400.0 (k R =  33.06): leading Im omega = +5.0611e+04 (Re -5.1879e+04); next +4.113e+04, +3.357e+04, +2.740e+04; leading mode at r/R = 1.349, support [1.287, 1.403] R; fastest modes centred inside 1.5 R: +5.061e+04, +4.113e+04
+--- front column, rmax 3R, N 300
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0143e+04 (Re -1.8410e+04); next +3.989e+04, +3.248e+04, +2.673e+04; leading mode at r/R = 1.364, support [1.284, 1.425] R; fastest modes centred inside 1.5 R: +5.014e+04, +3.989e+04
+--- front column, inviscid, N 300
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.1877e+04 (Re -1.8530e+04); next +4.173e+04, +3.468e+04, +2.940e+04; leading mode at r/R = 1.364, support [1.287, 1.425] R; fastest modes centred inside 1.5 R: +5.188e+04, +4.173e+04
+  k =  3200.0 (k R =  44.07): leading Im omega = +5.4586e+04 (Re -8.6334e+04); next +4.653e+04, +3.987e+04, +3.415e+04; leading mode at r/R = 1.337, support [1.287, 1.381] R; fastest modes centred inside 1.5 R: +5.459e+04, +4.653e+04
+  k =  6400.0 (k R =  88.15): leading Im omega = +5.5556e+04 (Re -2.2532e+05); next +4.950e+04, +4.365e+04, +3.974e+04; leading mode at r/R = 1.317, support [1.287, 1.342] R; fastest modes centred inside 1.5 R: +5.556e+04, +4.950e+04
+--- neighbouring heights z=0.0015, 0.0025, 0.003 at k 1600
+  k =  1600.0 (k R =  22.04): leading Im omega = +3.1827e+04 (Re -2.1277e+04); next +2.471e+04, +1.953e+04, +1.538e+04; leading mode at r/R = 1.386, support [1.305, 1.453] R; fastest modes centred inside 1.5 R: +3.183e+04, +2.471e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +6.5567e+04 (Re +6.1365e+03); next +5.314e+04, +4.452e+04, +3.810e+04; leading mode at r/R = 1.433, support [1.352, 1.505] R; fastest modes centred inside 1.5 R: +6.557e+04, +5.314e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +4.6619e+04 (Re +4.5628e+04); next +3.747e+04, +3.161e+04, +2.639e+04; leading mode at r/R = 1.712, support [1.623, 1.778] R; fastest modes centred inside 1.5 R: -1.735e+03, -1.944e+03
+--- front column z=0.002, viscous, m = 0
+  k =   800.0 (k R =  11.02): leading Im omega = +4.5916e+04 (Re -2.9073e+04); next +3.069e+04, +2.156e+04, +1.621e+04; leading mode at r/R = 1.382, support [1.257, 1.474] R; fastest modes centred inside 1.5 R: +4.592e+04, +3.069e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +4.9354e+04 (Re -6.3989e+04); next +3.665e+04, +2.735e+04, +2.290e+04; leading mode at r/R = 1.349, support [1.281, 1.409] R; fastest modes centred inside 1.5 R: +4.935e+04, +3.665e+04
+  k =  2400.0 (k R =  33.06): leading Im omega = +4.9188e+04 (Re -9.9158e+04); next +3.797e+04, +3.015e+04, +2.324e+04; leading mode at r/R = 1.333, support [1.281, 1.386] R; fastest modes centred inside 1.5 R: +4.919e+04, +3.797e+04
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.7625e+04 (Re -1.3429e+05); next +3.763e+04, +2.767e+04, +2.683e+04; leading mode at r/R = 1.324, support [1.281, 1.363] R; fastest modes centred inside 1.5 R: +4.762e+04, +3.763e+04
+--- front column z=0.002, viscous, m = 2
+  k =   800.0 (k R =  11.02): leading Im omega = +3.8068e+04 (Re +5.5788e+04); next +2.411e+04, +1.730e+04, +1.663e+04; leading mode at r/R = 1.383, support [1.293, 1.453] R; fastest modes centred inside 1.5 R: +3.807e+04, +2.411e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +4.7460e+04 (Re +2.4491e+04); next +3.820e+04, +3.159e+04, +2.652e+04; leading mode at r/R = 1.378, support [1.293, 1.442] R; fastest modes centred inside 1.5 R: +4.746e+04, +3.820e+04
+  k =  2400.0 (k R =  33.06): leading Im omega = +4.9953e+04 (Re -7.2446e+03); next +4.189e+04, +3.557e+04, +3.050e+04; leading mode at r/R = 1.366, support [1.305, 1.420] R; fastest modes centred inside 1.5 R: +4.995e+04, +4.189e+04
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.9276e+04 (Re -3.9930e+04); next +4.159e+04, +3.509e+04, +2.972e+04; leading mode at r/R = 1.354, support [1.305, 1.397] R; fastest modes centred inside 1.5 R: +4.928e+04, +4.159e+04
+--- front column z=0.002, viscous, m = 3
+  k =   800.0 (k R =  11.02): leading Im omega = +2.5175e+04 (Re +1.0176e+05); next +1.744e+04, +1.425e+04, +1.220e+04; leading mode at r/R = 1.362, support [1.305, 1.409] R; fastest modes centred inside 1.5 R: +2.518e+04, +1.744e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +3.8483e+04 (Re +6.6814e+04); next +3.193e+04, +2.692e+04, +2.340e+04; leading mode at r/R = 1.378, support [1.317, 1.431] R; fastest modes centred inside 1.5 R: +3.848e+04, +3.193e+04
+  k =  2400.0 (k R =  33.06): leading Im omega = +4.5596e+04 (Re +3.4711e+04); next +3.884e+04, +3.308e+04, +2.850e+04; leading mode at r/R = 1.382, support [1.317, 1.431] R; fastest modes centred inside 1.5 R: +4.560e+04, +3.884e+04
+  k =  3200.0 (k R =  44.07): leading Im omega = +4.7551e+04 (Re +3.5392e+03); next +4.098e+04, +3.545e+04, +3.105e+04; leading mode at r/R = 1.372, support [1.317, 1.420] R; fastest modes centred inside 1.5 R: +4.755e+04, +4.098e+04
+--- Euler x28, front column z=0.0059 (2D m1 peak), inviscid, m=1
+  k =   400.0 (k R =  10.00): leading Im omega = +2.9422e+03 (Re +8.7604e+03); next +1.501e+03, +9.804e+02, +8.352e+02; leading mode at r/R = 1.960, support [1.954, 2.000] R; fastest modes centred inside 1.5 R: +8.352e+02, +6.007e+02
+  k =   800.0 (k R =  20.00): leading Im omega = +4.1179e+03 (Re +6.7154e+03); next +2.399e+03, +1.553e+03, +1.076e+03; leading mode at r/R = 1.959, support [1.890, 2.000] R; fastest modes centred inside 1.5 R: +1.076e+03, +9.667e+02
+  k =  1600.0 (k R =  40.00): leading Im omega = +4.8257e+03 (Re +3.3518e+03); next +2.998e+03, +1.812e+03, +1.575e+03; leading mode at r/R = 1.966, support [1.923, 2.000] R; fastest modes centred inside 1.5 R: +1.575e+03, +1.491e+03
+  k =  3200.0 (k R =  80.01): leading Im omega = +5.1358e+03 (Re -2.3422e+03); next +3.254e+03, +2.482e+03, +1.860e+03; leading mode at r/R = 1.978, support [1.957, 1.989] R; fastest modes centred inside 1.5 R: +2.482e+03, +1.860e+03
+--- Euler x28, swirl-max column z=0.0078, inviscid
+  k =   800.0 (k R =  20.00): leading Im omega = +1.0660e+03 (Re +2.1339e+05); next +1.041e+03, +8.818e+02, +7.518e+02; leading mode at r/R = 0.167, support [0.149, 0.165] R; fastest modes centred inside 1.5 R: +1.066e+03, +1.041e+03
+  k =  1600.0 (k R =  40.00): leading Im omega = +1.6463e+03 (Re +4.1106e+05); next +1.587e+03, +1.187e+03, +8.376e+02; leading mode at r/R = 0.168, support [0.118, 0.118] R; fastest modes centred inside 1.5 R: +1.646e+03, +1.587e+03
+  k =  3200.0 (k R =  80.01): leading Im omega = +2.9260e+03 (Re +8.0230e+05); next +1.971e+03, +1.823e+03, +1.733e+03; leading mode at r/R = 0.045, support [0.024, 0.024] R; fastest modes centred inside 1.5 R: +2.926e+03, +1.971e+03
+--- Euler x28 z=0.005 rmax 3R inviscid m=1
+  k =   800.0 (k R =  20.00): leading Im omega = +1.0307e+04 (Re +2.5501e+03); next +9.039e+03, +8.055e+03, +7.270e+03; leading mode at r/R = 1.875, support [1.757, 1.978] R; fastest modes centred inside 1.5 R: +9.332e+02, +8.843e+02
+  k =  1600.0 (k R =  40.00): leading Im omega = +8.2777e+03 (Re -3.3796e+03); next +7.521e+03, +7.100e+03, +7.054e+03; leading mode at r/R = 1.939, support [1.882, 1.990] R; fastest modes centred inside 1.5 R: +1.498e+03, +1.303e+03
+--- Euler x28 z=0.0059 rmax 3R inviscid m=1
+  k =   800.0 (k R =  20.00): leading Im omega = +8.1272e+03 (Re +7.6319e+03); next +7.162e+03, +6.335e+03, +5.639e+03; leading mode at r/R = 2.196, support [2.082, 2.296] R; fastest modes centred inside 1.5 R: +1.076e+03, +9.844e+02
+  k =  1600.0 (k R =  40.00): leading Im omega = +8.4256e+03 (Re +7.3058e+03); next +7.864e+03, +7.358e+03, +6.906e+03; leading mode at r/R = 2.212, support [2.138, 2.286] R; fastest modes centred inside 1.5 R: +1.564e+03, +1.525e+03
+--- Euler x28 z=0.0065 rmax 3R inviscid m=1
+  k =   800.0 (k R =  20.00): leading Im omega = +5.5624e+03 (Re +1.0259e+04); next +4.964e+03, +4.681e+03, +4.035e+03; leading mode at r/R = 2.561, support [2.459, 2.648] R; fastest modes centred inside 1.5 R: +1.157e+03, +1.016e+03
+  k =  1600.0 (k R =  40.00): leading Im omega = +5.7058e+03 (Re +1.4764e+04); next +5.342e+03, +5.111e+03, +4.613e+03; leading mode at r/R = 2.503, support [2.432, 2.562] R; fastest modes centred inside 1.5 R: +1.697e+03, +1.248e+03
+--- Euler x28 z=0.007 rmax 3R inviscid m=1
+  k =   800.0 (k R =  20.00): leading Im omega = +5.5624e+03 (Re +1.0259e+04); next +4.964e+03, +4.681e+03, +4.035e+03; leading mode at r/R = 2.561, support [2.459, 2.648] R; fastest modes centred inside 1.5 R: +1.157e+03, +1.016e+03
+  k =  1600.0 (k R =  40.00): leading Im omega = +5.7058e+03 (Re +1.4764e+04); next +5.342e+03, +5.111e+03, +4.613e+03; leading mode at r/R = 2.503, support [2.432, 2.562] R; fastest modes centred inside 1.5 R: +1.697e+03, +1.248e+03
+--- x144 front column, nu = 5e-3 (Hou second stage), m=1
+  k =   400.0 (k R =   5.51): leading Im omega = +3.5069e+04 (Re +2.7285e+04); next +1.881e+04, +1.055e+04, +4.547e+03; leading mode at r/R = 1.397, support [1.244, 1.536] R; fastest modes centred inside 1.5 R: +3.507e+04, +1.881e+04
+  k =   800.0 (k R =  11.02): leading Im omega = +4.1452e+04 (Re +1.3333e+04); next +2.709e+04, +1.832e+04, +1.127e+04; leading mode at r/R = 1.399, support [1.269, 1.495] R; fastest modes centred inside 1.5 R: +4.145e+04, +2.709e+04
+  k =  1200.0 (k R =  16.53): leading Im omega = +4.1178e+04 (Re -2.0212e+03); next +2.781e+04, +1.893e+04, +1.226e+04; leading mode at r/R = 1.384, support [1.281, 1.463] R; fastest modes centred inside 1.5 R: +4.118e+04, +2.781e+04
+  k =  1600.0 (k R =  22.04): leading Im omega = +3.7344e+04 (Re -1.7919e+04); next +2.433e+04, +1.491e+04, +8.187e+03; leading mode at r/R = 1.373, support [1.281, 1.442] R; fastest modes centred inside 1.5 R: +3.734e+04, +2.433e+04
+  k =  2400.0 (k R =  33.06): leading Im omega = +2.2529e+04 (Re -5.0668e+04); next +9.387e+03, -1.314e+03, -9.724e+03; leading mode at r/R = 1.356, support [1.281, 1.420] R; fastest modes centred inside 1.5 R: +2.253e+04, +9.387e+03
+--- front column, polynomial degree 20, viscous m=1 k=1600
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0186e+04 (Re -1.8343e+04); next +3.979e+04, +3.265e+04, +2.759e+04; leading mode at r/R = 1.369, s
+--- front column, polynomial degree 30, viscous m=1 k=1600
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0415e+04 (Re -1.8457e+04); next +3.991e+04, +3.236e+04, +2.706e+04; leading mode at r/R = 1.365, s
+--- front column, polynomial degree 40, viscous m=1 k=1600
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0400e+04 (Re -1.8451e+04); next +3.989e+04, +3.247e+04, +2.687e+04; leading mode at r/R = 1.365, s
+--- front column, polynomial degree 60, viscous m=1 k=1600
+  k =  1600.0 (k R =  22.04): leading Im omega = +5.0400e+04 (Re -1.8453e+04); next +3.988e+04, +3.246e+04, +2.685e+04; leading mode at r/R = 1.365, s

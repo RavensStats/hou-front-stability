@@ -1,0 +1,6 @@
+axiphys_513_512_e513a5_t0.00221.npz: t 0.0022081; column z = 0.00781 through the swirl maximum at r = 0.02500; rmax = 1.5 R = 0.03750; 179 grid points; Chebyshev degree 30 in s = (r/rmax)^2
+  explicit field vs grid column: max relative residual Omega 1.58e-01, W 1.44e-04
+  float scan: B < 0 on [0.02484, 0.03004] (r/R 0.994 to 1.201); min B / max|Omega|^2 = -9.349e-01 at r = 0.02738
+  exact B(r): polynomial of degree 120 with rational coefficients
+  Sturm count of real roots of B in [0.024947, 0.029934]: 0; exact sign of B at the midpoint: negative (B(mid) = -8.0858e+08)
+  CERTIFIED (exact rational arithmetic): B < 0, hence Phi < 0, on [0.024947, 0.029934] = [0.998 R, 1.197 R] for the explicit polynomial columnar field

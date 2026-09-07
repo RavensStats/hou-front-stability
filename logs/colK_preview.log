@@ -1,0 +1,31 @@
+N 60: omega/(nu k^2) = -17.5259+25.4252j; singular values of (A - omega B)/(nu k^2) in the weighted norm: smallest 9.867e-15, second 2.664e-06, third 1.007e-04; largest 1.478e+03
+   preview K ~ 1/s_2 = 3.754e+05 (in units of 1/(nu k^2)); gap to next eigenvalue / (nu k^2) = 5.250 -> 1/gap = 0.190; non-normality factor (1/s_2)/(1/gap) = 1970746.6
+N 100: omega/(nu k^2) = -17.5259+25.4252j; singular values of (A - omega B)/(nu k^2) in the weighted norm: smallest 3.846e-14, second 1.610e-06, third 6.175e-05; largest 1.090e+04
+   preview K ~ 1/s_2 = 6.210e+05 (in units of 1/(nu k^2)); gap to next eigenvalue / (nu k^2) = 5.250 -> 1/gap = 0.190; non-normality factor (1/s_2)/(1/gap) = 3260233.0
+N 60: resolvent norm ||(A - mu)^-1|| (velocity, weighted, units 1/(nu k^2)) vs 1/|mu - omega|:
+   |mu - omega|/(nu k^2) = 2.625, direction 1.0: ||R|| = 1.591e+04, 1/|mu-omega| = 0.381, ratio 4.18e+04
+   |mu - omega|/(nu k^2) = 2.625, direction -1.0: ||R|| = 1.583e+04, 1/|mu-omega| = 0.381, ratio 4.16e+04
+   |mu - omega|/(nu k^2) = 2.625, direction 1j: ||R|| = 1.580e+04, 1/|mu-omega| = 0.381, ratio 4.15e+04
+   |mu - omega|/(nu k^2) = 2.625, direction (-0-1j): ||R|| = 1.596e+04, 1/|mu-omega| = 0.381, ratio 4.19e+04
+   |mu - omega|/(nu k^2) = 1.312, direction 1.0: ||R|| = 1.589e+04, 1/|mu-omega| = 0.762, ratio 2.09e+04
+   |mu - omega|/(nu k^2) = 1.312, direction -1.0: ||R|| = 1.585e+04, 1/|mu-omega| = 0.762, ratio 2.08e+04
+   |mu - omega|/(nu k^2) = 1.312, direction 1j: ||R|| = 1.583e+04, 1/|mu-omega| = 0.762, ratio 2.08e+04
+   |mu - omega|/(nu k^2) = 1.312, direction (-0-1j): ||R|| = 1.591e+04, 1/|mu-omega| = 0.762, ratio 2.09e+04
+   |mu - omega|/(nu k^2) = 0.525, direction 1.0: ||R|| = 1.588e+04, 1/|mu-omega| = 1.905, ratio 8.34e+03
+   |mu - omega|/(nu k^2) = 0.525, direction -1.0: ||R|| = 1.586e+04, 1/|mu-omega| = 1.905, ratio 8.33e+03
+   |mu - omega|/(nu k^2) = 0.525, direction 1j: ||R|| = 1.586e+04, 1/|mu-omega| = 1.905, ratio 8.32e+03
+   |mu - omega|/(nu k^2) = 0.525, direction (-0-1j): ||R|| = 1.589e+04, 1/|mu-omega| = 1.905, ratio 8.34e+03
+N 100: resolvent norm ||(A - mu)^-1|| (velocity, weighted, units 1/(nu k^2)) vs 1/|mu - omega|:
+   |mu - omega|/(nu k^2) = 2.625, direction 1.0: ||R|| = 2.652e+04, 1/|mu-omega| = 0.381, ratio 6.96e+04
+   |mu - omega|/(nu k^2) = 2.625, direction -1.0: ||R|| = 2.639e+04, 1/|mu-omega| = 0.381, ratio 6.93e+04
+   |mu - omega|/(nu k^2) = 2.625, direction 1j: ||R|| = 2.633e+04, 1/|mu-omega| = 0.381, ratio 6.91e+04
+   |mu - omega|/(nu k^2) = 2.625, direction (-0-1j): ||R|| = 2.660e+04, 1/|mu-omega| = 0.381, ratio 6.98e+04
+   |mu - omega|/(nu k^2) = 1.312, direction 1.0: ||R|| = 2.649e+04, 1/|mu-omega| = 0.762, ratio 3.48e+04
+   |mu - omega|/(nu k^2) = 1.312, direction -1.0: ||R|| = 2.642e+04, 1/|mu-omega| = 0.762, ratio 3.47e+04
+   |mu - omega|/(nu k^2) = 1.312, direction 1j: ||R|| = 2.639e+04, 1/|mu-omega| = 0.762, ratio 3.46e+04
+   |mu - omega|/(nu k^2) = 1.312, direction (-0-1j): ||R|| = 2.653e+04, 1/|mu-omega| = 0.762, ratio 3.48e+04
+   |mu - omega|/(nu k^2) = 0.525, direction 1.0: ||R|| = 2.647e+04, 1/|mu-omega| = 1.905, ratio 1.39e+04
+   |mu - omega|/(nu k^2) = 0.525, direction -1.0: ||R|| = 2.644e+04, 1/|mu-omega| = 1.905, ratio 1.39e+04
+   |mu - omega|/(nu k^2) = 0.525, direction 1j: ||R|| = 2.643e+04, 1/|mu-omega| = 1.905, ratio 1.39e+04
+   |mu - omega|/(nu k^2) = 0.525, direction (-0-1j): ||R|| = 2.648e+04, 1/|mu-omega| = 1.905, ratio 1.39e+04
+N 150: ||R|| = 3.949e+04 at |mu - omega|/(nu k^2) = 2.625 (ratio to 1/|mu-omega| 1.04e+05); worst forcing centred at r/rmax 1.000, response at 0.989; second singular value 1.080e+04

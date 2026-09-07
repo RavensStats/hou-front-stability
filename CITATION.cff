@@ -1,0 +1,17 @@
+cff-version: 1.2.0
+title: "Three-dimensional and axisymmetric stability of Hou's interior Navier-Stokes scenario: codes, data and record"
+message: "If you use these codes, snapshots or the spectral table, please cite the accompanying paper (arXiv id to be added) and this repository."
+type: software
+authors:
+  - family-names: "[surname]"
+    given-names: "[given names]"
+repository-code: "https://github.com/RavensStats/Millennium-Prize"
+license: MIT
+license-url: "https://github.com/RavensStats/Millennium-Prize/blob/main/LICENSE"
+date-released: "2026-09-07"
+keywords:
+  - Navier-Stokes
+  - singularity formation
+  - axisymmetric flow with swirl
+  - linear stability
+  - computer-assisted certificate

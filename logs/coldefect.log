@@ -1,0 +1,18 @@
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N60_m1_k2000_nu0.0005_d30.npz: N 60, m 1, k 2000.0, nu 0.0005; omega = -3.505189e+04 +5.085037e+04i
+  ||omega u||_(L2, r dr) = 4.5735e+01
+  defect norms (L2, r dr): r-momentum 1.079e+01, theta-momentum 2.803e-01, z-momentum 1.231e+00, continuity 5.169e-05
+  relative momentum defect 2.375e-01; continuity defect relative to ||k u_z|| 1.274e-04
+  momentum-defect energy centroid r/rmax = 0.999; fraction inside r < 0.1 rmax: 1.55e-06; near the wall r > 0.95 rmax: 9.99e-01
+  wall values: |u_r| 1.83e-07, |u_t| 1.55e-05, |u_z| 8.26e-05 (relative to max |u| 9.72e-02); axis: |u_z(0)| 4.60e-17, |p(0)| 1.50e-15
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N100_m1_k2000_nu0.0005_d30.npz: N 100, m 1, k 2000.0, nu 0.0005; omega = -3.505175e+04 +5.085034e+04i
+  ||omega u||_(L2, r dr) = 4.4981e+01
+  defect norms (L2, r dr): r-momentum 2.733e-01, theta-momentum 5.717e-03, z-momentum 2.350e-02, continuity 5.364e-07
+  relative momentum defect 6.099e-03; continuity defect relative to ||k u_z|| 1.345e-06
+  momentum-defect energy centroid r/rmax = 1.000; fraction inside r < 0.1 rmax: 2.33e-07; near the wall r > 0.95 rmax: 1.00e+00
+  wall values: |u_r| 2.81e-10, |u_t| 8.55e-08, |u_z| 3.52e-07 (relative to max |u| 9.61e-02); axis: |u_z(0)| 3.77e-17, |p(0)| 9.35e-16
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N150_m1_k2000_nu0.0005_d30.npz: N 150, m 1, k 2000.0, nu 0.0005; omega = -3.505175e+04 +5.085034e+04i
+  ||omega u||_(L2, r dr) = 4.4711e+01
+  defect norms (L2, r dr): r-momentum 2.314e-03, theta-momentum 4.811e-05, z-momentum 1.466e-04, continuity 2.423e-09
+  relative momentum defect 5.186e-05; continuity defect relative to ||k u_z|| 6.112e-09
+  momentum-defect energy centroid r/rmax = 1.000; fraction inside r < 0.1 rmax: 7.29e-08; near the wall r > 0.95 rmax: 1.00e+00
+  wall values: |u_r| 3.74e-13, |u_t| 1.89e-10, |u_z| 1.02e-09 (relative to max |u| 9.63e-02); axis: |u_z(0)| 1.01e-16, |p(0)| 2.82e-15

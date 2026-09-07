@@ -1,0 +1,38 @@
+PASS: gamma(k) >= k u/(1 - k u) exactly (Fraction check)
+PASS: outward(x,k) >= x (1+2u)^k exactly (Fraction check)
+PASS: (a) point matmul: exact Fraction product inside enclosure on 20 entries
+PASS: (a) point matmul radii sensible: max rad 2.062e-12 <= 1e-10 * scale 45.04
+PASS: (a) midpoint agrees with numpy A@B
+PASS: (a) perturbed matrices really lie inside the interval inputs (exact check)
+PASS: (a) interval matmul: exact product of perturbed matrices inside enclosure (20 entries)
+PASS: (a) interval radii dominate point radii
+PASS: scalar interval multiply encloses exact products of interior points
+PASS: interval subtraction encloses exact midpoint difference and sums radii
+PASS: contains: clearly interior -> True
+PASS: contains: touching boundary -> False
+PASS: contains: infinite radius -> False
+PASS: contains: infinite outer radius -> False
+PASS: (b) B=I, n=30: certificate obtained
+PASS: (b) W contains the numpy eigenvalue
+PASS: (b) rad(W) = 7.954e-13 < 1e-9
+PASS: (b) normalization component is exactly 1
+PASS: (b): certified W contains a pencil eigenvalue (dist 1.18e-14 <= rad 7.95e-13 + 1e-10)
+PASS: (b): residual of certified midpoint pair 2.51e-15
+PASS: (b') A with radius 1e-13: certificate obtained
+PASS: (b') interval-A enclosure wider (rad 6.143e-12) and still contains eigenvalue
+PASS: (c) pencil has 28 finite eigenvalues (expected 28) [scipy.linalg.eig]
+PASS: (c) singular B (two zero rows): certificate obtained
+PASS: (c) W contains the scipy.linalg.eig eigenvalue (rad 4.136e-12)
+PASS: (c): certified W contains a pencil eigenvalue (dist 1.14e-14 <= rad 4.14e-12 + 1e-10)
+PASS: (c): residual of certified midpoint pair 9.16e-16
+      (d) trial 0: not certified (flag False)
+      (d) trial 1: not certified (flag False)
+      (d) trial 2: not certified (flag False)
+      (d) trial 3: not certified (flag False)
+      (d) trial 4: not certified (flag False)
+      (d) trial 5: not certified (flag False)
+PASS: (d) negative control: no certified interval misses every pencil eigenvalue (0/6 certified, all containing a true eigenvalue)
+PASS: (d) far-away w0 and random x0: flag=False (never a wrong certificate)
+PASS: (e) n=400 certified in 0.37 s, rad(W)=2.40e-10
+
+ALL TESTS PASSED

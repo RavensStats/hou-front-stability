@@ -1,0 +1,3 @@
+  enclosure call returned in 0.4s: <class 'tuple'>
+  CERTIFIED: exactly one eigenvalue of every pencil in the enclosed family lies in the disc |omega - (-3.505189242e+04 +5.085036773e+04i)| <= 2.357e-08
+  hence Im omega in [5.085036773e+04, 5.085036773e+04]  -> growth (T-t) in [0.812485, 0.812485] > 0

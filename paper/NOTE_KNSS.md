@@ -1,0 +1,42 @@
+# Note: the leading axisymmetric Navier-Stokes singularity scenario satisfies the hypothesis of the Koch-Nadirashvili-Seregin-Sverak Liouville theorem as computed
+
+*Companion note to the paper; two pages; draft 0.1, 2026-09-07.*
+
+## 1. Setting
+
+Let u be a smooth solution of the incompressible Navier-Stokes equations with viscosity nu > 0 on the periodic cylinder D = {(x', x3): |x'| < 1, x3 in R / Z}, axisymmetric with swirl, with the no-slip (or the Hou-Luo) condition at the wall |x'| = 1, on a time interval (0, T), and suppose T is a first singular time. Write r = |x'|, u = u_r e_r + u_theta e_theta + u_z e_z, Gamma = r u_theta. This is the setting of Hou's Navier-Stokes scenario [H23b] (with the swirl profile 12000 (1 - r^2)^18 sin(2 pi z) / (1 + 12.5 sin^2(pi z)) as initial data and the two-stage viscosity 5e-4 then 5e-3).
+
+## 2. The theorems used
+
+**Theorem A (Koch, Nadirashvili, Seregin, Sverak [KNSS09], Theorem 5.3).** A bounded weak axisymmetric solution v on R^3 x (-infinity, 0) satisfying |v(y, s)| <= C / |y'| for all (y, s) is identically zero.
+
+**Theorem B ([KNSS09], Theorems 6.1-6.2).** An axisymmetric weak solution on R^3 x (0, T) satisfying |u(x, t)| <= C / |x'| is bounded (and mild); a Type I solution, |u| <= C / sqrt(T - t), satisfying |u| <= C / |x'| for |x'| >= R0 is bounded.
+
+**Theorem C (Seregin, Sverak [SS09], Theorem 1.1 and Lemma 3.3).** For an axisymmetric weak solution in L_3 with pressure in L_{3/2} on a parabolic cylinder about an axis point, a Type I bound on the meridional velocity alone, sup sqrt(t0 - t) |(u_r, u_z)| < infinity on the cylinder, gives regularity at that point; singular points of an axisymmetric suitable weak solution lie on the axis.
+
+None of these hypotheses involves r u^r, r u^z, or a log-weighted circulation.
+
+## 3. Proposition (proof by citation)
+
+**Proposition.** In the setting of Section 1, suppose that
+
+    K := sup_{0 < t < T} sup_{x in D} |u(x, t)| |x'| < infinity.        (H)
+
+Then T is not a singular time.
+
+*Proof.* (i) By Theorem C (Lemma 3.3) and the smoothness of u away from the axis for t < T, a singular point at time T lies on the axis; the wall |x'| = 1 is at distance one from the axis and the no-slip condition makes u smooth up to the wall for t < T, so the argument is local and the cylinder enters only through the existence of the solution on it. (ii) Let x0 be an axis point and suppose it is singular at T. Under (H) the Leray rescaling u^(lambda)(y, s) = lambda u(x0 + lambda y, T + lambda^2 s) satisfies |u^(lambda)(y, s)| <= K / |y'| for all lambda and all s < 0, uniformly. If the solution is Type I at x0 (|u| <= M / sqrt(T - t) on a parabolic cylinder about x0), the family is bounded and, by the standard compactness of Type I rescalings (the mild-solution local theory as in [SS09] and [AB19]), a subsequence converges locally uniformly to a bounded ancient axisymmetric solution v with |v(y, s)| <= K / |y'|, normalized so that |v| is of order one somewhere; Theorem A gives v = 0, a contradiction. If the solution is not Type I at x0, Theorem B (Theorem 6.1, applied on a parabolic cylinder about x0 where (H) holds; its proof is local) gives that u is bounded near x0 up to T, hence regular there. Either way x0 is regular. Since every candidate singular point is on the axis and is regular, T is not a singular time. QED
+
+*Remarks.* (a) The proposition contains no new mathematics; its content is that (H), and not any bound on r u^r, is what the theorems ask of Hou's scenario. Hou's stated escape [H24, Sec. 1.5], a logarithmic growth of |r u^r|, is not a hypothesis of Theorems A-C; Barker [B25] makes the same observation. (b) (H) is scale-invariant and does not involve the singular time T, so it can be measured on a computation without a fitted T.
+
+## 4. The measurement
+
+On the continuation of Hou's first-stage viscous solution (nu = 5e-4) from 144 to 331 times the initial swirl amplitude, over which log(1 / (T - t)) rises from 10.6 to 13.9 with T fitted by the log-derivative method (0.0022865 +- 1e-7), the quantity sup_x |u(x, t)| |x'| reads
+
+    72.3, 72.4, 72.2, 72.3, 72.3, 72.3, 72.2, 72.2, 72.2, 72.2, 72.2, 72.1
+
+on the twelve resolved snapshots (amplifications 144 to 331), constant to 0.3 percent. Its value at the swirl maximum itself is 21 to 22; the circulation maximum is 64.9 to 64.7 (its maximum principle); the Type I constant sup |u| (|x - x0| + sqrt(T - t)) is 75.4 to 74.6; the meridional Type I constant sup |(u_r, u_z)| sqrt(T - t) is 6.0 to 7.7. A logarithmic growth of |u| r over this range would read about thirty percent. The front of the collapse is resolved to ten cells on a front-following map and is the Rott-Lundgren strained layer under the measured collapse strain to a five percent profile residual; the amplitude exponent is 1.03 +- 0.03.
+
+**Conclusion.** As computed, the scenario satisfies (H) with K = 72 through the whole resolved range, with no trend. The only way for it to be singular is for K to become infinite as t -> T, which is the growth Hou's argument requires and the data do not show. Whether a logarithmic growth of K could be excluded by theorem is open: the KNSS argument uses (H) uniformly over rescalings and fails structurally under any logarithmic loss, and the sharpest growth-side results (Pan [P16]; Seregin [S21]) reach only a double logarithm to a small power. That question, which reduces to the dependence of the axis Holder exponent in the critical-drift oscillation decay on the drift constant, is the one analytical question this scenario poses.
+
+## References
+[AB19] Albritton, Barker, J. Math. Fluid Mech. 21 (2019) art. 43. [B25] Barker, arXiv:2510.20757. [H23b] Hou, Found. Comput. Math. 23 (2023) 2251-2299, arXiv:2107.06509. [H24] Hou, arXiv:2405.10916. [KNSS09] Koch, Nadirashvili, Seregin, Sverak, Acta Math. 203 (2009) 83-105. [P16] Pan, J. Differential Equations 260 (2016) 8485-8529. [S21] Seregin, arXiv:2109.09344. [SS09] Seregin, Sverak, Comm. Partial Differential Equations 34 (2009) 171-201.
