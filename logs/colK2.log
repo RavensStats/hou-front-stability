@@ -1,0 +1,24 @@
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N60_m1_k2000_nu0.0005_d30.npz: N 60; Leray-reduced dim 117; leading eigenvalues (units nu k^2): -17.52596+25.42514j, -15.78503+20.46870j, -14.48444+16.62032j; full-pencil omega/(nu k^2) = -17.52595+25.42518j
+  singular values of (A_Leray - mu): smallest 1.00e-13, then 4.3628, 7.8690, 10.5218  -> K_Leray = 1/s_2 = 0.2292; 1/gap = 0.1904; non-normality ratio 1.204
+  resolvent norm at mu + 1.0*0.5 gap: 0.4577 vs 1/|dist| 0.3807
+  resolvent norm at mu + 1j*0.5 gap: 0.4373 vs 1/|dist| 0.3807
+  resolvent norm at mu + 1.0*1.0 gap: 0.2353 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1j*1.0 gap: 0.2152 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1.0*2.0 gap: 0.1304 vs 1/|dist| 0.0952
+  resolvent norm at mu + 1j*2.0 gap: 0.1054 vs 1/|dist| 0.0952
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N100_m1_k2000_nu0.0005_d30.npz: N 100; Leray-reduced dim 197; leading eigenvalues (units nu k^2): -17.52587+25.42517j, -15.78428+20.46970j, -14.48408+16.62766j; full-pencil omega/(nu k^2) = -17.52587+25.42517j
+  singular values of (A_Leray - mu): smallest 1.73e-13, then 4.3626, 7.8685, 10.5211  -> K_Leray = 1/s_2 = 0.2292; 1/gap = 0.1904; non-normality ratio 1.204
+  resolvent norm at mu + 1.0*0.5 gap: 0.4578 vs 1/|dist| 0.3808
+  resolvent norm at mu + 1j*0.5 gap: 0.4374 vs 1/|dist| 0.3808
+  resolvent norm at mu + 1.0*1.0 gap: 0.2354 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1j*1.0 gap: 0.2152 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1.0*2.0 gap: 0.1304 vs 1/|dist| 0.0952
+  resolvent norm at mu + 1j*2.0 gap: 0.1055 vs 1/|dist| 0.0952
+colenc_axiphys_513_512_nsz_t0.00226_z0.002_N150_m1_k2000_nu0.0005_d30.npz: N 150; Leray-reduced dim 297; leading eigenvalues (units nu k^2): -17.52587+25.42517j, -15.78428+20.46970j, -14.48408+16.62766j; full-pencil omega/(nu k^2) = -17.52587+25.42517j
+  singular values of (A_Leray - mu): smallest 1.49e-13, then 4.3626, 7.8685, 10.5211  -> K_Leray = 1/s_2 = 0.2292; 1/gap = 0.1904; non-normality ratio 1.204
+  resolvent norm at mu + 1.0*0.5 gap: 0.4578 vs 1/|dist| 0.3808
+  resolvent norm at mu + 1j*0.5 gap: 0.4374 vs 1/|dist| 0.3808
+  resolvent norm at mu + 1.0*1.0 gap: 0.2354 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1j*1.0 gap: 0.2152 vs 1/|dist| 0.1904
+  resolvent norm at mu + 1.0*2.0 gap: 0.1304 vs 1/|dist| 0.0952
+  resolvent norm at mu + 1j*2.0 gap: 0.1055 vs 1/|dist| 0.0952
