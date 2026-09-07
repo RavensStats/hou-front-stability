@@ -16,3 +16,5 @@ colenc_axiphys_513_512_nsz_t0.00226_z0.002_N150_m1_k2000_nu0.0005_d30.npz: N 150
   relative momentum defect 5.186e-05; continuity defect relative to ||k u_z|| 6.112e-09
   momentum-defect energy centroid r/rmax = 1.000; fraction inside r < 0.1 rmax: 7.29e-08; near the wall r > 0.95 rmax: 1.00e+00
   wall values: |u_r| 3.74e-13, |u_t| 1.89e-10, |u_z| 1.02e-09 (relative to max |u| 9.63e-02); axis: |u_z(0)| 1.01e-16, |p(0)| 2.82e-15
+  relative momentum defect 3.602e-07; continuity defect relative to ||k u_z|| 2.750e-11
+  relative momentum defect 1.585e-09; continuity defect relative to ||k u_z|| 1.268e-12
