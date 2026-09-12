@@ -6,7 +6,7 @@ evaluated pseudo-spectrally in theta on N_th = 3M points (dealiased).  Base feed
 forces u1 (theta-momentum / r) and omega1 (curl_theta / r).  Diagnostics: base A = max u1 and location, mode energies,
 the 3D maximum of u_theta / r over theta (base + modes), the m = 0 forcing size, sigma (T-t) of the m = 1 energy.
    python axi3dnl.py <snapshot> <T_est> <M> <eps> [steps]     (eps: seed amplitude of m = 1 relative to max |U_theta|)
-   env: AXL_ZMAP, AXP_A, AXL_SEED=random"""
+   env: AXL_ZMAP, AXP_A  (NOTE: AXL_SEED is documented here historically but is NOT read by this file; runs are deterministic and two runs differing only in that variable are byte-identical)"""
 import os, sys, time
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import numpy as np

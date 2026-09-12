@@ -1,6 +1,9 @@
-"""Leibovich-Stewartson (JFM 126 1983) and Howard-Gupta (JFM 14 1962) criteria on an axisymmetric snapshot (lit 183):
-LS: non-axisymmetric short-wave instability where Phi = 2 V Om [D(rV) D(Om) + D(W^2)] < 0  (V = u_theta = r u1, Om = u1, W = u_z, D = d/dr)
-HG: axisymmetric stability where (1/r^3) D(Gamma^2) - (1/4)(DW)^2 > 0  (Gamma = r V = r^2 u1)"""
+"""Leibovich-Stewartson (JFM 126 1983) and Howard-Gupta (JFM 14 1962) criteria on an axisymmetric snapshot.
+CORRECTED 2026-09-12 -- see the retraction note at the top of lscert.py.  The LS criterion is
+  LS: unstable where Phi = V DOm [DOm D(rV) + (DW)^2] < 0   (V = u_theta = r u1, Om = u1, W = u_z, D = d/dr)
+The earlier form, Phi = 2 V Om [D(rV) D(Om) + D(W^2)], had a non-negative prefactor and a
+dimensionally inhomogeneous axial term.  The Howard-Gupta line below was always correct.
+  HG: axisymmetric stability where (1/r^3) D(Gamma^2) - (1/4)(DW)^2 > 0  (Gamma = r V = r^2 u1)"""
 import sys, glob, numpy as np
 sys.path.insert(0, ".")
 from axiphys import AxiPhys
@@ -16,7 +19,7 @@ for f in sys.argv[1:]:
         FF = np.concatenate([F[:0:-1] * (1 if par == "even" else -1), F], axis=0); return CubicSpline(rr, FF, axis=0)(r, 1)
     Psr = Dr(Ps, "even"); Psz = P.d_z(Ps); uz = 2 * Ps + r[:, None] * Psr
     V = r[:, None] * U; Omg = U; W = uz
-    Phi = 2 * V * Omg * (Dr(r[:, None] * V, "even") * Dr(Omg, "even") + Dr(W ** 2, "even"))
+    Phi = V * Dr(Omg, "even") * (Dr(Omg, "even") * Dr(r[:, None] * V, "even") + Dr(W, "even") ** 2)
     Gam2 = (r[:, None] ** 2 * U) ** 2; HG = Dr(Gam2, "even") / np.maximum(r[:, None], 1e-12) ** 3 - 0.25 * Dr(W, "even") ** 2
     A = float(np.abs(U).max()); i0, j0 = np.unravel_index(int(np.argmax(np.abs(U))), U.shape)
     im, jm = np.unravel_index(int(np.argmin(Phi)), Phi.shape)

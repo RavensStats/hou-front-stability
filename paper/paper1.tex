@@ -1,0 +1,1172 @@
+%% GENERATED FILE -- do not edit. Assembled by build_paper1_rev.py from the section
+%% sources; any edit made here is lost at the next build. Edit the sections instead.
+\documentclass[11pt]{article}
+\usepackage{cmap}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage[colorlinks=true,linkcolor=blue,citecolor=blue,urlcolor=blue]{hyperref}
+
+% scientific notation as written in the source (e.g. 5e-4)
+\newcommand{\sn}[2]{#1\times 10^{#2}}
+
+\title{A certified unstable eigenvalue of a columnar model of the front of Hou's Navier-Stokes collapse, and measured non-axisymmetric growth on the collapsing state}
+\author{Andrew Mullen\\ Independent researcher\\ \href{mailto:climbtheswissapps@gmail.com}{climbtheswissapps@gmail.com}\\ ORCID: \href{https://orcid.org/0009-0001-8581-4286}{0009-0001-8581-4286}}
+\date{\emph{Draft of 2026-09-12.}}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Hou's interior scenario is the leading numerical candidate for an interior finite-time singularity of the unforced axisymmetric Navier-Stokes equations, and the viscosity in it is raised by hand at a chosen time in order to suppress a shear instability of the collapsing front. We compute its growth rates, and identify its candidate mechanism in a parallel-flow model of the front. For a parallel-flow (columnar) model of the front -- a degree-30 polynomial fit of one column, carrying an artificial no-slip wall at twice the core radius, which brackets rather than predicts the two-dimensional rate -- we prove, by a computer-assisted argument of Plum's type in verified interval arithmetic, that the continuous columnar operator has an eigenvalue with growth rate at least $\sn{5.0802}{4}\,\mathrm{s}^{-1}$, which is 1.24 times the collapse rate of the state it is taken from: an unstable eigenvalue of a swirling column with axial flow, certified as such, together with local uniqueness of the eigenpair. We also give the first non-axisymmetric stability table for this scenario: growth rates of azimuthal modes $m = 0, 1, 2$ about the Euler and the viscous collapsing state, with a sweep over five viscosities, measured in a norm whose threshold we state as a sufficient condition rather than an equivalence. At Hou's first-stage viscosity every family tested outruns the collapse inside the first eleven percent of the remaining time, the short-wave families of the three azimuthal wavenumbers crossing within half a percentage point of one another, and applying his tenfold viscosity at that state, earlier in the remaining time than his own switch, moves that crossing from 4 to 15 percent without removing it. Nonlinearly, the mode depletes the collapse on the Euler states and, for the one localized seed run, leaves it unchanged to 0.02 percent out to 24 percent of the remaining time and to within 0.15 percent out to 35 percent on the viscous state. We continue Hou's first-stage solution, without his increase of viscosity, to a swirl maximum about 1450 times its initial value on two agreeing grids, and far less resolved to between fifteen and twenty-two thousand times; the measurements are made out to 1216 times. We identify the front as a fed strained layer at the Burgers scale, and measure the part of the Type I hypothesis that has content: the meridional quantities $|r u^r|$ and $|r u^z|$ rather than the full $|u|\,|x'|$, which is pinned from below by a circulation that obeys a maximum principle. We report them in the collapsing core, the global supremum being uninformative because it is attained in an outer flow that is effectively frozen. Over the resolved range the radial one is flat and the axial one rises by 36 percent, non-monotonically; across the late transition at which the one-scale collapse ends they rise by 27 and 60 percent.
+\end{abstract}
+
+\section{Introduction}
+
+The regularity problem for the three-dimensional incompressible Navier-Stokes equations remains open in both directions. On the numerical side the strongest evidence for singular behaviour comes from the axisymmetric flows with swirl of Luo and Hou \cite{LH14a,LH14b} at a solid boundary and, in the interior, of Hou \cite{H23a} for Euler and Hou \cite{H23b} for Navier-Stokes. The boundary scenario now has a computer-assisted proof of stable nearly self-similar blowup for Euler \cite{CH25}, whose rigorous-numerics half \cite{CH25b} is the closest computer-assisted precedent in this problem to the certificates below; the interior scenario is supported by a self-similar profile fitted through amplifications of order $10^{7}$ in Euler and, at a viscosity of $\sn{5}{-4}$ raised tenfold at a chosen time, in Navier-Stokes. It is the leading numerical candidate for an interior finite-time singularity of the unforced axisymmetric equations.
+
+Two questions about it have not, to our knowledge, been asked in print. First, every stability statement about these scenarios -- Hou's perturbations of the data, the nonlinear stability of Chen and Hou \cite{CH25}, and the machine-learned profiles of \cite{WLGB23} with the unstable-direction counts of \cite{W25}, those counts being for the one-dimensional Cordoba-Cordoba-Fontelos, two-dimensional porous-media and two-dimensional Boussinesq models rather than for axisymmetric Euler itself, and the stability framework of \cite{DGGA26} for the self-similar Euler profile of \cite{GDA26}, whose perturbations are required to inherit the symmetry of the profile -- is a statement within the axisymmetric class. Whether the collapsing state is stable to symmetry-breaking perturbations is unknown, and the question matters because the viscosity Hou raises by hand is raised precisely to suppress a shear instability of the front \cite[Sec. 3]{H23b}. Second, the viscous scenario's relation to the exclusion theorems for Type I singularities of axisymmetric flows with swirl \cite{CSTY09,KNSS09,SS09} has been argued about but not measured.
+
+This paper measures the growth that bears on the first and the quantities that decide the second. Its two halves are bound by one object: the table measures the growth of a family that lives on the front, and the theorem certifies an unstable eigenvalue of a parallel-flow model of that same front. The link is an identification, not an implication, and Section~\ref{sec:columnar} measures how far it holds -- the model brackets the two-dimensional rate rather than predicting it. Its contributions are, in order of weight:
+\begin{enumerate}
+\item \emph{A certified unstable eigenvalue of a columnar model of the front} (Sections~\ref{sec:krawczyk} and \ref{sec:stageb}). For the parallel-flow problem on an explicit rational field we verify, in interval arithmetic with rigorous floating-point error bounds, an eigenvalue of the collocation pencil (Theorem~1); and by an argument of Plum's type for non-self-adjoint eigenvalue problems \cite[\S 9.3]{NPW19} -- a certified defect for a Galerkin eigenpair, a certified bound on the inverse of the shifted operator on the complement of the Galerkin space, and a Newton-Kantorovich fixed point -- we prove that the \emph{continuous} columnar operator has an eigenvalue of growth rate at least $\sn{5.080293}{4}\,\mathrm{s}^{-1}$, that is $1.2435$ times the collapse rate of the state it is taken from (Theorem 2). Rigorous instability for a swirling column with axial flow is not new: Albritton and Ozanski \cite{AO25} construct the Leibovich-Stewartson ring modes of the inviscid column $V(r) e_\theta + W(r) e_z$ rigorously, with $O(1)$ growth rates in the joint large-wavenumber limit, and deduce nonlinear instability. What is new here, to our knowledge, is the form of the statement: a verified enclosure of a specific unstable eigenvalue of a \emph{viscous} such column, at a finite wavenumber, on an explicit field, with a rigorous radius. The weight is carried by the word verified. Verified enclosures of unstable eigenvalues in viscous parallel-flow stability do exist for the scalar Orr-Sommerfeld operator \cite{LP04,WPN09,BLMTW10} -- the last of these with exclosures as well, and with an eigenvalue proved to lie in the unstable region at $R = 5772.221818$, which is more than we claim here. Unstable modes of viscous swirling columns have of course been computed, and computed in three dimensions and in a pipe; what we have not found is a three-component swirling system with axial flow whose unstable eigenvalue is enclosed with an error bound a reader can check. The nearest verified eigenvalue in three-dimensional incompressible stability that we know of is that of Hou, Wang and Yang \cite{HWY26}, who certify an unstable eigenpair for the operator linearized about a self-similar Leray-Hopf profile, and deduce nonuniqueness from it; their object is a profile of the full equations rather than a column. Concurrently with this work, Dahne and Sverak \cite{DS26} certify an unstable eigenvalue of the linearization about a forward self-similar profile of the complex Ginzburg-Landau equation, a scalar problem posed with the Navier-Stokes non-uniqueness question in view. It is a statement about that model, on that field, and about nothing else; Section~\ref{sec:stageb} says so precisely.
+\item \emph{A non-axisymmetric stability table for Hou's collapsing state} (Section~\ref{sec:table}): growth rates of azimuthal modes $m = 0, 1, 2$ about the Euler and the viscous state, at three viscosities, with resolution pairs where they exist, the dependence of the crossing on viscosity, and the identification of the family that carries the instability as a short-wave band on the front. To our knowledge this is the first non-axisymmetric stability computation of this scenario, and we have found none for any other axisymmetric blowup candidate.
+\item \emph{The nonlinear fate of the unstable mode} (Section~\ref{sec:nl}): on the Euler states the mode depletes the collapse; on the viscous state, for the one localized seed run, the collapse is unaffected to 0.02 percent out to 24 percent of the remaining time and to within 0.15 percent out to 35 percent, and no run reached either a continued or an arrested symmetry-broken collapse.
+\item \emph{A resolved first-stage viscous continuation and its constants} (Section~\ref{sec:cont}), including the identification of the front as a fed strained layer at the Burgers scale, and the end of the one-scale regime near the label x400.
+\item \emph{The measurement against the exclusion theorems} (Section~\ref{sec:theorems}), with the observation that the quantity usually quoted, $\sup|u|\,|x'|$, is pinned from below by a circulation that obeys a maximum principle and is attained in an outer flow that is effectively frozen over the window, so that the informative quantities are the core meridional ones, $|r u^r|$ and $|r u^z|$.
+\end{enumerate}
+
+A distinction that the events of September 2026 make necessary. Finite-time blowup has been claimed for the three-dimensional Navier-Stokes equations with a smooth force compactly supported in space and time \cite{OAI26a}, for the unforced Euler equations from smooth compactly supported data \cite{OAI26b}, and, in the same week, for forced Euler, Boussinesq and porous-medium flows \cite{AB26}, continuing the multiscale programme of Cordoba and Martinez-Zoroa \cite{CM23}. A force of that kind satisfies Fefferman's conditions (4) and (5), so a correct proof of the first would settle option (C) of the Clay problem \cite{F00}. None of these claims had been independently verified as we wrote -- the Lean development accompanying \cite{OAI26a} records itself as self-assessed, and the one accompanying \cite{AB26} as verified by an author; since then the former has added a harness for checking its statements against an independently authored formalization of the Clay alternatives, which we note without having run it -- and none of them speaks to the object of this paper: Hou's scenario is unforced, and the exclusion theorems we measure against \cite{CSTY09,KNSS09,SS09} are theorems about the unforced equation, which no forced construction tests. The mechanism those constructions use is, however, the same short-wave amplification that our table finds on this state, and Section~\ref{sec:obstruction} says what our measurements do and do not imply for it.
+
+The paper is organized as follows. Section~\ref{sec:eqs} gives the equations, the solvers, their validation, and -- in Remark 1, which governs every rate in the paper -- the sense in which a perturbation outruns a collapse. Section~\ref{sec:table} is the stability table and the spectrum it is drawn from. Section~\ref{sec:cert} is the certificate: the columnar model of the front, the enclosure of its collocation pencil, and the enclosure of the continuous operator. Section~\ref{sec:nl} is the nonlinear fate. Section~\ref{sec:cont} is the continuation. Section~\ref{sec:theorems} places the measured quantities against the theorems. Section~\ref{sec:disc} discusses what the results mean for constructions of Type II singularities and for the regularity side.
+
+\section{Equations, codes and validation}
+\label{sec:eqs}
+
+\subsection{Formulation}
+
+We work with the Hou-Li variables
+\[
+u_1 = \frac{u^\theta}{r}, \qquad \omega_1 = \frac{\omega^\theta}{r}, \qquad \psi_1 = \frac{\psi^\theta}{r},
+\]
+on the periodic cylinder $\Omega = \{r \le 1,\ z \in [0,1)\}$, in which the axisymmetric Navier-Stokes equations read
+\begin{align}
+\partial_t u_1 + u^r \partial_r u_1 + u^z \partial_z u_1 &= 2 u_1 \partial_z \psi_1 + \nu \Delta_3 u_1, \label{eq:u1}\\
+\partial_t \omega_1 + u^r \partial_r \omega_1 + u^z \partial_z \omega_1 &= \partial_z\!\left(u_1^2\right) + \nu \Delta_3 \omega_1, \label{eq:om1}\\
+-\Delta_3 \psi_1 &= \omega_1, \label{eq:psi1}
+\end{align}
+with
+\[
+\Delta_3 = \partial_r^2 + \frac{3}{r}\partial_r + \partial_z^2, \qquad
+u^r = -r\, \partial_z \psi_1, \qquad u^z = 2 \psi_1 + r\, \partial_r \psi_1 .
+\]
+The data are Hou's \cite{H23a,H23b},
+\[
+u_1(0, r, z) = \frac{12000\,(1 - r^2)^{18} \sin(2 \pi z)}{1 + 12.5 \sin^2(\pi z)}, \qquad \omega_1(0, r, z) = 0,
+\]
+odd and $1$-periodic in $z$, with the pole conditions $\partial_r u_1 = \partial_r \omega_1 = \partial_r \psi_1 = 0$ at $r = 0$.
+
+\emph{The wall, where our problem differs from Hou's.} Hou imposes a no-slip no-flow condition at $r = 1$: in these variables $\psi_1(t,1,z) = 0$, $u_1(t,1,z) = 0$ and $\omega_1(t,1,z) = -\partial_r^2 \psi_1(t,1,z)$ enforced together with $\partial_r \psi_1(t,1,z) = 0$ \cite[eqs. (2.4)-(2.5)]{H23b}. Our solver imposes the no-flow condition $\psi_1(t,1,z) = 0$ alone; $u_1$ and $\omega_1$ are advanced at the wall with one-sided stencils and no boundary value, so the wall here is impermeable but not no-slip. The difference is a boundary effect at $r = 1$ on a structure that lives at $r \lesssim 0.03$ and collapses toward the axis; it is invisible in the checkpoint comparisons of Section~\ref{sec:gates} at the precision quoted there, and we have not attempted to quantify it further. Every statement below is a statement about the flow our solver computes.
+
+The base solver (\texttt{axiphys}) integrates \eqref{eq:u1}-\eqref{eq:psi1} on a radial sinh-type map and an axial map, with the exponential filter of Hou and Li \cite{HL07}, a moving radial map that follows the collapse, and, for the runs of Section~\ref{sec:cont}, a front-following axial map described there.
+
+\subsection{Azimuthal-mode solvers and what is measured}
+
+A perturbation of azimuthal wavenumber $m$ about an axisymmetric base $U$ is written $v(r, z, t)\, e^{i m \theta}$ and obeys the linearized Navier-Stokes system
+\begin{equation}
+\partial_t v + (U \cdot \nabla) v + (v \cdot \nabla) U + \nabla q = \nu \Delta v, \qquad \nabla \cdot v = 0,
+\label{eq:lin}
+\end{equation}
+with $\nabla$, $\Delta$ and $\nabla \cdot$ carrying the factor $i m / r$ in the azimuthal slot. We compute \eqref{eq:lin} in three ways. The frozen-base solver (\texttt{axi3dlin}) linearizes about a fixed snapshot and integrates the mode with an exact discrete pressure projection (the divergence-of-gradient operator assembled from the same difference stencils, banded, with a Neumann wall row so that the projected radial velocity vanishes at the wall) and the parity rules $v_r, v_\theta \sim r^{m-1}$, $v_z, q \sim r^m$ at the axis; viscosity enters through the combinations $v_r \pm i v_\theta$, which obey the Laplacians of index $m \pm 1$. The tangent-linear solver (\texttt{axi3dtl}) marches the nonlinear axisymmetric base and the mode in one Runge-Kutta step, linearizing about the instantaneous base at every stage, with the base's moving radial map installed as a fixed map and mapped bases transferred by exact sine series. The nonlinear solver (\texttt{axi3dnl}) carries modes $m = 1$ to $M - 1$ with the azimuthal convolutions evaluated pseudo-spectrally on $3M$ points and feeds the $m = 0$ Reynolds stress back into the base equations. For $m = 0$ the seed exponents become $v_r, v_\theta \sim r$ and $v_z \sim 1$, and the axial-mean Neumann problem for the pressure is singular and is pinned at the axis.
+
+Two numbers are reported for every run. The first is the energy growth rate
+\begin{equation}
+E(t) = \int_0^1\!\!\int_0^1 \left(|v_r|^2 + |v_\theta|^2 + |v_z|^2\right) r\, dr\, dz, \qquad
+\sigma(t) = \frac{1}{2}\,\frac{d \log E}{d t},
+\label{eq:sigma}
+\end{equation}
+quoted throughout in collapse units as $\sigma\,(T - t)$, where $T$ is the fitted singular time of Section~\ref{sec:fit}. The second does not involve $T$ at all:
+\begin{equation}
+\lambda = \frac{d \log\!\big(E^{1/2} / a_b\big)}{d \log A}, \qquad
+a_b^2 = \int_{\mathcal{B}} |U|^2\, r\, dr\, dz, \qquad A = \max |u_1|,
+\label{eq:lambda}
+\end{equation}
+with $\mathcal{B}$ the co-moving core box $r < 3R$, $|z - Z| < 3Z$ about the swirl maximum $(R, Z)$. Since $A \sim (T-t)^{-1}$ to the accuracy of Section~\ref{sec:fit}, $\lambda > 0$ means that the perturbation's energy norm grows faster than the base's energy norm on the collapse scale, that is, that the perturbation outruns the collapse in that ratio. We report $\lambda$ cumulatively, from the start of each run.
+
+\subsection{Gates}
+\label{sec:gates}
+
+Solid-body rotation is neutral to $\sn{1}{-10}$ in the frozen solver. On a Rayleigh-unstable column $V = r(1-r^2)$, $k = 2\pi$, an independent one-dimensional primitive-variable eigensolver reproduces the reference $m = 0$ growth rate (0.3708 against 0.370756, the latter computed independently here and not taken from the literature) and gives $\omega = 0.2481 + 0.3371 i$ for the physical $m = 1$ mode, a second mode at 0.446 being wall-localized and spurious. The frozen solver, seeded in the unstable annulus, approaches that eigenvalue from above rather than reproducing it: its rate peaks at 0.388 and decays monotonically to 0.363 at $t = 6$ against the eigensolver's 0.3371, the gap closing as the subdominant modes at 0.157 and 0.107 die out. An earlier version of this gate locked onto a wall artefact, which is why the wall row of the pressure projection is a Neumann row. The nonlinear code with a seed of $\sn{1}{-6}$ reproduces the tangent-linear rate to 1.3 percent (0.158 against 0.160) and generates the $m = 2$ harmonic at second order. Perturbations preserve the subgroup structure of their azimuthal wavenumbers exactly (a base carrying only even modes never generates an odd one; measured at $\sn{6}{-17}$), which is the elementary equivariance of \eqref{eq:lin} under rotation by $2\pi/p$ and is used below only to read the harmonic content of the nonlinear runs.
+
+The base solver reproduces Hou's published checkpoints: the Euler vorticity ratio at his first checkpoint to one percent and the Navier-Stokes ratio to three percent at his checkpoint $t = 0.0022616$ (his Appendix A.2), where he reports 139.6 (the snapshot we use as a base is the neighbouring computed state at $t = 0.0022620220$, at which our vorticity amplification is 144.1; Table~\ref{tab:states}). The tangent-linear and frozen-base rates are compared on a common convention, the raw rate in inverse seconds at equal fraction of the remaining time: the two solvers normalize by different remaining times (the frozen one by the remaining time at the snapshot, the co-evolving one by the remaining time at the current time), so their printed columns are not comparable and a ratio taken between them is not a growth-rate ratio. On the common convention the co-evolving Euler $m = 1$ rate exceeds the frozen one by 4 percent at 2.2 percent of the remaining time and by 13 percent at 13 percent, and the excess then grows (Section~\ref{sec:euler}); they agree to within 4 percent only over the first 6.5 percent of the remaining time, where the base has not yet moved.
+
+\emph{Amplification labels, defined exactly.} Two different labels are in use and we state both, because they are neither equal nor proportional. States of the Euler and first-stage Navier-Stokes solutions used as bases in Section~\ref{sec:table} are named by the amplification of the full vorticity maximum, $\max|\omega|(t) / \max|\omega|(0)$, which is how Hou identifies his checkpoints: `the x144 state' is his, and we reproduce 144.1 on it against his tabulated 139.6. The continuation of Section~\ref{sec:cont} and the series of Section~\ref{sec:theorems} are indexed instead by
+\[
+\text{(label)} = \frac{\max |u_1|(t)}{12000},
+\]
+the maximum of the swirl variable in units of the coefficient of the initial datum. That coefficient is not the initial maximum: $\max |u_1|(0) = 3266$, so a label of 331 is an amplification of $\max|u_1|$ by a factor 1216. We keep these labels because every log and every archived snapshot carries them, and we write them as `x331' to distinguish them from amplifications. Table~\ref{tab:states} gives both labels, with the times, for every state used below.
+
+\subsection{The trivial directions and the threshold}
+\label{sec:thresh}
+
+On a Type I base $u = (T - t)^{-1/2} U\!\left(x / \sqrt{T - t}\right)$ the pointwise amplitude rate, in units of the collapse rate $1/(T-t)$, is $3/2$ for the time-translation direction $\partial_t U$ and $1$ for an axis translation, and a perturbation outruns the collapse pointwise -- the ratio $\|v\|_\infty / \|u\|_\infty$ grows -- when its pointwise rate exceeds $1/2$. What we measure is the energy rate \eqref{eq:sigma}, and the two are related in one direction only.
+
+\medskip\noindent\textbf{Remark 1 (the threshold in the energy norm).} \emph{On the bounded cylinder $\Omega$, $\|v\|_{L^\infty} \ge |\Omega|^{-1/2} \|v\|_{L^2}$. Hence if $\sigma\,(T - t) \ge 1/2 + \epsilon$ on an interval with $\epsilon > 0$, then $\|v\|_{L^2} (T-t)^{1/2}$ grows there like $(T-t)^{-\epsilon}$, and since $\|u\|_\infty (T-t)^{1/2}$ is bounded on a Type I base -- applied to the computed state this hypothesis is the measured constant of Section~\ref{sec:consts}, flat to eleven percent over the resolved range -- $\|v\|_\infty / \|u\|_\infty$ grows. The condition $\sigma\,(T-t) > 1/2$ is therefore sufficient for outrunning, whatever the perturbation's support does. It is not necessary: for a perturbation co-scaling with the collapse, whose support shrinks like $(T-t)^{3/2}$ in volume, the energy rate is the pointwise rate less $3/4$, so the symmetry directions sit at energy rates $1/4$ (translation) and $3/4$ (time translation) and the outrunning threshold at $-1/4$.}
+
+\medskip\noindent We therefore use $\sigma\,(T-t) > 1/2$ as a \emph{conservative} criterion: every crossing fraction reported below is the point at which that sufficient condition is first met, not the point at which outrunning begins, and a family below it is not thereby stable. Where a verdict depends on the difference we report $\lambda$ of \eqref{eq:lambda}, which involves neither $T$ nor the pointwise normalization, and we compare each family with the symmetry directions of its own azimuthal wavenumber: for $m = 0$ these are the translation and the time translation, at energy rates $1/4$ and $3/4$; for $m = 1$ the axis translation, at $1/4$; for $m \ge 2$ there is none. For $m = 1$ the axis-translation field $-\partial_x U$ is an exact solution of the interior equations \eqref{eq:lin}, admissible up to a boundary term at $r = 1$, where it has a nonzero radial component because the cylinder is not invariant under translation; the term is negligible for a structure at $r \lesssim 0.03$ and is projected out with the energy inner product (exact for a normal operator; the overlap reaches 0.33 to 0.36 in the long-wave runs and stays below 0.06 in the random-seed runs, so the projection is exact to about ten percent in the worst case); for $m = 0$ the overlap with $\partial_t U$ starts at 0.11 and falls monotonically to 0.07. We report both the raw rate and the rate of the orthogonal part where it matters.
+
+A floor is known for the inviscid problem and we state its scope precisely, because it is often quoted more widely than it holds. For a Type I Euler blowup, Vasseur and Vishik \cite{VV20} bound the growth of the linearized \emph{Euler} semigroup below by the vorticity amplification, which for a Type I blowup implies a Lyapunov exponent of at least $1/2$ in these units, and Lafleche, Vasseur and Vishik \cite{LVV21} prove an axisymmetric counterpart, in weighted $L^p$ and under an extra hypothesis on the datum, with a $p$-dependent rather than a universal threshold. Both realize the growth with short-wave packets on bicharacteristics, so the class is identified even though no concrete or spectral mode is, neither bounds how far above it they lie, and neither applies to the viscous linearization, in which short waves are damped at rate $\nu k^2$. For the viscous states of Sections~\ref{sec:ns4}-\ref{sec:cross} no such floor is known, and the inviscid value serves only as a reference.
+
+\medskip\noindent\textbf{Remark 2 (collapse units carry the error in $T$).} \emph{If a rate $q$ is quoted in units of $1/(T-t)$ and $T$ carries an uncertainty $\delta$, the quoted value is $q\,(1 + \delta/(T-t))$ to first order.} On the state of Sections~\ref{sec:ns4}-\ref{sec:columnar}, $\delta/(T-t) = \sn{1}{-7} / \sn{2.4478}{-5} = 0.41$ percent, and every collapse-unit number quoted for that state carries that relative uncertainty in addition to its own. For the Euler states no fitted $T$ exists (Section~\ref{sec:euler}) and the band is much wider.
+
+\subsection{Resolution checks}
+\label{sec:res}
+
+Every long-wave entry on the frozen Euler base has three axial resolutions (512, 1024 and 2048 points, with the localized seed pinned at the same position) and a radial pair (an exact subsample of the sinh-map grid to 257 points against 513). The short-wave families have an axial pair (1024 against 2048) on the viscous base, at 3.9 and 5.2 percent of the remaining time. The fastest-growing co-evolving run has an axial pair of its own, 512 against 1024 on the same base exactly re-gridded, which agrees over the first 5 percent of the remaining time and then separates to a factor 1.4 by 22 percent: the threshold crossing of Remark 1 is reproduced to 0.1 percentage points, the late magnitudes are not, and we say so where they are used (Section~\ref{sec:table}). The other late co-evolving values, at 23.9 to 34.2 percent, have no pair at all, and neither does the twinned run beyond 22 percent. The viscous continuation has a twin at a different axial map and Courant number, and the front-resolved runs have two maps. Three earlier readings were retracted during the work and are recorded as such in the supplementary record: a fit-dependent departure of the Type I constants (the singular-time degeneracy of Section~\ref{sec:fit}), a grid-scale event in a seeded run at the x200 state, and a three-cell front thickness.
+
+\begin{table}[tbp]
+\centering\small
+\begin{tabular}{llcccccccc}
+\hline
+state & run & $t$ & $T - t$ & $\max|\omega|$ & label & $\sup |u||x'|$ & $|u|r$ core & $|r u^r|$ & $|r u^z|$ \\
+ & & & & ratio & $\max|u_1|/12000$ & & & core & core \\
+\hline
+Euler x28 & Euler & 0.0022081 & 7.84e-05 & 28.0 & 2.5 & 72.44 & 19.5 & 21.6 & 7.3 \\
+NS x144 & NS first stage & 0.0022620 & 2.45e-05 & 144.1 & 8.9 & 72.32 & 21.1 & 19.1 & 7.5 \\
+x32 & continuation & 0.0022770 & 9.48e-06 & 854.6 & 31.7 & 72.23 & 21.4 & 16.4 & 8.8 \\
+x36 & continuation & 0.0022780 & 8.48e-06 & 1027.3 & 36.2 & 72.25 & 21.6 & 16.1 & 8.9 \\
+x42 & continuation & 0.0022790 & 7.47e-06 & 1260.0 & 41.8 & 72.29 & 21.7 & 15.8 & 9.1 \\
+x49 & continuation & 0.0022800 & 6.47e-06 & 1565.6 & 49.1 & 72.28 & 21.6 & 15.5 & 9.2 \\
+x59 & continuation & 0.0022810 & 5.46e-06 & 1996.1 & 58.6 & 72.24 & 21.8 & 15.2 & 9.4 \\
+x72 & continuation & 0.0022820 & 4.46e-06 & 2587.7 & 72.1 & 72.17 & 21.7 & 14.9 & 9.5 \\
+x92 & continuation & 0.0022830 & 3.46e-06 & 3642.0 & 92.4 & 72.19 & 21.9 & 15.8 & 9.7 \\
+x130 & continuation & 0.0022840 & 2.46e-06 & 5646.6 & 129.8 & 72.23 & 22.1 & 16.4 & 9.9 \\
+x223 & continuation & 0.0022850 & 1.45e-06 & 13346.5 & 222.7 & 72.15 & 23.6 & 15.4 & 11.0 \\
+x266 & continuation & 0.0022853 & 1.20e-06 & 20057.7 & 266.2 & 72.15 & 21.8 & 15.8 & 10.3 \\
+x265 & continuation & 0.0022853 & 1.20e-06 & 17766.8 & 265.4 & 72.17 & 23.2 & 17.8 & 10.7 \\
+x365$^\dagger$ & continuation & 0.0022855 & 9.51e-07 & 30469.6 & 364.9 & 556.46 & 22.4 & 73.6 & 11.3 \\
+x329 & continuation & 0.0022855 & 9.51e-07 & 33682.0 & 328.6 & 72.13 & 20.5 & 19.1 & 10.2 \\
+x438 & continuation & 0.0022871 & $-$5.50e-07 & 24361.5 & 438.5 & 72.08 & 10.8 & 23.0 & 17.1 \\
+\hline
+\end{tabular}
+\caption{The states used in this paper, with every quantity recomputed from the archived snapshot. `x28' and `x144' are amplifications of the full vorticity maximum, which are Hou's labels; the `label' column is $\max|u_1|/12000$ of Section~\ref{sec:gates}, which is how the states are named in Sections~\ref{sec:consts} to \ref{sec:theorems}. The other row names are the labels $\max|u_1|/12000$ of Section~\ref{sec:gates}. The last four columns are independent of the fitted singular time: the global supremum of $|u|\,|x'|$, and $|u|\,r$, $|r u^r|$, $|r u^z|$ in the core box $r < 3R$, $|z - Z| < 3Z$ of \eqref{eq:lambda}. $^\dagger$The snapshot excluded in Section~\ref{sec:l3}, on a degraded map; its twin at the same instant is the row below it. The $T - t$ column uses the fitted $T = 0.0022865$ for every row; on the Euler convention of Section~\ref{sec:euler} ($T_E = 0.002278$) the Euler state has $T_E - t = \sn{7.0}{-5}$. The last row lies past the fitted singular time.}
+\label{tab:states}
+\end{table}
+
+\section{Non-axisymmetric stability of the collapsing state}
+\label{sec:table}
+
+\subsection{Conventions, and the two Euler caveats}
+\label{sec:euler}
+
+The states are those of Table~\ref{tab:states}. Collapse units on the viscous branch use the fitted $T = 0.0022865$ of Section~\ref{sec:fit}; the runs themselves were integrated with the Euler checkpoint value $T_{\mathrm{est}} = 0.002278$ as the normalizing time, and the viscous entries below are the same measurements renormalized to the fitted $T$.
+
+On the Euler branch there is no fitted singular time and we do not invent one. Running the log-derivative method of Section~\ref{sec:fit} on our densest Euler record (a $513 \times 512$ run with twenty-six retained snapshots to $t = 0.0022736$) does not converge: the last seven four- and five-point windows give $T$ between 0.0022716 and 0.0022845 with the exponent drifting from 0.905 to 1.35, and neither stops moving as the window slides toward $T$, so Luo and Hou's criterion is not met; a separate Euler run passes $t = 0.002278$ with an amplitude of $\sn{1.5}{6}$, still finite. Collapse units on the Euler branch therefore use $T_E = 0.002278$, Hou's checkpoint, and carry a systematic band: over the range of admissible $T$ the frozen-base entries move by about $\pm 9$ percent and the late co-evolving ones by about $\pm 17$ percent. Every Euler number below should be read with that band attached, and the Euler conclusions rest on ratios -- between resolutions, between azimuthal wavenumbers, between the frozen and the co-evolving base, and between the two-dimensional and the columnar rate -- each of which is taken at equal time and is invariant under the choice of $T$.
+
+\subsection{The table}
+\label{sec:ns4}
+
+Table~\ref{tab:spectral} is the paper's central measurement. Each row is one tangent-linear or frozen-base run: the fraction of the remaining time at which the energy rate $\sigma\,(T-t)$ of \eqref{eq:sigma} first meets the conservative criterion of Remark 1; the fraction at which it exceeds the symmetry directions of its own azimuthal wavenumber ($3/4$ for $m = 0$, $1/4$ for the translation-orthogonal part at $m = 1$, none for $m \ge 2$); the last measured value and the fraction at which it is taken; and the cumulative $\lambda$ of \eqref{eq:lambda}, which involves no fitted time.
+
+\emph{How to read the $\lambda$ column.} The core box of \eqref{eq:lambda} is built on the grid location of the swirl maximum, whose axial index moves by whole cells; when it steps, the box height jumps by 13 percent (Euler) to 30 percent (viscous) and puts one step into the cumulative $\lambda$. Exactly one such step occurs in each run, and we give $\lambda_{\mathrm{cum}}$ as a bracket whose upper end is the logged value and whose lower end has that step removed. The truth lies between. Where the bracket does not straddle the relevant threshold the sign verdict is safe, and where it does we say so. Early cumulative values are meaningless (at the first output $\log(A/A_0) \approx 0.008$, so a half-percent change in the base norm moves $\lambda_{\mathrm{cum}}$ by 0.6); only the last third of each run gives a usable value. The two diagnostics are consistent: for a Type I base $\lambda = (\sigma (T-t) + 1/4)/p$, which reproduces the logged $\lambda$ to a few percent on every run.
+
+\begin{table}[tbp]
+\centering\small
+\begin{tabular}{llclcccccc}
+\hline
+state & $\nu$ & $m$ & seed & base & $\sigma > 1/2$ & symmetry & last $\sigma$ (frac.) & $\lambda_{\mathrm{cum}}$ & pair \\
+\hline
+Euler x28 & 0 & 1 & long-wave & co-ev. & 22.9\% & 8.8\% & 0.836 (49.5\%) & $+0.93$ & -- \\
+Euler x28 & 0 & 1 & long-wave & frozen & 24.7\% & 5.3\% & 0.695 (43.4\%) & n/a & 3 axial, 1 radial \\
+Euler x28 & 0 & 0 & long-wave & co-ev. & never & never & 0.389 (26.9\%) & $[+0.55, +0.73]$ & -- \\
+Euler x28 & 0 & 0 & long-wave & frozen & never & never & 0.378 (28.9\%) & n/a & 3 axial, 1 radial \\
+Euler x28 & 0 & 0 & short-wave & co-ev. & 7.7\% & never & 0.691 (26.9\%) & $[+0.70, +0.89]$ & -- \\
+Euler x28 & 0 & 1 & short-wave & frozen & 6.0\% & 2.6\% & 0.921 (18.1\%) & n/a & 1 axial (20--27\%) \\
+Euler x28 & 0 & 2 & long-wave & frozen & 28.1\% & n/a & 0.756 (43.4\%) & n/a & -- \\
+\hline
+NS x144 & $\sn{5}{-4}$ & 1 & long-wave & co-ev. & 10.8\% & 5.8\% & 1.176 (34.2\%) & $[+0.49, +0.90]$ & -- \\
+NS x144 & $\sn{5}{-4}$ & 1 & short-wave & co-ev. & 4.3\% & 2.9\% & 2.149 (34.2\%) & $[+1.03, +1.45]$ & 1 axial (8--55\%) \\
+NS x144 & $\sn{5}{-4}$ & 1 & short-wave & frozen & 4.8\% & 3.3\% & 1.311 (26.2\%) & n/a & 1 axial (1.5--8\%) \\
+NS x144 & $\sn{5}{-4}$ & 0 & short-wave & co-ev. & 4.7\% & 7.0\% & 1.484 (23.9\%) & $[+0.66, +1.12]$ & -- \\
+NS x144 & $\sn{5}{-4}$ & 2 & short-wave & co-ev. & 4.2\% & n/a & 2.084 (23.9\%) & $[+1.01, +1.49]$ & -- \\
+\hline
+NS x144 & $\sn{5}{-3}$ & 1 & short-wave & co-ev. & 14.5\% & 11.7\% & 1.367 (24.1\%) & $[+0.21, +0.64]$ & -- \\
+NS x144 & $\sn{5}{-3}$ & 0 & short-wave & co-ev. & 19.1\% & 21.5\% & 0.953 (24.1\%) & $[-0.02, +0.40]$ & -- \\
+NS x144 & $\sn{5}{-3}$ & 1 & long-wave & co-ev. & 11.0\% & 5.3\% & 0.848 (24.1\%) & $[+0.52, +0.92]$ & -- \\
+NS x144 & $\sn{1}{-2}$ & 1 & short-wave & co-ev. & 16.8\% & 15.3\% & 0.909 (19.7\%) & $[-0.54, -0.09]$ & -- \\
+\hline
+\end{tabular}
+\caption{Growth of non-axisymmetric perturbations about the collapsing state. `symmetry' is the fraction of the remaining time at which the run exceeds every symmetry direction of its azimuthal wavenumber ($\sigma > 3/4$ for $m = 0$; $\sigma_\perp > 1/4$ for $m = 1$; none exists for $m \ge 2$). On the frozen base the translation-orthogonal part was not computed, so the three frozen $m = 1$ entries are crossings of the raw $\sigma$ instead. $\lambda_{\mathrm{cum}}$ is the cumulative ratio \eqref{eq:lambda}, bracketed as described in the text; it is not defined on a frozen base. `pair' lists the resolution twins; the one co-evolving twin is discussed below and in Section~\ref{sec:res}.}
+\label{tab:spectral}
+\end{table}
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{fig1_euler_rates}
+\caption{Euler, x28 state: energy rates $\sigma\,(T-t)$ of the perturbation families of Table~\ref{tab:spectral} against the fraction of the remaining time, on the Euler convention $T_E = 0.002278$ (Section~\ref{sec:euler}), which carries a $\pm 9$ to $\pm 17$ percent band. The solid line at $1/2$ is the sufficient threshold of Remark 1; the dashed lines at $1/4$ and $3/4$ are the energy rates of the axis-translation and time-translation directions for a co-scaling perturbation.}
+\label{fig:1}
+\end{figure}
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{fig2_viscous_rates}
+\caption{Navier-Stokes, x144 state: energy rates $\sigma\,(T-t)$ at $\nu = \sn{5}{-4}$ and at $\nu = \sn{5}{-3}$ applied to base and mode at that state (which is earlier in the remaining time than Hou's own switch; Section~\ref{sec:cross}). Lines as in Figure~\ref{fig:1}.}
+\label{fig:2}
+\end{figure}
+
+\emph{What the table supports.} At Hou's first-stage viscosity every family tested meets the conservative criterion inside the first eleven percent of the remaining time, and the short-wave families of all three azimuthal wavenumbers meet it within half a percentage point of one another (4.2, 4.3 and 4.7 percent for $m = 2$, 1 and 0), which is a property of the sheet they live on and not of a symmetry class. Their last measured rates, 1.48, 2.15 and 2.08, are 3.0 to 4.3 times the conservative threshold, and each exceeds every symmetry direction of its own wavenumber; the cumulative ratios, $+0.66$ to $+1.49$ across their brackets, say the same thing without reference to $T$. The long-wave $m = 1$ direction, a displacement of the collapse, also clears both, ending at 1.176 with a translation-orthogonal part of 1.045. On the Euler state the excess is smaller, a factor 1.4 to 1.8, with cumulative ratios from $+0.55$ to $+0.93$ across their brackets, the long-wave $m = 0$ direction included.
+
+Three qualifications belong with these numbers and are not decorations. First, the late co-evolving values are not converged in the axial resolution. The fastest-growing entry in the table, and the source of its headline value, has been repeated at half the axial resolution ($513 \times 512$ against $513 \times 1024$) on the same base state exactly re-gridded. The two agree to 8 percent over the first 5 percent of the remaining time and then separate steadily: the coarse run's rate is a factor 1.37 to 1.55 lower from 8 percent onward, and at the last fraction the two share, 21.6 percent, it gives $\sigma\,(T-t) = 1.26$ against 1.79 and a cumulative $\lambda$ of $+0.93$ against $+1.35$. Their axial wavenumber centroids separate with them, 114 against 183 cycles per unit, each about 40 percent of its own Nyquist in a run that carries no filter. Had viscosity selected the scale, the two would have settled on the same physical wavenumber; that they instead settle at a similar fraction of their own Nyquist says that the short end of the band is set by the grid. What survives this is the criterion the paper actually applies: both resolutions cross Remark 1's conservative threshold at the same time, 4.4 and 4.5 percent, and both keep $\lambda_{\mathrm{cum}}$ positive throughout. What does not survive is the magnitude: the crossings of $3/4$ and $1$ move from 5.7 and 7.6 percent to 8.1 and 17.2 percent, and the values quoted at 23.9 to 34.2 percent should be read as lower bounds that rise with axial resolution rather than as converged rates. A third axial resolution, which is what would decide whether they converge at all, has not been run. The twin also draws a different realisation of its random seed, so the comparison is not seed-matched; that the two agree early and diverge only as their wavenumber centroids diverge points to the resolved axial band rather than to the seed. The frozen pairs remain the rest of the resolution support, agreeing to 1.3 to 8 percent but only out to 14 to 26 percent of the remaining time. Second, the one Euler family that fails the conservative criterion, the long-wave axisymmetric direction, is not thereby stable: its rate peaks at 0.454 (co-evolving) and 0.495 to 0.497 (frozen, three axial resolutions, radial pair to 1 percent), which sits on the threshold inside the $\pm 9$ percent Euler band, while its cumulative $\lambda$ is strictly positive, $[+0.55, +0.73]$, so it outruns the collapse in the norm-consistent ratio, and lies between the two symmetry directions of its own wavenumber. An earlier draft of this paper called that direction stable; the statement the data support is that it clears neither the conservative threshold nor the time-translation direction at $3/4$, while exceeding the translation direction at $1/4$. Third, at the highest viscosity tested, $\nu = \sn{1}{-2}$, the two criteria disagree in sign: the rate clears the conservative threshold from 16.8 percent, while the cumulative ratio is negative throughout, $[-0.54, -0.09]$, the perturbation not yet having recovered its initial viscous decay. We report that as it stands.
+
+Figure~\ref{fig:2} collects the viscous rates of this subsection and of Section~\ref{sec:cross}.
+
+\emph{The families themselves.} The short-wave families are excited by a smooth random seed under the same envelope and live in a thin band on the front, with an axial wavenumber centroid that marches with the collapse and production dominated by the meridional shear. On the Euler state the frozen $m = 1$ family runs from 19.5 to 79.5 cycles per unit over its resolved range and the $m = 0$ family reaches 117; on the viscous state the co-evolving $m = 1$ family ends at 207, against an axial Nyquist of 512 in a run that carries no filter, which is the resolution caveat of Section~\ref{sec:res} in its sharpest form. For comparison the long-wave $m = 1$ direction on the Euler state, which is a displacement of the collapse rather than a band on the front, moves only from 6.9 to 35.0. This is the continuum Hou describes as the `shearing instability', which he reports as the strongest of the fluid dynamic instabilities that `typically occurs near the sharp front' and which, he states, a second-order vanishing numerical viscosity `would not be strong enough to suppress' \cite[Sec. 3.6]{H23a}. The long-wave $m = 1$ direction is a displacement of the collapse: its precession rate $\omega (T-t)$ passes from $+0.12$ through zero to retrograde near 40 percent of the remaining time, which the $SO(2)$ symmetry of a swirling base permits and which is not a bifurcation signature; the swirl share of its energy production rises from 0.07 to 0.47 and falls back to 0.37.
+
+\subsection{The crossing fraction versus viscosity}
+\label{sec:cross}
+
+Applying a viscosity to base and mode from the x144 state -- which is a switch made at that state, earlier in the remaining time than Hou's own switch at $t_0 = 0.00227375$, and therefore not his second stage -- the fraction of the remaining time at which the $m = 1$ short-wave family meets the conservative criterion is 4.3 percent at $\sn{5}{-4}$, 5.2 at $\sn{1}{-3}$, 7.5 at $\sn{2}{-3}$, 14.5 at $\sn{5}{-3}$ and 16.8 at $\sn{1}{-2}$ (Figure~\ref{fig:3}). Over the decade from $\sn{1}{-3}$ to $\sn{1}{-2}$ the crossing fraction rises by 11.6 points, roughly linearly in the logarithm of the viscosity and flattening at the top. At every viscosity from Hou's first stage to twice his second, the family meets the criterion before a fifth of the remaining time has elapsed. We do not extrapolate the trend to a viscosity that would hold the family below the threshold for half the remaining time: the five points span a factor twenty in viscosity and any such extrapolation lands far outside them.
+
+A remark on what the viscosity axis is, because these data invite a misreading. Hou's initial data have vanishing $\omega_1$, and for such data the system carries an exact scaling: the solution at amplitude $\lambda$ and viscosity $\nu$ is $\lambda$ times the solution at unit amplitude and viscosity $\nu/\lambda$, run at time $\lambda t$, so the two parameters enter only through their ratio and the amplitude of the initial swirl is not an independent knob. For data with $\omega_1 \neq 0$, such as the evolved states used here, the equivalence holds only if all fields are scaled together; a viscosity sweep on a fixed evolved base is then equivalent to a joint amplitude sweep of that base, and not to a swirl-only sweep. What this means for anyone varying Hou's setup is that only the lobe geometry and a nonzero initial $\omega_1$ are genuinely independent directions.
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=0.7\linewidth]{fig3_crossing_vs_nu}
+\caption{The $m = 1$ short-wave family on the co-evolving x144 base: the fraction of the remaining time at which $\sigma\,(T-t)$ first reaches $1/2$, against the viscosity applied to base and mode.}
+\label{fig:3}
+\end{figure}
+
+\subsection{An analytic cross-check}
+\label{sec:ls}
+
+Leibovich and Stewartson's sufficient condition \cite{LS83} for non-axisymmetric short-wave instability of a swirling flow -- whose ring modes Albritton and Ozanski \cite{AO25} have since constructed rigorously under their own hypotheses -- $\Phi = V\, D\Omega\,[D\Omega\, D(rV) + (DW)^2] < 0$ with $V$ the swirl, $\Omega = V/r$, $W$ the axial velocity and $D$ the radial derivative, is evaluable on the axisymmetric base alone. On the grid fields it is satisfied in a band just outside the swirl maximum on every state examined: at $(r, z) = (0.0264, 0.0088)$ against the maximum at $(0.0250, 0.0078)$ on the Euler x28 state, at $(0.0140, 0.0040)$ against $(0.0138, 0.0037)$ on the viscous x144 state, and at $(0.0029, 0.0009)$ against $(0.0029, 0.0008)$ at x222; the implied short-wave growth is of order the collapse rate. Rayleigh's centrifugal discriminant is negative on 6, 12 and 33 percent of the column through the swirl maximum inside twice its radius on the three states.
+
+We attempted to make the same condition rigorous as a statement about an explicit polynomial field, by Sturm's theorem in exact rational arithmetic on a degree-20 Chebyshev fit of the column through the swirl maximum, and we withdraw the attempt. The criterion carries $D\Omega$ in its prefactor as well as inside its bracket, and the fit's first derivative is wrong by up to a factor of two near the swirl maximum, which is precisely where the annulus of interest lies; on the fitted field the quantity is negative only in a sliver at the outer edge of the fit, and interval arithmetic does not certify even that. An earlier version of this paper reported such a certificate. It rested on a misstatement of the criterion -- a prefactor $2V\Omega$, which is non-negative and therefore cannot invert the test where $\Omega$ decreases, and an axial term $D(W^2)$ in place of $(DW)^2$, which is not dimensionally homogeneous with the term beside it -- and it is retracted along with the code that produced it. The statement about the flow is the uncertified grid evaluation above, which is unaffected in its conclusion: recomputed with the criterion as Leibovich and Stewartson state it, $\Phi$ is still negative in a band just outside the swirl maximum on all three states, with the coordinates given there.
+
+\subsection{The spectrum of the frozen operator, and why the enclosure is one-dimensional}
+\label{sec:frozen}
+
+The rates of Table~\ref{tab:spectral} are growth rates of evolved perturbations, not eigenvalues. A direct eigenvalue computation of the frozen $m = 1$ operator shows why the distinction matters. On the Euler x28 state at $257 \times 512$, shift-invert Arnoldi at $\sigma (T-t) = 3.0$ returns $\sigma (T-t) = 3.035$ and 1.096 (frequencies $-109.5$ and $-110.9$ in collapse units) with relative residuals $\sn{2.2}{-5}$ and $\sn{5.0}{-5}$, axial wavenumber centroids at half the resolved range and radial centroids just inside the swirl maximum: these are the short-wave shearing continuum at the grid scale, whose rate grows with resolution, and not the long-wave rate 0.3 to 0.5 that the localized seed excites. The long-wave direction is therefore not a leading discrete eigenvalue of the inviscid frozen problem, and an inviscid eigenvalue enclosure would be a statement about the grid.
+
+The viscous operator damps the short waves and should have a resolution-convergent leading eigenvalue; that is the object a rigorous enclosure of the two-dimensional problem would target. Plain Arnoldi did not reach it: at $513 \times 1024$ the iteration failed to converge, and at $257 \times 512$ with a Krylov space of 60 it had not returned after 8.5 CPU-hours and was stopped. The leading eigenvalues sit in a cluster whose separation is of the order of the viscous damping of neighbouring short waves, which is the regime in which unshifted Arnoldi stalls \cite{MR96,LS01}. We tried both matrix-free remedies: Arnoldi on the propagator over 6.5 percent of the remaining time did not converge, and shift-invert with an inner GMRES solve stalled at a 36 percent inner residual for a real shift at the conservative threshold, with and without a shifted-diffusion preconditioner, which says that the shifted operator is nearly singular over a region -- the shift lies inside the pseudospectrum of the damped continuum rather than near an isolated eigenvalue. The leading viscous eigenvalue of the two-dimensional operator is therefore not isolated at this resolution, and this bounds what a rigorous enclosure of that operator could achieve, since every enclosure radius scales with the inverse of the distance to the continuum. The reachable rigorous statement is the one-dimensional radial problem on the front column, which is the subject of Section~\ref{sec:cert}.
+
+\section{A certified unstable eigenvalue of the columnar model}
+\label{sec:cert}
+
+Before the model is described, why certify \emph{it}. Three reasons, and they are the reasons this section exists rather than one about the collapse itself. First, it is the only object here with an isolated eigenvalue to enclose, and Section~\ref{sec:frozen} establishes that rather than assuming it: the two-dimensional operator's leading eigenvalue is not isolated at any resolution we can run, and both matrix-free remedies stall inside the pseudospectrum of the damped continuum. Second, a swirling column with axial flow is a classical object in its own right, not an artefact of this scenario; its instability is the Leibovich-Stewartson mechanism, whose modes Albritton and Ozanski \cite{AO25} have constructed rigorously in the inviscid case. Third, the enclosure is a genuine computation -- a non-self-adjoint operator, a Galerkin space of dimension $7682$, and a certified Stokes spectrum underneath it -- and is a contribution to verified numerics independently of what it says about this scenario. What it is not is a statement about the front, and Section~\ref{sec:stageb} says so precisely.
+
+\subsection{The columnar model of the front}
+\label{sec:columnar}
+
+A column of the flow at fixed height, treated as a parallel swirling flow $(V, W) = (r\Omega, W)$ with axial velocity, has normal modes $\exp(i m \theta + i k z - i \omega t)$ governed by a one-dimensional eigenvalue problem, which we solve by Chebyshev collocation with the axis conditions imposed by parity and no-slip at the outer edge of the fitted column ($r_{\max} = 2R$). The column that carries the instability is the front's, not the swirl maximum's. On the grid column through the front at the height where the two-dimensional $m = 1$ mode peaks, the columnar solver has an isolated unstable viscous $m = 1$ eigenvalue with growth 1.24 in collapse units at $kR = 28$ (converged in resolution and domain, 20 percent above the next eigenvalue, inviscid limit 1.27 to 1.36 and still rising slowly with $k$), against 1.21 to 1.24 for the frozen-base two-dimensional rate at 13 percent of the remaining time. The columnar rate varies from 0.78 to 1.61 across the front's thickness; the columnar eigenfunction sits at $1.3$ to $1.4R$ where the two-dimensional mode peaks at $1.0R$; and on the inviscid x28 state, whose front is sharper, no column reproduces the two-dimensional rate at all (columnar rates 0.4 to 0.7 against 0.92, at twice the radius). The parallel-flow model is therefore local: it supplies a candidate mechanism for the viscous front and brackets rather than predicts the two-dimensional rate. What it provides is a discrete, well-separated eigenvalue of a one-dimensional problem, which is the object a rigorous enclosure can reach.
+
+Figure~\ref{fig:6} collects the columnar spectra of the front column against wavenumber, with the certified eigenvalues of Theorem 1 marked.
+
+\emph{Mechanism.} On the front column the circulation $r^2\Omega$ decreases outward beyond $1.2R$, so Rayleigh's discriminant is negative on $1.21R$ to $2.0R$, and the inviscid $m = 1$ rate approaches the local centrifugal rate $\sqrt{-\Phi_R} = 1.47$ collapse units from below as $k$ grows (1.27, 1.34, 1.36 at $kR = 22, 44, 88$) with the eigenfunction narrowing onto the radius of the bound's maximum, which is the fixed-$m$ large-$k$ limit of Billant and Gallaire \cite{BG05,BG13}; the viscous peak at $kR = 28$ is the Mayer-Powell cutoff of that branch \cite{MP92}. The axial flow of the collapse extends the centrifugal instability to every azimuthal wavenumber \cite{BG13}, and on the front column the viscous columnar peaks are 1.21, 1.24, 1.22 and 1.16 collapse units for $m = 0, 1, 2, 3$, at $kR = 22, 28, 33$ and 44, all in the same annulus: one centrifugal instability of the front at every azimuthal wavenumber, not three. Without axial flow a Rayleigh-stable column is spectrally stable under further hypotheses \cite{GS20}. Two limits of this identification should be stated. The rate $\sqrt{-\Phi_R}$ is the large-wavenumber centrifugal limit and not a universal bound: under strong axial shear the Leibovich-Stewartson rate exceeds it, so approaching it from below is a property of this column. And in the two-dimensional runs the differential-rotation term supplies between nothing and 13 percent of the energy production of the viscous families, and under 9 percent over most of each run, the rest coming from the meridional shear, so the centrifugal identification is a statement about the columnar model and its eigenfunction, not a decomposition of the two-dimensional energy budget.
+
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{fig6_columnar}
+\caption{The columnar (parallel-flow) spectrum of the front column of the x144 state against axial wavenumber, in collapse units, at $\nu = \sn{5}{-4}$ (leading and second eigenvalue), inviscid, and $\nu = \sn{5}{-3}$; the Rayleigh bound of the column; the two-dimensional frozen-base rate; and the eigenvalues certified in Theorem~1 (the star at $kR = 22$ is the $m = 0$ certificate, the others $m = 1$).}
+\label{fig:6}
+\end{figure}
+
+\subsection{A certified eigenvalue of the collocation pencil}
+\label{sec:krawczyk}
+
+We first certify the discretized columnar problem. Let $\Omega(s)$ and $W(s)$ be the degree-30 polynomials in $s = (r/r_{\max})^2$, $r_{\max} = 2R$, with exactly rational coefficients (the double-precision Chebyshev fit of the front column, converted exactly; the fit reproduces the grid column's eigenvalue to 0.01 percent), and let $(A_N, B_N)$ be the $N$-point Chebyshev-Gauss collocation pencil of the linearized viscous columnar problem on the field $(r\Omega, W)$, with no-slip imposed at the outermost collocation point $r_{\max}\cos(\pi/4N)$, axis conditions by parity, and every entry enclosed in interval arithmetic.
+
+\medskip\noindent\textbf{Theorem 1.} \emph{For $m = 1$, $k = 2000$, $\nu = \sn{5}{-4}$ and $N = 150$, the pencil $(A_N, B_N)$ has an eigenvalue in the disc of radius $\sn{1.2}{-7}$ about}
+\[
+\omega = -\sn{3.5051747}{4} + \sn{5.0850344}{4}\, i \quad \mathrm{s}^{-1},
+\]
+\emph{with an eigenvector in an explicit box in which the eigenpair is unique.}
+
+\medskip\noindent The proof is a Krawczyk verification with rigorous floating-point error bounds (Rump's method \cite{R10}; midpoint-radius matrices; all products bounded by the classical $\gamma_n$ inequalities), and the code and its tests accompany the paper. The same verification at $N = 100$ gives radius $\sn{5.2}{-8}$ and agrees with $N = 150$ to nine digits, and at $N = 60$ gives $\sn{5.0850368}{4}$ with radius $\sn{2.4}{-8}$. An independent assembly of the pencil at 200 bits without the parity trick agrees with every stored entry within its radius, and a separate symbolic check reproduces the Cartesian linearized equations on a test field to $\sn{1}{-34}$. Three further certificates, each with radius below $\sn{1.3}{-7}$, are obtained at $N = 100$: at $\nu = \sn{5}{-3}$ with $k = 1200$, on the same $\nu = \sn{5}{-4}$ column with the viscosity of the operator replaced; for the inviscid problem at $k = 2000$; and for $m = 0$ at $k = 1600$, $\nu = \sn{5}{-4}$.
+
+The enclosure is a statement about the eigenvalue in inverse seconds and does not involve the singular time; only the conversion to collapse units does, and by Remark 2 that conversion carries 0.4 percent. In collapse units the four certified growth rates are $1.245 \pm 0.005$, $1.008 \pm 0.004$, $1.300 \pm 0.005$ and $1.208 \pm 0.005$, that is 2.49, 2.02, 2.60 and 2.42 times the conservative threshold of Remark 1 -- as a comparison of scales only, since Remark 1's hypothesis is about a perturbation of the two-dimensional collapsing base, whereas the columnar operator is a frozen parallel flow with no singular time of its own, and the conversion borrows $T - t$ from the state the column is taken from.
+
+What Theorem 1 certifies is that each of these four finite pencils, on an explicit rational field, has an isolated eigenvalue in the stated disc. It does not certify the continuous columnar operator -- that is Theorem 2 -- and it says nothing about the two-dimensional collapse, whose operator has no isolated eigenvalue to enclose (Section~\ref{sec:frozen}). The assumptions are those of every interval computation on BLAS and multiple-precision arithmetic: the real matrix product is a classical inner-product algorithm, the interval library is correct, overflow is detected and underflow is floored.
+
+% ---------------------------------------------------------------------------
+% Paper 1, Section 4.3: from the discretization to the continuous columnar operator (stage B).
+% This file is the source of Section 4.3 of tex/paper1.tex, where it is currently inlined;
+% corrections made here must be transplanted there.  Requires only the macro
+% \sn{a}{b} and amsmath, as in tex/paper1.tex.  Its deferred proofs are S1-S5 of tex/supplement.tex.
+% ---------------------------------------------------------------------------
+
+\subsection{From the discretization to the continuous columnar operator}\label{sec:stageb}
+
+The certificate of the preceding subsection is a statement about a finite matrix pencil. We now remove
+the discretization: the same eigenvalue is enclosed for the continuous columnar operator, by a
+argument of Plum's type for non-self-adjoint eigenvalue problems \cite[\S 9.3]{NPW19}, following \cite{LP04,WPN09}, whose two ingredients are a rigorous defect bound for an
+approximate eigenfunction and a rigorous bound on the inverse of the shifted operator, the second
+obtained from a certified block of the exact Stokes eigenbasis plus a-priori estimates on its
+complement. Every constant below is an outward-rounded interval quantity; the computations that
+produce them are described in the supplementary material and summarized in
+Section~\ref{sec:stageb-arith}.
+
+\medskip\noindent \emph{The operator.} Let $r_w := 0.027546\cos(\pi/400)$, let
+$D_{r_w} \subset \mathbb{R}^2$ be the open disc of that radius, and let
+$Q := D_{r_w}\times(\mathbb{R}/(2\pi/k)\mathbb{Z})$ be the periodic cylinder, $k = 2000$,
+$\nu = \sn{5}{-4}$. Let $\Omega(s)$ and $W(s)$ be the degree-30 polynomials in $s = (r/r_{\max})^2$
+with exactly rational coefficients of the preceding subsection, $r_{\max} = 0.0275462274972771$, and
+let the base flow be $U = r\,\Omega\, e_\theta + W e_z$. Perturbations are taken in the single Fourier
+mode
+\[
+   u(r)\,e^{i(m\theta + kz) - i\omega t}, \qquad m = 1,
+\]
+so that the growth rate is $\operatorname{Im}\omega$. Let $H = H_{m,k}$ be the closure, in
+$L^2(Q)^3$, of the divergence-free fields of that mode which are compactly supported in $D_{r_w}$;
+equivalently, $H$ is the space of $u \in (L^2((0,r_w), r\,dr))^3$ with
+$\operatorname{div}_{m,k} u = 0$ and $u_r(r_w) = 0$. Let $S$ be the self-adjoint operator of the
+Dirichlet form on that space (Section~\ref{sec:stageb-chain}, step 1), and let
+\[
+   T u := P_H\!\left(a\,u + C u\right), \quad a = m\Omega + kW, \quad
+   C u = \bigl(2i\Omega u_\theta,\; -i(2\Omega + r\Omega')u_r,\; -i W' u_r\bigr),
+\]
+with $P_H$ the Leray projection of the mode. The columnar operator is
+\begin{equation}\label{eq:stageb-A}
+   A := -iS + T \quad\text{on } D(A) = D(S) \subset H,
+\end{equation}
+in units $\nu = k = 1$: that is, the physical operator divided by $\nu k^2 = 2000\,\mathrm{s}^{-1}$,
+and Stokes eigenvalues by $k^2$. Lengths are then measured in units of $1/k$, so that in every
+formula written in these units --- steps 11 and 12 below, and the supplement throughout --- the wall
+of $Q$ sits at radius $X = k r_w = 55.090300832967$, not at $r_w$; the physical radius $r_w$ appears
+only in the description of the geometry and in the argument of the field polynomials.
+Equation~\eqref{eq:stageb-A} is the primitive-variable system of the
+preceding subsection with the pressure eliminated by $P_H$; the base flow has $U_r \equiv 0$, so $T$
+is a bounded multiplication operator and not a differential one.
+
+\medskip\noindent The theorem is posed on the cylinder of radius $r_w$, which is the wall of the
+certified Stokes spectrum and of every rigorous computation below. Two bookkeeping facts are
+hypotheses of the theorem rather than remarks.
+
+\begin{itemize}
+\item[(G1)] $r_w = 0.027546\cos(\pi/400)$, so $X := k r_w = 55.090300832967$. The field polynomials are
+polynomials in $s = (r/r_{\max})^2$ with $r_{\max} = 0.0275462274972771$, a radius exceeding
+$0.027546$ by $\sn{8.3}{-6}$ relative. The two radii play different roles and are not interchanged:
+$r_w$ is the boundary of $Q$, $r_{\max}$ is a coefficient inside the polynomial field, and the field
+is evaluated on $0 \le r \le r_w$. In particular the continuous problem enclosed here and the
+collocation pencil of the preceding subsection are posed on cylinders whose radii differ by
+$\sn{8.3}{-6}$ relative, so the agreement of the two eigenvalues to $\sn{5.0}{-9}$, quoted below, is
+a convergence check across two discretizations and two radii, not a certificate.
+\item[(G2)] The certified Stokes eigenvalue data are used in two files, one covering
+$\lambda/k^2 \le \sn{4.8}{4}$ (its 7682 entries are the block of step 5) and one covering
+$\lambda/k^2 \le \sn{6.97}{5}$; their first 7682 eigenvalue brackets are bit-identical, which is
+verified at the head of the one run that reads both, the rectangle of step 10. The three eigenvalues
+quoted in step 4, $\lambda_M$, $\lambda_{M+1}$ and $\lambda_{N+1}$, are taken from the larger file.
+\end{itemize}
+
+\medskip\noindent \textbf{Theorem 2 (the continuous columnar eigenvalue).}\label{thm:stageb}
+\emph{Assume} (G1), (G2) \emph{and the arithmetic assumptions} (A1)--(A3) \emph{of
+Section~\ref{sec:stageb-arith}. Let $M = 7682$, let $P$ be the spectral projection of $S$ on its first
+$M$ eigenfunctions, let $w \in \operatorname{range}P$ be the stored Galerkin eigenvector of $PAP$,
+normalized so that $\bigl|\,\|w\|^2 - 1\,\bigr| \le \sn{3}{-16}$, and}
+\[
+   \mu = -17.525873540058 + 25.425171859977\,i \quad (\text{units } \nu k^2)
+       = -\sn{3.5051747}{4} + \sn{5.0850344}{4}\,i \ \ \mathrm{s}^{-1}
+\]
+\emph{its Galerkin eigenvalue. Then, with the certified constants}
+\[
+   K \le 2.7632556, \qquad \delta \le \sn{8.017048}{-3}, \qquad
+   \beta := 4K^2\delta \le 0.2448593 < 1,
+\]
+\emph{the operator $A$ of \eqref{eq:stageb-A} has an eigenvalue $\omega$ with eigenfunction
+$u \in D(S)$ normalized by $\langle u, w\rangle = \|w\|^2$ such that}
+\begin{equation}\label{eq:stageb-encl}
+   \bigl(|\omega - \mu|^2 + \|u - w\|^2\bigr)^{1/2} \le \rho := \frac{2K\delta}{1 + \sqrt{1-\beta}}
+   \le \sn{2.370604}{-2} \quad (\text{units } \nu k^2; \ 47.42\ \mathrm{s}^{-1}),
+\end{equation}
+\emph{and $(\omega, u)$ is the only such pair in that ball. In particular}
+\[
+   \operatorname{Im}\omega \ \ge\ \sn{5.080293}{4}\ \mathrm{s}^{-1}
+   \quad (25.4014658 \text{ in units } \nu k^2) \ >\ 0 :
+\]
+\emph{the continuous columnar operator is unstable.} In collapse units, with the fitted
+$T = 0.0022865$ and $T - t = \sn{2.4478}{-5}$ on the x144 state, the certified growth rate is
+$1.2435 \pm 0.0051$ in units of $(T-t)^{-1}$, the uncertainty being the 0.41 percent that Remark 2 attaches to every collapse-unit quantity on this state.
+
+\medskip\noindent \emph{What is claimed and what is not.} The theorem asserts the existence of an
+eigenpair in the ball \eqref{eq:stageb-encl} and the local uniqueness of that \emph{pair}. It does not
+assert that $\omega$ is the only eigenvalue of $A$ in the disc $|z - \mu| \le \rho$: an eigenvalue
+exclosure is a different statement, requiring a certified lower bound on a second auxiliary
+eigenvalue, and we do not claim it. Nor do we claim that $\omega$ is algebraically or geometrically
+simple, or that it is the most unstable eigenvalue of $A$. The scope of the object is equally
+important. The field is the explicit rational polynomial pair $(\Omega, W)$, which differs from the
+grid column it was fitted to by $\sn{1.4}{-3}$ relative and whose first derivative is wrong by up to a
+factor two at the swirl maximum; the operator is a parallel-flow columnar model carrying an artificial
+no-slip wall at $r_w \approx 2R$, where the physical column has none; and the statement is about that
+operator alone. Nothing here bears on the front itself, on the two-dimensional collapse, whose
+operator has no isolated eigenvalue to enclose, or on regularity for the three-dimensional
+Navier-Stokes equations.
+
+\medskip\noindent \emph{How much the artificial wall matters.} The wall is the one feature of the
+model with no counterpart in the column, so we measured its effect directly, by re-running the
+collocation solver of the preceding subsection on the same field ($z = 0.00201$ of the x144 state,
+degree-30 polynomials, $m = 1$, $k = 2000$, $\nu = \sn{5}{-4}$, $N = 150$) with the wall moved:
+
+\begin{center}
+\begin{tabular}{lllll}
+wall radius & $1.5R$ & $2.0R$ & $2.5R$ & $3.0R$\\[2pt]
+leading $\operatorname{Im}\omega$ (s$^{-1}$) & $\sn{5.0377}{4}$ & $\sn{5.0850}{4}$
+  & $\sn{5.0543}{4}$ & $\sn{5.0597}{4}$\\
+mode centre & $1.357R$ & $1.356R$ & $1.358R$ & $1.355R$\\
+mode support & $[1.287, 1.409]R$ & $[1.283, 1.407]R$ & $[1.284, 1.416]R$ & $[1.292, 1.404]R$
+\end{tabular}
+\end{center}
+
+\noindent Doubling the wall radius moves the growth rate by 0.93 percent, and in every case the
+eigenfunction is centred at $1.36R$ with support ending near $1.41R$: it never reaches the wall. The
+certified mode is therefore an interior one, and the wall is not what holds it up. Beyond about $3R$
+the computation ceases to mean anything --- at $4R$ it returns $\sn{6.7}{15}$ with the mode at
+$0.04R$ --- because the degree-30 field is then evaluated far outside the interval on which it was
+fitted; that is a property of the fit, not of the column, and it is why the sweep stops at $3R$.
+
+\subsubsection{The chain}\label{sec:stageb-chain}
+
+The proof is the following chain. Steps whose proofs are a line are given here; the five that are
+not are stated with their certified values and proved in the supplementary document, as its items
+S1--S5, each of which is self-contained and is named at the step that uses it. The computations are
+described in Section~\ref{sec:stageb-arith} and, item by item with their falsification tests, in
+Section S6 of the supplement.
+
+\begin{enumerate}
+\item \emph{The operator, its self-adjointness, and its compact resolvent.} Let $\mathcal{H}$ and
+$\mathcal{V}$ be the closures, in $L^2(Q)^3$ and in $H^1(Q)^3$ respectively, of all divergence-free
+fields compactly supported in $D_{r_w}$ --- all azimuthal modes, not only $(m,k)$ --- and let
+$s[u,v] := \int_Q \nabla u : \overline{\nabla v}$ on $\mathcal{V}$. Then $s$ is a densely defined,
+symmetric, closed form on $\mathcal{H}$, so Kato's first representation theorem
+\cite[Thm.\ VI-2.1]{K80} defines a unique
+self-adjoint $S \ge 0$ with $D(S)\subset \mathcal{V}$ and $s[u,v] = \langle Su, v\rangle$. Freezing
+$z$ and applying the two-dimensional Poincare inequality on $D_{r_w}$ gives
+$S \ge (j_{0,1}/r_w)^2 > 0$; on the $(m,k)$ mode one has in addition
+$\|\partial_z u\|^2 = k^2\|u\|^2$, and the two together give $\lambda/k^2 \ge 1 + (j_{0,1}/X)^2$, the
+$1$ coming from the axial derivative and not from Poincare. Restriction to the
+fundamental domain $D_{r_w}\times(0, 2\pi/k)$ is an isometry on $L^2$ and on $H^1$ onto a bounded
+domain of $\mathbb{R}^3$ satisfying the cone condition, where Rellich-Kondrachov applies
+\cite[Thm.\ 6.3]{AF03}; hence $\mathcal{V} \hookrightarrow \mathcal{H}$ is compact. Since $S^{-1}$
+maps $\mathcal{H}$ boundedly into
+$\mathcal{V}$ (from $s[u,u] = \langle f, u\rangle$ with $u = S^{-1}f$), it is compact as the composition of a
+bounded and a compact map, so the spectrum of $S$ is a discrete set of eigenvalues of finite
+multiplicity \cite[III-\S6.8, Thm.\ III-6.29]{K80} and, $S^{-1}$ being compact and self-adjoint,
+$\mathcal{H}$ has an orthonormal eigenbasis with
+$0 < \lambda_1 \le \lambda_2 \le \cdots \to \infty$. Rotations about the axis
+and axial translations act as unitaries preserving $\mathcal{V}$ and $s$, so they commute with $S$ and reduce it
+\cite[III-\S5.6, V-\S3.9]{K80}; the part of $S$ in the reducing subspace $H_{m,k}$ is self-adjoint,
+because $(S \pm i)^{-1}$ commutes with the corresponding projection and therefore maps $H_{m,k}$ onto
+$D(S)\cap H_{m,k}$, and has compact resolvent; from here on $S$, $H$ and $\{\phi_j\}$ always mean
+that part, that mode space and its eigenbasis. No identification of $D(S)$ with an $H^2$ space is
+made, and none is used anywhere below; no boundary regularity theory enters.
+\item \emph{$T$ is bounded, and $A$ is closed with compact resolvent.} Since $U_r \equiv 0$, advection
+acts on the mode as multiplication by $ia(r)$ and $T = P_H(a + C)$ is bounded, with
+$\|T\| \le \operatorname*{ess\,sup}_r \sigma_{\max}(T_{\mathrm{loc}}(r))$,
+$T_{\mathrm{loc}} = a I + C_{\mathrm{loc}}$. Hence $A = -iS + T$ is a bounded perturbation of a normal
+operator with compact resolvent: it is closed on $D(S)$, its spectrum is a discrete set of eigenvalues
+of finite algebraic multiplicity, and for $|\operatorname{Re} z| > \|T\|$ the Neumann series gives
+$(A-z)^{-1}$ compact. There is no continuous spectrum for $\nu > 0$.
+\item \emph{Completeness and simplicity of the certified segment.} This is Lemma~S1 of the
+supplement, proved there, whose part (ii) is Lemma A of Section~\ref{sec:stageb-axis} below and whose
+determinant algebra is Lemma S1.1 of the supplement. Its statement:
+under step 1, $\lambda > 1$ is an eigenvalue of $S$ on $H_{m,k}$ if and only if $\Delta(x) = 0$ with
+$x = X\sqrt{\lambda - 1}$, where $\Delta$ is the $3\times 3$ wall determinant of the ansatz
+$\phi = \alpha_+ J_{m+1}(\kappa r)e_+ + \alpha_- J_{m-1}(\kappa r)e_- + \alpha_z J_m(\kappa r)e_z
++ \lambda^{-1}c\,\nabla g$, $g = I_m(kr)e^{i(m\theta + kz)}$, $\kappa^2 = \lambda - k^2$, the
+multiplicity being $\dim\ker A_3(x)$; every eigenfunction is of that form and is real-analytic on
+$\overline{Q}$. The $H^2$ and $H^4$ memberships used in steps 11 and 12 are read off these formulas,
+not obtained from a regularity theorem.
+\item \emph{The certified Stokes spectrum.} The determinant $\Delta$ is expanded exactly and evaluated
+in ball arithmetic \cite{J17}: $29278$ sign changes on $[2, 45993]$ from $\sn{2.3}{6}$ certified scan
+points, each bracket bisected with certified signs, and the argument principle on
+$(2, 45993)\times(-2,2)$ encloses the winding number as $29278 \pm \sn{1.6}{-22}$. The count equals
+the number of brackets, so every zero in the rectangle is real and simple and none is missed;
+separately $\Delta > 0$ on $(0,2]$. With step 3, the mode Stokes spectrum is complete and simple
+through $\lambda/k^2 \ge \sn{6.97}{5}$, and in particular $\lambda_M \le 47997.288158$,
+$\lambda_{M+1} \ge 48009.746020$, $\lambda_{N+1} \ge 208193.490748$ at $N = 16000$.
+(\texttt{stokes\_rigorous\_L.py}; 371 s.)
+\item \emph{The Galerkin matrix.} $T_{ij} = \langle T\phi_j, \phi_i\rangle$, $i,j \le M$, by
+Gauss-Legendre quadrature with Arb nodes and weights \cite{JM18} and the analyticity remainder of
+\cite[Thm.\ 19.3, Gauss case]{T13}, the Bessel factors bounded on the Bernstein ellipse and the polynomial field
+enclosed by an exact rational Taylor shift to each panel centre followed by ball Horner. All 256 block
+pairs: the Gram enclosure contains the identity on every pair (maximum deviation and radius
+$\sn{2.5}{-15}$), normalizations have maximum relative radius $\sn{7.2}{-16}$, and the entry radii
+run from $\sn{1.60}{-16}$ to $\sn{3.57}{-13}$ with mean $\sn{4.20}{-14}$. (\texttt{tmatrix\_block.py}; 7.4 core-hours.)
+\item \emph{The approximate eigenpair.} $(\mu, w)$ is an eigenpair of the floating-point midpoint of
+that matrix, with residual $\sn{3.91}{-13}$; $\mu$ and the components of $w$ are exact binary64 data
+of the theorem, not approximations of anything, and $\|w\|^2$ differs from 1 by at most
+$\sn{3}{-16}$, which is why the normalization is written $\langle u, w\rangle = \|w\|^2$. The independently certified Krawczyk
+enclosure of the collocation pencil at $N = 100$, the resolution whose wall $r_{\max}\cos(\pi/4N)$
+carries the same cosine factor as $r_w$, has centre $-17.525873540 + 25.425171865\,i$ and radius
+$\sn{2.6}{-11}$ in these units, agreeing with $\mu$ to $\sn{5.0}{-9}$; by (G1) this is a cross-check,
+not an input.
+\item \emph{The bordered inverse on the block.} Let
+$B_{11} := \begin{pmatrix} P(A - \mu)P & -w \\ \langle\cdot, w\rangle & 0\end{pmatrix}$ on
+$\operatorname{range}P \times \mathbb{C}$. Then $\|B_{11}^{-1}\| \le \tilde K_h \le 1.2246711$. The
+bound is a verified $\sigma_{\min}$: a floating Cholesky of the real $15\,366$-dimensional embedding
+of $B_m^{H}B_m - tI$ succeeds, which by \cite[Thm.\ 10.3]{H02} and \cite{R06} certifies
+$\lambda_{\min}(B_m^{H}B_m) \ge t = 0.666747054$ once the backward error and the product enclosure are
+accounted for. Lemma S2.6 of the supplement then transports this over the whole interval family:
+with $R$ the stored radius matrix of $B_{11}$, $\|R\|_2 \le \min(\|R\|_F, \sqrt{\|R\|_1\|R\|_\infty})
+= \sn{4.932}{-10}$, bounded in the run by its outward-rounded accumulation $\sn{5.04}{-10}$, so that
+by the perturbation form of Weyl's inequality \cite[Thm.\ 3.3.16(c)]{HJ91}
+$\sigma_{\min} \ge \sqrt{t} - \sn{5.04}{-10} \ge 0.8165458059$ and
+$\tilde K_h \le 1/0.8165458059 \le 1.2246711$. (\texttt{kh\_block.py}; 210 s, 3.1 GB.)
+\item \emph{Block decomposition and the bound on $K$.} Write $\mathcal{B}$ for the bordered operator of
+step 14 and $Q_\perp := I - P$. Since $P$ is a spectral projection of $S$, $PSQ_\perp = Q_\perp SP = 0$,
+so $\mathcal{B}$ has the $2\times2$ block form with off-diagonal blocks $PTQ_\perp$ and $Q_\perp TP$
+and corner $\mathcal{B}_{22} = Q_\perp(A - \mu)Q_\perp$. Two elementary bounds control the corner: the
+normal part $D := Q_\perp(-iS - \mu)Q_\perp$ has $\|D^{-1}\| = 1/d_M$ with
+$d_M = \bigl((\operatorname{Re}\mu)^2 + (\lambda_{M+1} + \operatorname{Im}\mu)^2\bigr)^{1/2}
+\ge 48035.17$, and, since $a$ is real,
+$\operatorname{Im}\langle \mathcal{B}_{22}u, u\rangle \le -c_\perp\|u\|^2$ with
+$c_\perp := \lambda_{M+1} + \operatorname{Im}\mu - \|C\| \ge 47802.92$. The second bound gives more
+than an estimate: $D^{-1}$ is compact on $\operatorname{range}Q_\perp$, being the norm limit of its
+finite-rank truncations, so $I + D^{-1}Q_\perp T Q_\perp$ is Fredholm of index zero; the numerical-range
+bound makes it injective, hence bijective, so
+$\mathcal{B}_{22} = D(I + D^{-1}Q_\perp T Q_\perp)$ is boundedly invertible and
+$\|\mathcal{B}_{22}^{-1}\| \le e := 1/c_\perp$. The Schur complement then gives, with
+$t_{12} := \|PTQ_\perp\|$, $t_{21} := \|Q_\perp TP\|$, $Z := PTQ_\perp \mathcal{B}_{22}^{-1}Q_\perp TP$,
+$\theta := \tilde K_h\|Z\|$ and $s := \tilde K_h/(1-\theta)$,
+\begin{equation}\label{eq:stageb-K}
+   \theta < 1 \ \Longrightarrow\ K \ \le\ \left\|
+   \begin{pmatrix} s & s\,t_{12}e \\ e\,t_{21}s & e + e^2 t_{21}s\,t_{12}\end{pmatrix}\right\|_2 .
+\end{equation}
+(Proposition S2 of the supplement, with the lemmas and propositions S2.1--S2.5 that precede it and,
+for the compactness of $D^{-1}$, Lemma S1.2.)
+\item \emph{The pointwise constants.} By Lemma S5 of the supplement, with $F := aI + C^{*}$ written in
+Cartesian components, $F$ is a
+matrix field whose entries are polynomials in $(x,y)$ of degree at most 60 with coefficients in
+$\mathbb{Q} + i\mathbb{Q}$, because $\Omega$ and $W$ are even polynomials in $r$ and hence
+$\Omega'/r$, $W'/r$ are polynomials in $x^2+y^2$; in particular $\partial_z F = 0$, every
+$\partial^\alpha F$ is such a polynomial matrix, and the Leibniz expansions of steps 11--12 are
+legitimate. The jet $\Theta_n := \max_{|\alpha| = n}\sup_{\overline{Q}}\|\partial^\alpha F\|_{op}$ is
+computed by rotational covariance (which collapses the two-dimensional supremum to a one-dimensional
+adaptive bisection with an enclosed angular table), an exact integer Taylor shift of the field to each
+panel centre, and the exact largest eigenvalue of the $3\times3$ Hermitian $A^{H}A$:
+\[
+   \Theta_0 = \|T\| \le 506.548892, \quad \Theta_1 \le 2482.955855, \quad
+   \Theta_2 \le 21447.36325, \quad \Theta_4 \le 906972.8975 ,
+\]
+together with $\gamma := 2(1+m^2/X^2)/(X\varrho) \le 0.0366439622$ with
+$\varrho = I_m'(X)/I_m(X)$, $\mu_w = 0.1905558538$, $\mu_2 = 1.408070809$,
+$\alpha = \pi/(3X) \ge 0.0190087462$, $\|h\|/\|\nabla g\| \le 44.4999489$ and
+$\|h^{*}\|/\|\nabla g\| \le 31.2324161$ with $h := F^{*}\nabla g$, $h^{*} := F\nabla g$. A free
+correctness test of the quadrature is that its own value of $\|\nabla g\|^2$ encloses the closed form
+$X\varrho$, which it does to 27 digits. ($\Theta_3$ does not appear: see step 11.)
+(\texttt{stageb\_consts.py}; 1.5 s.) The constant $\|C\| \le 232.2489$ used in step 8 comes from a
+separate subdivision in interval arithmetic (\texttt{tnorm\_rigorous.py}), taken over the slightly
+larger disc $r \le r_{\max}\cos(\pi/400)$, which contains $\overline{Q}$; a supremum over a superset
+is an upper bound on the supremum over $\overline{Q}$, so the constant is valid and conservative.
+\item \emph{The computed coupling.} With $N = 16000$, the two $M\times(N-M)$ strips
+$PT(P_N - P)$ and $(P_N - P)TP$ are computed in ball arithmetic by the same quadrature machinery as
+step 5, in 17 column blocks, $\sn{1.3}{8}$ entries, the Gram enclosure containing zero on all 272
+block pairs. Their operator norms are then certified by
+$\|A\|_2 \le \|A_{\mathrm{mid}}\|_2 + \|A_{\mathrm{rad}}\|_2$ (Lemma S2.6 of the supplement), with
+$\lambda_{\max}(A_{\mathrm{mid}}^{T}A_{\mathrm{mid}}) \le c$ established by a floating Cholesky of
+$cI - A_{\mathrm{mid}}^{T}A_{\mathrm{mid}}$ under \cite[Thm.\ 10.3]{H02}, and the radius matrices
+bounded by $\|A_{\mathrm{rad}}\|_2 \le \sn{8.6381}{-10}$ and $\sn{8.6243}{-10}$ respectively
+(Frobenius $\sn{9.814}{-10}$, $\sn{9.812}{-10}$):
+\[
+   \|PT(P_N-P)\| \le 140.320484, \qquad \|(P_N-P)TP\| \le 140.228256 ,
+\]
+valid for every matrix of the stored ball family. (\texttt{tmatrix\_rect.py}, 24 core-hours;
+\texttt{ropnorm.py}, 389 s.)
+\item \emph{The coupling tail (Proposition T2).} The remaining coupling is
+$\tau_N := \|(I - P_N)T^{*}P\|_{HS}$ and $\tau'_N := \|(I-P_N)TP\|_{HS}$, which bound
+$t_{12} \le \|PT(P_N-P)\| + \tau_N$ and $t_{21} \le \|(P_N-P)TP\| + \tau'_N$ and the tail of $Z$. They
+are estimated by a two-level identity: for $v \in H^2(Q)^3$ and any index $j$,
+\[
+   (\lambda_j - \lambda_i)\langle v, \phi_j\rangle
+   = \langle -(\Delta + \lambda_i)v, \phi_j\rangle
+     - X\, v(X)\cdot\overline{\partial_n\phi_j(X)}
+     + \overline{c_j}\,\langle v, \nabla g\rangle ,
+\]
+$q_j = c_j g$ being the pressure of $\phi_j$; applied twice, once to $f_i := F\phi_i$ and once to
+$(\Delta + \lambda_i)f_i$, with one integration by parts that cancels the Hessian of $\phi_i$ against
+the third-derivative terms of $F$ exactly. The inputs are the jet of step 9, a Rellich identity
+bounding the wall shear, a wall identity bounding the pressure amplitudes by
+$|c_j|\,\|\nabla g\| \le \sqrt{\gamma(\lambda_j-1)} + \gamma$ for \emph{all} $j$, and a Weyl-type
+lower bound $\lambda_j \ge 1 + \alpha^2(j-5)^2$. No Hessian estimate, no third-derivative constant and
+no elliptic regularity on $Q$ enter. Evaluated in ball arithmetic at $N = 16000$ with the certified
+eigenvalues of step 4,
+\[
+   \tau_{16000} \le 84.882443, \qquad \tau'_{16000} \le 83.185699 .
+\]
+(Proposition S3 of the supplement, with Lemmas S3.1--S3.5; evaluation in
+\texttt{stageb\_scalars\_iv.py}.)
+\item \emph{The defect (Proposition T3).} Since $w \in \operatorname{range}P$ and $P$ is a spectral
+projection of $S$, $\delta^2 = \|(A - \mu)w\|^2 = \|(PAP - \mu)w\|^2 + \|(I-P)Tw\|^2$ exactly. The
+first term is certified from the stored interval matrix at $\le \sn{9.124907}{-11}$; it is eight
+orders below the second, and the Pythagorean sum is carried out below rather than dropped. The second is a
+single-vector version of the identity of step 11 applied at shift zero to $v := F^{*}w$, which
+vanishes at the wall; at shift zero the denominator is $\lambda_j$ rather than
+$\lambda_j - \lambda_i$, so $N = M$ is admissible and the bound needs no rectangle. It reduces to four
+scalar families built from $w$ and the certified per-mode data --- the moments
+$m_p = (\sum_i \lambda_i^p|w_i|^2)^{1/2}$, the pressure moments
+$\gamma_p = |\sum_i \lambda_i^p w_i c_i|\,\|\nabla g\|$, the wall shear
+$d_w = |\sum_i w_i\,\partial_n\phi_i(X)|$ and $\pi_0 = \langle w, h^{*}\rangle$ --- all evaluated as
+signed Arb enclosures, the signs being licensed by an orientation certificate that matches the mode
+field of every one of the 7682 modes, at three quadrature nodes and in all three components, against
+the exactly serialized field that built the matrix of step 5 (69138 ball tests, all overlapping, worst
+separation $\sn{4.1}{17}$ combined radii). The result is
+\[
+   \text{part two} \le \sn{8.017047}{-3}, \qquad\text{hence}\qquad
+   \delta = \sqrt{(\sn{9.124907}{-11})^2 + (\text{part two})^2} \le \sn{8.017048}{-3} .
+\]
+A cancellation-free variant, in which three of the four families are replaced by sums of absolute
+values, gives $\delta \le \sn{1.095725}{-2}$ and still closes the acceptance below.
+(Proposition S4 of the supplement, with Lemma S4.1; \texttt{rdefect.py}, \texttt{t3\_balls.py};
+350 s.)
+\item \emph{The assembly.} With $d_N \ge 208218.91$ the Schur term splits as
+$Z = Z_0^{(N)} + R_N + (Z - Z_0)$, the computed band, the tail beyond $N$, and the resolvent
+correction, bounded respectively by
+$\|PT(P_N-P)\|\,\|(P_N-P)TP\|/d_M$, $\tau_N\tau'_N/d_N$ and
+$t_{12}t_{21}\|T\|/(c_\perp d_M)$. In interval arithmetic:
+\begin{center}
+\begin{tabular}{lll}
+$\|Z_0^{(N)}\|$ & $\le 0.4096352$ & computed band, $M < j \le N$\\
+$\|R_N\|$ & $\le 0.0339115$ & tail, $j > N$, from step 11\\
+$\|Z - Z_0\|$ & $\le 0.0110993$ & with $t_{12} \le 225.2030$, $t_{21} \le 223.4140$\\[2pt]
+$\|Z\|$ & $\le 0.4546459$ & \\
+$\theta = \tilde K_h\|Z\|$ & $\le 0.5567917$ & $< 1$\\
+$K$ & $\le 2.7632556$ & by \eqref{eq:stageb-K}\\
+$\beta = 4K^2\delta$ & $\le 0.2448593$ & $< 1$\\
+$\rho$ & $\le \sn{2.370604}{-2}$ & $= 47.42\ \mathrm{s}^{-1}$
+\end{tabular}
+\end{center}
+Each line of the table is independently outward-rounded from the unrounded interval chain, so the
+table is not to be re-composed: recomputing $K$ from the printed $\theta$, $t_{12}$, $t_{21}$ and
+$\tilde K_h$ returns $2.7632562$, above the printed $2.7632556$, which is nonetheless a valid bound
+on the true $K = 2.76325554$.
+The tail is the only term entitled to the weight $1/d_N$ rather than $1/d_M$, and it is entitled to it
+because $D^{-1}$ restricted to $\operatorname{range}(I - P_N)$ has norm $1/d_N$. Nothing turns on that
+gain: with the pessimistic weight $1/d_M$ throughout, the acceptance still admits any tail up to
+$101.6$, against the certified $84.88$.
+The criterion is insensitive to most of these inputs and tight in three. Holding the others at their
+certified values, $\beta = 1$ is reached when the two strip bounds rise by 20 percent, when
+$\tilde K_h$ rises by 29 percent, or when $\lambda_{M+1}$ falls by 29 percent; whereas the tail may
+rise by 144 percent, $\delta$ may be 4.1 times larger and $\|T\|$ may be wrong by a factor 17.
+Degrading every input simultaneously in its unfavourable direction, the criterion closes up to a
+common relative degradation of 7.6 percent (all nine inputs, $\lambda_{N+1}$ included); that, rather
+than the factor 4.1 in $\beta$, is the honest
+robustness figure, because $\theta$ sits at $0.56$ and $K$ carries the factor $(1-\theta)^{-1}$, which
+amplifies every input error.
+(\texttt{accept\_iv.py}, \texttt{stageb\_scalars\_iv.py}.)
+\item \emph{The fixed point.} Let $\mathcal{B}: D(S)\times\mathbb{C} \to H\times\mathbb{C}$,
+$\mathcal{B}(v,\eta) := ((A - \mu)v - \eta w,\ \langle v, w\rangle)$, and let $K$ be as in
+\eqref{eq:stageb-K}, so that $\|(v,\eta)\| \le K\|\mathcal{B}(v,\eta)\|$ in the Euclidean norms
+$\|(v,\eta)\|^2 = \|v\|^2 + |\eta|^2$. Put $d := (A - \mu)w$, $\delta = \|d\|$, and seek
+$\omega = \mu + \eta$, $u = w + v$ with $\langle v, w\rangle = 0$. Then $(A-\omega)u = 0$ is
+equivalent to $\mathcal{B}(v,\eta) = (-d + \eta v,\ 0)$, i.e.\ to the fixed-point equation
+$(v,\eta) = \mathcal{T}(v,\eta) := \mathcal{B}^{-1}(-d + \eta v,\ 0)$, whose solutions automatically
+satisfy $\langle v, w\rangle = 0$. On the closed ball of radius $\rho$,
+$\|\mathcal{T}(v,\eta)\| \le K(\delta + |\eta|\|v\|) \le K(\delta + \rho^2)$ and
+\[
+   \|\mathcal{T}(v,\eta) - \mathcal{T}(v',\eta')\|
+   \le K\bigl(|\eta|\,\|v - v'\| + |\eta - \eta'|\,\|v'\|\bigr)
+   \le \sqrt{2}\,K\rho\,\|(v,\eta) - (v',\eta')\| .
+\]
+With $\rho = 2K\delta/(1 + \sqrt{1-\beta})$ and $\beta = 4K^2\delta < 1$ one has
+$K\rho^2 - \rho + K\delta = 0$, so $\mathcal{T}$ maps the ball into itself, and
+$2K\rho = 1 - \sqrt{1-\beta} < 1$, so $\mathcal{T}$ is a contraction there. Banach's theorem gives a
+unique fixed point in the ball, and hence a unique pair $(\omega, u)$ with
+$|\omega - \mu|^2 + \|u - w\|^2 \le \rho^2$ and $\langle u - w, w\rangle = 0$; $u = w + v \ne 0$
+because $\|u - w\| \le \rho < \|w\|$, and $\langle u, w\rangle = \|w\|^2$. This proves Theorem 2,
+modulo Lemma S1 and Propositions S2, S3 and S4 of the supplement, which are proved there, and
+Lemma S5, which licenses the Leibniz expansions of steps 11 and 12. $\square$
+\end{enumerate}
+
+\subsubsection{The axis condition at the first azimuthal mode}\label{sec:stageb-axis}
+
+Step 3 asserts that every eigenfunction of $S$ on $H_{m,k}$ lies in the three-dimensional span of the
+regular Bessel solutions and $\nabla g$, and in particular that its pressure carries no singular
+modified-Bessel part. For $|m| \ge 2$ that exclusion follows from square-integrability alone, since the
+singular pressure then contributes a term of order $r^{-(m-1)}$ to a component that must lie in
+$L^2(r\,dr)$. At $m = 1$, the case used here, it does not: the singular terms can be cancelled between
+the two Bessel families and what remains is square-integrable. The following lemma repairs the step,
+using only $D(S) \subset V \subset H^1(Q)^3$, which step 1 supplies.
+
+\medskip\noindent \textbf{Lemma A (axis exclusion at $m = 1$).}\label{lem:K}
+\emph{Let $m = 1$, $k \ne 0$, $\lambda \ne 0$. Let $\phi \in H^1(Q)^3$ be of mode type $(m,k)$ with
+$\operatorname{div}\phi = 0$, and suppose $(\Delta + \lambda)\phi = \nabla q$ in
+$\mathcal{D}'(Q)$ for some distribution $q$. Then $q = c\,I_m(kr)e^{i(m\theta + kz)}$ for some
+$c \in \mathbb{C}$, with no $K_m$ part, and $\phi$ lies in the span of the two regular Bessel solutions
+and $\nabla q$.}
+
+\medskip\noindent \emph{Proof.} (i) Taking the divergence, $\Delta q = 0$ in $\mathcal{D}'(Q)$, so $q$
+is harmonic, hence smooth inside $Q$ by Weyl's lemma, and equivariant under the two commuting groups
+up to an additive constant, which vanishes because $(m,k) \ne (0,0)$. Thus
+$q = Q(r)e^{i(m\theta + kz)}$ with $(rQ')' = (m^2/r + k^2 r)Q$, i.e.\
+$Q = a\,I_m(kr) + b\,K_m(kr)$.
+
+(ii) Set $w := \phi - \lambda^{-1}\nabla q$. Since $\Delta\nabla q = \nabla\Delta q = 0$, $w$ solves
+$(\Delta + \lambda)w = 0$, so by interior regularity and the mode structure its components
+$w_+ := w_r + iw_\theta$, $w_- := w_r - iw_\theta$, $w_z$ solve Bessel equations of orders $m+1 = 2$,
+$m-1 = 0$ and $m = 1$ in the argument $\kappa r$, $\kappa^2 = \lambda - k^2$:
+$w_+ = \alpha_+ J_2(\kappa r) + \beta_+ Y_2(\kappa r)$ and similarly in the other two slots.
+
+(iii) The Cartesian components of the mode carry azimuthal indices $m+1 = 2$ for $w_+$, $m-1 = 0$ for
+$w_-$ and $m = 1$ for $w_z$, and for a Cartesian component $F(r)e^{in\theta}e^{ikz}$ one has
+$|\nabla(\cdot)|^2 = |F'|^2 + n^2|F|^2/r^2 + k^2|F|^2$. Membership in $H^1(Q)$ therefore forces
+$\int_0 |F|^2\,dr/r < \infty$ whenever $n \ne 0$, and $\int_0 |F'|^2 r\,dr < \infty$ always.
+
+(iv) The ``$+$'' slot alone forces $b = 0$. With
+$(\nabla q)_+ = Q' - (m/r)Q = k\,(a I_{m+1}(kr) - b K_{m+1}(kr))$,
+\[
+   \phi_+ = \lambda^{-1}k\bigl[a I_2(kr) - b K_2(kr)\bigr]
+            + \alpha_+ J_2(\kappa r) + \beta_+ Y_2(\kappa r).
+\]
+By \cite[(10.31.1)]{DLMF}, $K_2(z) = 2/z^2 - 1/2 + O(z^2\log z)$, and by \cite[(10.8.1)]{DLMF},
+$Y_2(z) = -4/(\pi z^2) - 1/\pi + O(z^2\log z)$, while $I_2$ and $J_2$ are $O(r^2)$. In both expansions
+the logarithm first enters at order $z^2\log z$, so the only obstructions in this slot are the
+$r^{-2}$ and $r^0$ coefficients. Since $n = 2$ here, step (iii) requires
+$\int_0 |\phi_+|^2 dr/r < \infty$, which annihilates both:
+\[
+   r^{-2}:\quad -\frac{2b}{\lambda k} - \frac{4\beta_+}{\pi\kappa^2} = 0, \qquad
+   r^{0}:\quad \frac{kb}{2\lambda} - \frac{\beta_+}{\pi} = 0 ,
+\]
+that is, $\beta_+ = -\pi\kappa^2 b/(2\lambda k)$ and $\beta_+ = \pi k b/(2\lambda)$. Equating,
+$-\kappa^2 b/k = kb$, i.e.\ $b(\kappa^2 + k^2) = b\lambda = 0$, so $b = 0$ and $\beta_+ = 0$.
+Equivalently, the $2\times2$ system for $(b, \beta_+)$ has determinant
+$(2/(\lambda\pi))(\kappa^2 + k^2)/\kappa^2 = 2/(\pi\kappa^2) \ne 0$. (For
+$\kappa^2 < 0$ the same two conditions, with $(J,Y)$ replaced by $(I,K)$, give
+$b(|\kappa|^2 - k^2) = -b\lambda = 0$; for $\kappa = 0$ the $r^0$ term is uncancelled and $b = 0$
+directly.)
+
+(v) With $b = 0$ the pressure gradient is regular, and the remaining singular coefficients die slot by
+slot: in the $z$ slot $Y_1(\kappa r) \sim -2/(\pi\kappa r)$ violates the condition of step (iii) at
+$n = 1$, so $\beta_z = 0$; in the ``$-$'' slot $Y_0(\kappa r) \sim (2/\pi)\log r$ has derivative of
+order $1/r$, and $\int_0 r^{-2}\,r\,dr = \infty$, so $\beta_- = 0$. What remains is
+$\phi \in \operatorname{span}\{$toroidal, poloidal, $\nabla g\}$, and the divergence-free condition
+reduces to the single linear relation of step 3. $\square$
+
+\medskip\noindent The mechanism is that $K_2(kr)$ and $Y_2(\kappa r)$ carry different arguments, so
+their two singular coefficients cannot be matched simultaneously; the obstruction is exactly
+$\kappa^2 + k^2 = \lambda \ne 0$, which the positivity of $S$ from step 1 supplies. Lemma A is used
+only in step 3, and only at $m = 1$; at $|m| \ge 2$ square-integrability suffices, and $m = 0$, which
+this certificate does not use, genuinely differs, the singular orders in the two transverse slots
+coinciding there.
+
+\subsubsection{Arithmetic assumptions, and reproduction}\label{sec:stageb-arith}
+
+The computations are of three kinds: ball (midpoint-radius) arithmetic in Arb through python-flint
+\cite{J17}, with rigorous Gauss-Legendre nodes \cite{JM18}; interval arithmetic in mpmath; and
+double-precision linear algebra whose rounding errors are accounted a posteriori by the classical
+$\gamma_n$ inequalities \cite{H02,R10}. The assumptions are:
+
+\begin{itemize}
+\item[(A1)] IEEE-754 binary64 arithmetic, with overflow detected rather than prevented and underflow
+floored at values checked by inspection.
+\item[(A2)] The classical inner-product model for real BLAS: each entry of a real binary64 matrix
+product is one inner product evaluated in some order, with or without a fused multiply-add. No
+Strassen-type algorithm. This is the assumption INTLAB makes, and it is what licenses the
+$|fl(PQ) - PQ| \le \gamma_n |P||Q|$ bounds used for every product enclosure and for the Cholesky
+backward error \cite[Thm.\ 10.3]{H02}.
+\item[(A3)] Correctness of the interval libraries: Arb/python-flint, mpmath's interval arithmetic, and
+the project's own midpoint-radius matrix module, whose rounding bounds are checked against exact
+rational arithmetic in its test suite.
+\end{itemize}
+
+The two Cholesky-based steps (7 and 10) are order-independent in the sense of
+\cite[Lemma 8.4 and Thm.\ 10.3]{H02},
+so neither the blocked LAPACK factorization nor a self-contained row factorization is load-bearing;
+both were run and agree.
+
+Reproduction. The scripts, logs and certified data files accompany the paper as supplementary
+material, together with the supplement, whose Section S6 describes each computation, its falsification
+tests and its hash. The two large intermediate
+objects are not distributed: the $M\times M$ Galerkin matrix and the $M\times(N-M)$ rectangle occupy
+5.9 and 5.8 GiB, and are rebuilt from the scripts in 7.4 and 24 core-hours respectively on one core,
+with peak resident memory 1.8 and 1.7 GB. Everything downstream of them is minutes: the certified
+Stokes spectrum 371 s, the bordered inverse 210 s, the strip norms 389 s, the defect 350 s, the
+pointwise constants 1.5 s, the tail and the assembly under a second, and a single driver
+(\texttt{stageb\_verify\_all.py}) runs all of it and prints the constants of the table above in the
+order the assembly uses them. The SHA-256 of every certified input, log and script, and a directory
+digest for each of the two stores, are listed in \texttt{SUPPLEMENT\_MANIFEST.txt}
+(982 files, 11.7 GiB), which \texttt{stageb\_manifest.py} regenerates.
+
+\subsubsection{Corrections}\label{sec:stageb-corrections}
+
+Three bounds that were adequate at 200 basis functions were inadequate at 7682, and we record them
+because the discipline they impose --- recompute every constant by a second, independent route at the
+size actually used --- is what the rest of this subsection rests on.
+
+First, an early bound on $\|T\|$ read the largest singular value off $T_{\mathrm{loc}}^{H}T_{\mathrm{loc}}$
+assumed block diagonal. It is not: the entry $(1,3)$ equals $i a d$ with $d = W'$, so the closed form
+underestimates $\sigma_{\max}$ by between 0.02 and 0.3 percent on the matrices that occur here, and a
+bound taking a minimum over it could in principle fall below the true supremum. The figure is
+withdrawn and replaced by $\Theta_0 \le 506.548892$ of step 9, computed by an independent route. The
+same script's bound on $\|C\|$ survives, and is used in step 8: for $C_{\mathrm{loc}}$ the matrix
+$C_{\mathrm{loc}}^{H}C_{\mathrm{loc}} = \operatorname{diag}(c^2 + d^2,\ 4\Omega^2,\ 0)$ with
+$c = 2\Omega + r\Omega'$ is genuinely diagonal, the offending entry being proportional to $a$, which
+is removed in $C$.
+
+Second, the a-posteriori rounding-correction routine carries a guard limiting it to the number of
+roundings its own proof covers, $\sn{4}{7}$; the Frobenius accumulation over a $7683\times7683$ matrix
+counts $\sn{5.9}{7}$ and the first bordered inverse aborted. The guard was correct and the fix is by
+composition rather than by weakening: applying the correction in chunks multiplies the inflation
+factors, and the regression reproduces the $M = 200$ value bit-identically.
+
+Third, the strip couplings were first bounded by their Hilbert-Schmidt norms, $229.74$ and $229.55$
+against the operator norms $140.32$ and $140.23$ of step 10. That is the $\sqrt{\mathrm{rank}}$ cost of
+bounding an operator norm by a Hilbert-Schmidt norm; harmless at $M = 200$, it is fatal at $M = 7682$,
+where it makes $\theta > 1$ and the criterion vacuous. It was found by comparing the bound against the
+floating-point operator norm of its own midpoints, and repaired post hoc by the certified
+$\lambda_{\max}$ route of step 10, with no quadrature repeated. That route carries a deliberate
+falsification test --- set the Cholesky shift a tenth of a percent below the floating-point
+$\lambda_{\max}$ and require breakdown, which occurs --- and it is exactly the test the first bound
+would have failed.
+
+% ===========================================================================
+
+\section{Nonlinear fate}
+\label{sec:nl}
+
+The $m = 1$ mode was seeded at 20 and 50 percent of the local swirl velocity on the Euler x28 state, at 20 percent on the viscous x144 state, and at 20 percent on the Euler x200 state, with $m = 0, 1, 2$ (and 3) carried and the Reynolds-stress feedback on the base.
+
+\emph{On the Euler states the mode depletes the collapse.} Against the unperturbed collapse at matched times the axisymmetric amplitude lags: on Euler x28 by 0.8, 1.3, 2.1, 3.6 percent at 10, 13, 16, 21 percent of the remaining time with the 20 percent seed, and by 5 percent at 11 percent with the 50 percent seed, at which the axisymmetric swirl maximum stalls, at 1.062 times its value at the seeding time, while the three-dimensional swirl maximum stays flat at 1.9 times the axisymmetric one, the mode's own growth drops below its linear rate (0.266 against 0.35 on the co-evolving base at that time), and the $m = 2$ harmonic sits on the $\epsilon^2$ curve at $\sn{8}{-3}$ of the $m = 1$ energy without migrating. The x28 continuation reached 49 percent of the remaining time with a 22 percent lag and the three-dimensional swirl ratio flat at 1.37.
+
+\emph{On the viscous state it does not, within the range we resolve.} At every output time the two runs share, the seeded run's axisymmetric amplitude agrees with the unperturbed collapse to better than 0.02 percent out to 23.9 percent of the remaining time, and to within 0.15 percent -- the reference's time-printing resolution, which is what limits the comparison there -- out to 34.6 percent. The same run, carried to 23.9 percent of the remaining time with three azimuthal modes, also tests whether the growth rolls up into an intensifying substructure. (We intended a second run from a random seed here. It was not performed: the nonlinear solver does not read the variable that was meant to select the seed, and the two logs are byte-identical. What follows is the localized-seed run, and the paper makes no claim about a random seed on the viscous base.) The three-dimensional vorticity peak rose from 1.04 to 1.71 times the axisymmetric peak while the axisymmetric amplitude ran 9 percent above the Type I line and the second harmonic stayed at two percent of the first. The end-state fields show the mode's energy density peaking on the ring (radius 0.98 of the swirl maximum's, height 0.91 of its) with half-widths of 0.7 to 0.8 collapse lengths, about thirty times the Burgers thickness $\sqrt{\nu (T - t)}$, and the swirl at that point exceeding its azimuthal mean by a factor 1.38. There is no compact off-axis maximum at the viscous scale, no Burgers-locked core and no climbing harmonics: the rising vorticity ratio is the linear family growing on a base whose amplitude it has not measurably touched. So on the viscous state the runs end with a symmetry-broken state that is still collapsing on the axisymmetric law, and neither a continued nor an arrested symmetry-broken collapse was reached before the computation ran out of resolution.
+
+\emph{When the mode arrives.} A perturbation of relative size $\epsilon$ reaches order one after the base amplifies by $\epsilon^{-1/\lambda_{\mathrm{SW}}}$, with $\lambda_{\mathrm{SW}} = \sigma\,(T-t) - 1/2$ the margin over the conservative threshold of Section~\ref{sec:thresh} and the estimate that of a supercritical mode saturating on its own Reynolds stress (Stuart-Watson \cite{SW60}; depletion of this general kind was found in Hou and Li's computation of Kerr's antiparallel tubes \cite{HL06,HL08}, by a mechanism of their own, geometric depletion of vortex stretching, which is not the one here). On the last measured points -- which for the co-evolving families are inside the unconverged window of Section~\ref{sec:res}, so the amplifications below are order-of-magnitude -- $\lambda_{\mathrm{SW}}$ is 0.34 for the long-wave $m = 1$ direction of the Euler x28 state, 0.68 for the long-wave direction of the viscous x144 state and 1.65 for its short-wave $m = 1$ family, so a one percent seed reaches order one after an amplification of about $\sn{8}{5}$, $\sn{9}{2}$ and 16 respectively. Because the threshold is conservative (Remark 1), these are upper bounds on the amplification required. On the viscous base that is well inside the range a computation resolves, and it is what the runs show: the mode reaches order one relative to the base swirl while the collapse continues.
+
+\emph{The second harmonic is slaved, and the null that says so.} Only $m = 1$ is seeded, so $m = 2$ is born as its harmonic, and a test of whether a second instability has taken over must be read against the growth a mere harmonic would show. That growth obeys a one-line law.
+
+\medskip\noindent\textbf{Lemma H (the harmonic-exponent law).} \emph{Let $a_2' = \lambda_2 a_2 + c\, a_1^2$ with $a_1 = a_1(0) e^{\lambda_1 t}$, $c \neq 0$, $\operatorname{Re}\lambda_1 = \sigma_1 > 0$ and $2\lambda_1 \neq \lambda_2$. Then}
+\[
+\kappa = \frac{d \log |a_2|^2}{d \log |a_1|^2} \longrightarrow \max\!\left(2, \frac{\sigma_2}{\sigma_1}\right), \qquad \sigma_2 = \operatorname{Re}\lambda_2 .
+\]
+\emph{In particular $\kappa$ settles above $2$ only if the second mode's own growth rate exceeds twice the first's.}
+
+\medskip\noindent\emph{Proof.} The solution is $a_2 = c\,a_1(0)^2 e^{2\lambda_1 t}/(2\lambda_1 - \lambda_2) + K e^{\lambda_2 t}$. The faster exponential dominates $|a_2|^2$, whose exponent is therefore $\max(4\sigma_1, 2\sigma_2)$, while $\log|a_1|^2$ grows at $2\sigma_1$. \hfill$\square$
+
+\medskip\noindent The forced part is the slaved harmonic and the homogeneous part is the second mode growing at its own rate; if $a_2(0) = 0$ the ratio approaches $2$ from above when $\sigma_2 < 2\sigma_1$. On the columnar rates of Section~\ref{sec:columnar}, $\sigma_2 / \sigma_1 = 0.98$, so the law predicts $\kappa \to 2$: a harmonic, not an independent rung. The runs are consistent with that and nothing stronger. The harmonic stays at $\sn{8}{-3}$ of the $m = 1$ energy on the Euler state and at two percent of the first mode on the viscous one, without migrating in wavenumber; we do not have a measurement of $\kappa$ with the error bars that would distinguish $2$ from $\sigma_2/\sigma_1$. The reason for stating the lemma is negative and methodological: a harmonic climbing from near zero towards the level its parent sustains shows a rising energy ratio and a fast transient growth, which is what a naive test of independence reads as independence. We ran such a test on the eight independent seeded runs, on criteria fixed in writing beforehand, and most runs passed it; two of the three criteria have no power against the null of Lemma H, and the verdict was withdrawn before it was reported. A test of a handoff between successive instability stages needs $\kappa$ measured against $\max(2, \sigma_2/\sigma_1)$ with the rates measured on the same states, and we do not report one here.
+
+\section{The first-stage viscous continuation}
+\label{sec:cont}
+
+Hou computes his Navier-Stokes scenario in two stages: viscosity $\nu = \sn{5}{-4}$ from $t = 0$ to $t_0 = 0.00227375$, and $\nu = \sn{5}{-3}$ thereafter, the increase being made because $\sn{5}{-4}$ `is not strong enough to stabilize the shearing instability generated by the 3D Euler equations' \cite[Sec. 3]{H23b}. What we continue, and what every measurement in this section and in Section~\ref{sec:theorems} is made on, is his \emph{first-stage} solution, carried at $\nu = \sn{5}{-4}$ past $t_0$ without the increase. It is a different flow from his two-stage one after $t_0$, and we make no measurement on the second stage. The instability that made him raise the viscosity is the object of Sections~\ref{sec:euler}-\ref{sec:columnar}.
+
+\subsection{The singular time and the amplitude exponent}
+\label{sec:fit}
+
+Hou's own caveat \cite[Sec. 3.4]{H23b} is that the Type I rate inequalities `would be almost impossible to verify numerically since it requires the exact value of $T$'. We fit $T$ by the log-derivative method: for $A \sim C (T - t)^{-p}$ the ratio $A / A'$ equals $(T - t) / p$, linear in $t$ with slope $-1/p$ and zero at $T$, so sliding-window fits give $p$ and $T$ together with nothing assumed, and Luo and Hou's criterion \cite{LH14a,LH14b} is that both stop moving as the window slides toward $T$. On the resolved snapshots of the continuation (Section~\ref{sec:map}) four-point windows ending at 0.002281, 0.002282, 0.002283, 0.002284 and 0.0022845 give $p = 1.49$, 1.37, 1.19, 1.04, 1.05 with $T = 0.0022888$, 0.0022881, 0.0022872, 0.0022865, 0.0022866, and five-point windows ending at 0.0022845, 0.002285 and 0.0022853 give $p = 1.04$, 1.00, 1.06 with $T = 0.0022865$, 0.0022864, 0.0022866: both have stopped moving over the last three windows. We quote
+\[
+p = 1.03 \pm 0.03, \qquad T = 0.0022865 \pm \sn{1}{-7},
+\]
+and use this $T$ for every collapse-unit quantity in the paper.
+
+The pair is strongly correlated, and the correlation is larger than the trend it is fitted to. Recomputing the constants of Section~\ref{sec:consts} directly from the archived snapshots gives $A\,(T-t)$ at the fitted $T$ that rises to a plateau near 3.85 by x72 and then falls by 2 percent to x329; since $A(T-t) \propto A^{1-1/p}$, that fall implies $p = 0.98$ over the late range, while moving $T$ by $+\sn{1}{-7}$, one part in $10^4$ and within the fit's own uncertainty, turns the same 2 percent fall into a 4 percent rise and $p$ into 1.05. The exponent that the data support is therefore $p = 1.0 \pm 0.05$ jointly with $T = 0.0022865 \pm \sn{1}{-7}$, and no statement in this paper rests on the second decimal of either. We keep the log-derivative value as the quoted fit because it uses the amplitude history rather than two endpoints, and we flag that a reader who prefers the endpoint estimate gets 0.98 at the same $T$.
+
+The exponent is not constant along the way, and measuring it locally resolves what would otherwise look like a disagreement with Section~\ref{sec:ns4}. Centred differences of $\log A$ against $\log(1/(T-t))$ on the fourteen recorded states from x3 to x92 give a local exponent that rises from 1.07 at x3 to a maximum of 1.33 near x25, which is why the base of the runs of Section~\ref{sec:ns4}, which advances from x9 through x25 while they proceed, carries an effective exponent of 1.2 to 1.4, and then falls monotonically through 1.12, 1.03 and 0.99 to 0.98 by x92. A fit over all fourteen returns 1.20 and a fit over the last six returns 1.007; the quoted $p = 1.03$ is the value settled on over the later, resolved range x131 to x331, which is a different and later set of states. So the amplitude approaches the Type I exponent from above, with a transient overshoot of about a third in the middle of the range. The earlier apparent $p \sim 1.8$ of a fixed-$T$ fit was the concave $A/A'$ of subleading corrections in the early windows, and a first reading of `falling Type I constants' from a $1/A$ fit with a drifting $T$ was retracted on this basis.
+
+\subsection{The continuation and the front-following map}
+\label{sec:map}
+
+The first-stage solution was continued at $\nu = \sn{5}{-4}$ on a $513 \times 1024$ grid with a moving radial map and an axial map concentrated at the symmetry plane, from x25 to x217, with a twin at a different axial map and Courant number agreeing to 0.5 percent in amplitude through x217; past x217 the front's width fell to two cells and the twins diverged by 27 percent, and the run was stopped. A 2048-point restart from x131 with a three-times finer axial map read the front at three cells at x268, still grid-limited. The solver was then given a front-following axial map: a Gaussian point density centred on the vorticity maximum with a fifth of the points within three front widths, re-fitted with the radial rezone every hundred steps, the fields moved by exact sine-series evaluation; a map contrast above about 500 breaks the mapped Poisson solve, so the window is kept at three front widths (contrast about 140, symmetrization error $\sn{2}{-5}$), at which the restart reproduces the state to a percent.
+
+On that map the same x222 state has a front $\sn{4.8}{-5}$ wide over ten cells where the coarse map had read $\sn{7.7}{-5}$ over three, and after one interval (x268) the front is $\sn{3.3}{-5}$ wide over nine cells. Re-evaluating the x268 state on a second map gives the error bars: front thickness $\pm 15$ percent, vorticity plateau $\pm 5$ percent, swirl constant $\pm 2$ percent from the grid, meridional constant $\pm 20$ percent, amplitude and its constants 0.5 percent.
+
+With the window floor set at $\sn{1.5}{-4}$ (contrast 140 to 170) the continuation was carried on two grids (1536 and 2048 axial points) from x131 to x395, agreeing to 0.5 percent. The measurements of Sections~\ref{sec:consts}-\ref{sec:theorems} are made on the snapshots of that range, extended backwards to 9 times where the earlier grids supply resolved states; Table~\ref{tab:states} gives the range used for each quantity.
+
+At about x400 ($T - t$ about $\sn{8}{-7}$, $\log(1/(T-t)) = 14.0$) the one-scale collapse ends: the primary front stalls (x395 to x382 over one output interval, $A(T-t)$ falling from 4.3 to 3.7) while a second structure nearer the symmetry plane, at $z$ about 0.0003 against the front's 0.0009, grows to 96 percent of it; at the next interval the maximum is at the second structure (x484, at $r = 0.00185$, $z = 0.00030$), and at the next it has burst to x776. The two follower-map grids and a third run on a wide fixed fine region (2048 points, no following, contrast 175, which cannot lose the front) agree at every one of these points to 0.2 to 0.6 percent through x484 and to 3 percent at x776, so the transition is a property of the solution and not of the map. The aspect ratio $z/r$ of the maximum's position drops from 0.42 to 0.16 across it, the swirl inside the maximum empties ($|u_1|$ at 0.7 of the maximum's radius, on its row, falls from 15 percent of the maximum at x395 to 3 percent at x776, and at 1.05 of the radius from 83 to 28 percent, so the structure is a ring compact in $r$), and the meridional velocity at the maximum turns from axial to radially inward ($|u^r|/|u^z|$ from 0.05 to 20 to 67). This has the sign of Hou's two-scale structure: in his Case 4 at the same viscosity (different data) a vacuum region for $u_1$ opens between the front and the axis and the growth then slows under viscous dominance \cite[Sec. 3.6]{H23b}, and in his rescaled model at dimension three the one-scale profile drifts toward two scales, which he calls a mild scaling instability \cite[Secs. 1 and 5]{H24}.
+
+Past the transition the collapse does not resume as a one-scale law, and it does not arrest. The wide-map run and the two follower runs agree to one percent at every point through x909, and the label sequence 395, 382, 484, 776, 899, 909, 1025, 1422, 2501 carries $A\,(T - t) = 4.3$, 3.7, 4.1, 5.6, 5.4, 4.4, 3.7, 3.4, 3.0 with $T = 0.0022866$: the constant of Section~\ref{sec:consts} is replaced by pulses of about 60 percent, local fits of the exponent give a singular time bouncing between 0.0022861 and 0.0022895 over consecutive intervals, and the front and the ring alternate as the site of the maximum. No exponent is determined after x400, and those last points are on maps past their tested contrast. Followed further on a wide fixed map with ten times denser output, the label rises through 1390, 1764, 2546, 2861, 3991 and 5079, monotonically over the first fourteen of the sixteen recorded points, the vorticity maximum with it, and the structure descends onto the symmetry plane and contracts. The run passes the singular time fitted before the transition -- so that $T$ is a parameter of the one-scale regime and not a singular time of the computed solution -- with local fits of the logarithmic derivative giving a consistent later time of 0.0022867; the last two points fall back to 4337 and 4763, so the pulsing persists and the growth at the stopping point is not monotone. A twin at half the axial resolution instead peaks and decays ninefold, and a twin at twice the radial resolution reaches a third again higher amplitude at the same instant, so the decay is the coarse grid suppressing the collapse and not the collapse ending. We stop between x4000 and x6000, because the structure by then is resolved by seven cells across its width in one direction or the other on every grid we can run, against the ten-cell standard used above, and because the one cheap remedy, a tighter axial window, would take the map contrast past the value at which the mapped Poisson solve is known to fail. Two scale-invariant diagnostics are unchanged throughout that range: the circulation maximum stays pinned between 64.9 and 64.7 by its maximum principle, and the local $L^3$ norm of Section~\ref{sec:l3}, recomputed on that run, stays flat while the amplitude grows by a factor three.
+
+\subsection{The constants}
+\label{sec:consts}
+
+Every constant in this subsection is recomputed from the archived snapshots themselves, so that each is checkable against the deposited data; where a quantity was also logged during the run we quote the recomputation. With $T = 0.0022865$, over the twelve retained states of Table~\ref{tab:states} (labels x9 to x329):
+\[
+A\,(T-t) = 2.62,\ 3.60,\ 3.68,\ 3.75,\ 3.81,\ 3.84,\ 3.86,\ 3.83,\ 3.83,\ 3.88,\ 3.83,\ 3.75 ,
+\]
+which rises out of the early transient onto a plateau near 3.85 by x72 and falls 2 percent over the last three states. The fall is not significant: it is smaller than the sensitivity to $T$ (Section~\ref{sec:fit}), and at the last instant it rests on a single map, the second map at that instant being the degraded one excluded in Section~\ref{sec:l3}. At the penultimate instant, where two independent maps both give resolved states, they agree to 0.3 percent in amplitude. What the series supports is that the amplitude constant is flat to a few percent over 1.5 units of $\log(1/(T-t))$ after the early transient, which is the Type I statement, and not a determination of its trend.
+
+Figure~\ref{fig:4} plots the three of these that are scale-invariant. The other constants, recomputed over the same twelve instants. The collapse length
+$R/\sqrt{T-t}$ reads 2.78 on the earliest state and then 2.42, 2.41, 2.39, 2.37, 2.37, 2.36, 2.38,
+2.39, 2.44, 2.38, 2.31: flat to about three percent from x32 onwards, with the first state still in
+the early transient. The Type I velocity constant $\sup|u|\sqrt{T-t}$ -- equivalently $\sup|u|^2(T-t)$, the Leray rate, whose divergence is what the geometric criterion of Constantin, Fefferman and Majda \cite{CFM96} makes necessary under smoothly directed vorticity -- reads 7.71, 8.89, 8.98, 9.07,
+9.13, 9.19, 9.20, 9.20, 9.24, 9.70, 9.34, 9.89, a rise of eleven percent from x32 to x329 on top of
+the $\pm 2$ percent grid scatter and the singular-time sensitivity of Section~\ref{sec:fit}, which is
+why we do not read a growth law from it: a $\sn{1}{-7}$ change in $T$ moves it by two percent at
+$T - t = \sn{2}{-6}$ and more later. The meridional Type I constant
+$\sup|(u_r, u_z)|\sqrt{T-t}$ reads 6.16, 5.86, 5.79, 5.71, 5.61, 5.50, 5.38, 5.32, 5.32, 5.85, 6.23,
+6.52, falling by a seventh and then recovering, with no trend over the range. And the circulation
+maximum falls from 64.90 to 64.68, bounded by its maximum principle.
+
+That the collapse length stays flat is worth one remark, because whether a collapsing core flattens as it goes is unsettled in the vortex-dynamics literature. Moffatt and Kimura argue that at large vortex Reynolds number the cores spin rapidly enough to feel an effectively axisymmetric strain and so retain a compact cross-section, flattening decreasing with $R_\Gamma$, while cautioning that curvature at the tipping points may defeat the argument \cite{MK19} -- a caution their own corrigendum then accepts, so the two are not symmetric and the question is closer to settled against the compact core than a juxtaposition would suggest; Yao and Hussain report from direct simulation the opposite, notable core flattening and stripping that increases with the Reynolds number \cite{YH20}. Our front is a strained layer in an axisymmetric collapse rather than a pair of reconnecting rings, so it is not a test of either claim; but it does not progressively flatten. $R/\sqrt{T-t}$ is flat to three percent over the range, so the cross-section settles to a fixed anisotropic shape and holds it, rather than degenerating as the collapse proceeds. That is the case in which the circulation-conserving exponent is attained with equality rather than as an inequality (Section~\ref{sec:theorems}).
+
+The vorticity maximum, taken as the full $|\omega|$ rather than its azimuthal part, gives $|\omega|\,(T-t) = 26.7$, 61.3, 65.9, 71.3, 76.6, 82.6, 87.4, 95.3, 105.0, 146.7, 161.5, 242.5 on the same states. This rises throughout, and the last two values should not be read as a rate: past x222 the sheet tilts, the radial vorticity maximum overtaking the azimuthal one by a factor rising to 2.1 (Section~\ref{sec:front}), so the late rise in $|\omega|$ is in part the tilt and not an acceleration of the azimuthal front. Over the range where the front is untilted the growth exponent of $|\omega|$ in $1/(T-t)$ falls from 0.43 to 0.33, levelling toward the Burgers ceiling of Section~\ref{sec:front}, and the $T$-free ratio $|\omega|/A$, recomputed on the same states, reads 10.2, 17.0, 17.9, 19.0, 20.1, 21.5, 22.6, 24.9, 27.4, 37.8, 47.5, 64.7 -- rising throughout, and steeply at the end for the same reason.
+
+\begin{figure}[tbp]
+\centering
+\includegraphics[width=\linewidth]{fig4_constants}
+\caption{The constants against the label $\max|u_1|/12000$: the $T$-free quantity $\sup |u|\,|x'|$, $A\,(T-t)$ and $|\omega|_{\max}\,(T-t)$ with $T = 0.0022865$.}
+\label{fig:4}
+\end{figure}
+
+\subsection{The front is a forced strained layer}
+\label{sec:front}
+
+The front's full width at half maximum is 0.087, 0.065, 0.063, 0.038, 0.029 collapse lengths $\sqrt{T - t}$ and 3.9, 2.9, 2.8, 1.7, 1.3 Burgers lengths $\sqrt{\nu (T - t)}$ from x131 to x268 (the first three grid-limited), and 1.0 Burgers lengths at x331 (six cells). The compressive strain at the front, measured on the symmetry plane at the ring radius and on the axis, is $a\,(T-t) = 2.2$ to 3.8. A Gaussian fit of the azimuthal vorticity across the front at x268 (24 cells inside three standard deviations) gives a standard deviation of $0.58 \sqrt{\nu (T - t)}$, a relative residual of 5 percent and a baseline of 9 percent of the peak; the strain implied by the thickness, $\nu (T - t)$ over the variance, is 2.9 against the measured 2.2 to 3.3; the velocity jump implied by the fit, $\sqrt{2 \pi}\, \delta\, \omega_{\mathrm{peak}} = 2600$, agrees with the measured jump of $u_r$ across the layer (2980) and with the integral of the vorticity (3240). The jump constant $\Delta U \sqrt{T - t}$ is 2.8 to 3.3, a third of the swirl constant. The sheet Reynolds number $\Delta U / \sqrt{\nu a}$ is 65 to 100 with the measured strain (120 to 150 if the nominal collapse strain $a = 1/(T-t)$ is used instead) and, under the Type I scaling, constant in time, so the shear family of Section~\ref{sec:ns4} is never frozen out. At x331 (six cells) the fit residual is 10 percent and the implied strain 5.5 against a measured 3.8, and the $u_r$ jump no longer accounts for the vorticity integral as the sheet tilts (the ratio of the radial to the azimuthal vorticity maximum rising from 1.1 to 2.1): the identification holds to the resolution available.
+
+The front is therefore locally a Burgers-type strained layer: its profile is Gaussian and its thickness is $\sqrt{\nu / a}$ with the measured strain, which are the profile and the width of the Rott-Lundgren solution $u = (-a x, v(x,t), a z)$, $v_t - a x v_x = \nu v_{xx}$ (the planar strained layer of Burgers and Townsend; \cite{R58,L82} treat the axisymmetric core and the strained spiral) under the same strain. It is not that solution. In the Rott-Lundgren layer the velocity jump $\int v_x\,dx$ is conserved for any strain history, while the jump measured here grows like $(T-t)^{-1/2}$, by a factor of about 1.6 from x131 to x331; the layer here is fed, its jump supplied by the axisymmetric source of $\omega_\theta$ in \eqref{eq:om1}, which the free solution does not have. One consequence is worth stating, because it is the sheet-or-tube question asked of this scenario. If the front floors at one Burgers length -- which the series above shows only as a trend, its last point being six cells wide -- its thickness is $\sqrt{\nu(T-t)}$ while the collapse radius is $2.3\sqrt{T-t}$, so the front's thickness is $\sqrt{\nu} = 0.022$ collapse lengths and about one percent of the collapse radius -- and that ratio is then fixed, both lengths scaling as $\sqrt{T-t}$. The front stops flattening relative to the collapse rather than continuing to thin, so the collapsing object is a tube carrying a thin internal layer of fixed relative thickness, not a structure that is itself becoming a sheet. What the identification gives is the thickness law and the profile, and with them the statement that the front sits at the viscous scale $\sqrt{\nu (T-t)}$ rather than at the collapse scale: the vorticity's super-$1/(T-t)$ growth between x25 and x268 is its approach to that floor.
+
+\subsection{The local $L^3$ norm}
+\label{sec:l3}
+
+The scale-invariant quantity $\|u\|_{L^3(B)}$, $B$ the ball of radius four collapse lengths $4\sqrt{T-t}$ about the axis point the ring converges to, was computed on the resolved snapshots from x4 to x268: 25.6, 25.3, 25.0, 24.6, 24.1, 23.3, 23.2, 23.1, 23.0, 22.8, 22.6, 22.5, 22.4, 22.3, 22.0, a monotone decrease of 14 percent over four units of $\log(1/(T - t))$, with the balls of eight and sixteen collapse lengths decreasing faster. What this does and does not say is stated in Section~\ref{sec:l3say}.
+
+One snapshot of the series, at $t = 0.002285549$, is excluded from this and from every series in Section~\ref{sec:theorems}, and we state the exclusion and its ground here. Its axial map had degraded (Section~\ref{sec:map}), and it is anomalous in every diagnostic computed on it: the local $L^3$ norm reads 34.8 against a neighbouring trend at 22.0, and $\sup |u|\,|x'|$ reads 556 against 72. The twin run on a second map at the same instant reads 72.2 and continues the series smoothly. The excluded value is the largest in the series, so the series as quoted omits its largest value; it is a numerical artefact of one map, and we report it rather than let a reader discover a gap in the times.
+
+\section{The scenario against the exclusion theorems}
+\label{sec:theorems}
+
+\subsection{What the theorems require}
+\label{sec:hyp}
+
+For axisymmetric flows with swirl the relevant exclusions are these. Chen, Strain, Tsai and Yau \cite{CSTY09} prove that axisymmetric strong solutions with swirl in $\mathbb{R}^3$ satisfying a Type I bound $|v| \le C_* |t|^{-1/2}$, with $C_*$ arbitrary, are regular, under their standing hypotheses on the data and the pressure. Koch, Nadirashvili, Seregin and Sverak \cite{KNSS09} prove a Liouville theorem for bounded ancient axisymmetric solutions with swirl under the hypothesis
+\begin{equation}
+|v(x, t)| \le \frac{C}{|x'|}, \qquad |x'| = \text{distance to the axis},
+\label{eq:H}
+\end{equation}
+and deduce regularity for solutions whose Leray rescalings inherit \eqref{eq:H} uniformly. Seregin and Sverak \cite{SS09} prove the local statement: on a parabolic cylinder about an axis point, an axisymmetric suitable weak solution with the bound \eqref{eq:H} \emph{on the meridional velocity} $\bar v = v_r e_r + v_z e_z$ is regular at that point. Singular points of an axisymmetric suitable weak solution lie on the axis: this follows from Caffarelli, Kohn and Nirenberg's $\mathcal{P}^1(S) = 0$ \cite{CKN82} together with the axisymmetric reduction stated in \cite[Sec. 3]{SS09}, a circle of singular points off the axis having positive one-dimensional measure. So the local theorem plus the localization of singular points is the step from a periodic cylinder to a statement about our flow, and no separate argument is needed. Barker \cite[Sec. 1 and footnote 3]{B25} makes the nearest prior observation: that Hou's solution appears to satisfy a Type I bound, that axisymmetric solutions satisfying such a bound cannot lose smoothness \cite{SS09}, and that this requires singular points to be excluded away from the axis, which for a no-slip cylinder needs boundary partial regularity \cite{SSS04} as well as \cite{CKN82}. Our wall is impermeable but not no-slip (Section~\ref{sec:eqs}), so that boundary result does not apply to the flow computed here; the collapse is interior and three orders of magnitude from the wall, and we claim nothing about wall points.
+
+One structural remark decides what is worth measuring, and we state it because our own earlier reading of this point was wrong. In \eqref{eq:H} the swirl contributes $|v^\theta|\,|x'| = |\Gamma|$, the circulation, which for axisymmetric unforced flow obeys a maximum principle: it cannot exceed its initial value. The swirl part of the hypothesis is therefore satisfied automatically, for any such flow, and a measurement confirming it measures nothing. The content of \eqref{eq:H} is entirely in the meridional part,
+\[
+|x'|\,|\bar v| = \sqrt{(r u^r)^2 + (r u^z)^2},
+\]
+which is exactly the pair of quantities Hou names when he writes that the theorems apply `provided that $\|r u^r\|_\infty$ and $\|r u^z\|_\infty$ remain bounded for $r \ge r_0 > 0$' \cite[Sec. 1.4]{H24}. His gloss identifies the operative hypothesis correctly. What the theorems do \emph{not} require, and what a measurement of the global supremum of $|u|\,|x'|$ mostly reflects, is a bound on the full velocity in the outer flow.
+
+\subsection{The measurements}
+\label{sec:measure}
+
+Every quantity in this subsection is independent of the fitted singular time.
+
+\emph{The global quantity, and why it carries little information.} Recomputed from the archived snapshots (Table~\ref{tab:states}), $\sup_x |u(x,t)|\,|x'|$ reads 72.32, 72.23, 72.25, 72.29, 72.28, 72.24, 72.17, 72.19, 72.23, 72.15, 72.15, 72.13 on the twelve retained instants, from x9 to x329 (Table~\ref{tab:states} lists thirteen rows: x266 and x265 are two maps at one instant, and the series uses x266), over 3.3 units of $\log(1/(T-t))$: constant to 0.26 percent. A thirteenth is excluded on the ground given in Section~\ref{sec:l3}. Two facts limit what this shows. It is bounded below by the circulation maximum, since $|u|\,|x'| \ge |u^\theta| r = |\Gamma|$ pointwise, and $\max|\Gamma|$ falls only from 64.90 to 64.68 over the same states, pinned by its maximum principle; so nine tenths of the quantity is a number no flow of this class can change. And it is attained in the outer flow, at $r \approx 0.40$, $z \approx 0.09$ on every state, where $|u| \approx 180$ and the advective time $r/|u| \approx \sn{2.2}{-3}$, while the whole series spans $\Delta t \approx \sn{2.3}{-5}$, about one percent of one turnover of that flow. An outer maximum cannot move much over one percent of its own turnover whatever the core does; indeed the quantity still reads 72.08 on a snapshot past the fitted singular time. The measurement verifies that the hypothesis is not violated somewhere unexpected. It is not evidence about the collapse.
+
+\emph{The core quantities, which are the informative ones.} In the core box $r < 3R$, $|z - Z| < 3Z$ of \eqref{eq:lambda}, over the same twelve states: $|u|\,r$ at the swirl maximum runs 21.1, 21.4, 21.6, 21.7, 21.6, 21.8, 21.7, 21.9, 22.1, 23.6, 21.8, 20.5, a spread of 16 percent with no trend, and a factor 3.3 below the global supremum; $|r u^r|$ is non-monotone, 19.1 at x9, falling to 14.9 at x72, and returning to 19.1 at x329; and $|r u^z|$ reads 7.5, 8.8, 8.9, 9.1, 9.2, 9.4, 9.5, 9.7, 9.9, 11.0, 10.3, 10.2, a rise of 36 percent from x9 to x329 that is not monotone: it peaks at 11.0 at x223, 47 percent above the start, and its last three values fall. Their global maxima, 49 to 64 for $|r u^r|$ and about 20 for $|r u^z|$, sit in the far field. The rise in $|r u^z|$ is the one trend in the operative pair over the resolved range, and it is not fast: against $\log(1/(T-t))$, which rises by 3.3 over the same states, it is a slope of about 0.9 per log-unit on a value of order ten.
+
+\emph{Across the late transition.} The one-scale collapse ends near the label x400 (Section~\ref{sec:map}), and the ten snapshots of the wide-map run that bracket the transition, recomputed here on the same core box, carry the quantities across it. From x394 to x759, over 0.47 units of $\log(1/(T-t))$, the core $|r u^r|$ rises from 16.5 to 21.0, the core $|r u^z|$ from 9.9 to 15.8, and $|u|\,r$ at the swirl maximum from 21.9 to 23.7; at the two later snapshots, x917 and x905, $|r u^r|$ reads 22.4 and 21.7, above the band of 14.9 to 19.1 that holds over the whole one-scale range. The global supremum meanwhile falls from 72.07 to 71.94 and stays in the far field. So the operative quantities move upward, and substantially, exactly where the one-scale law fails. Over a quarter of a log-unit that is a jump between regimes and not a trend, no exponent can be fitted to it, and those snapshots are on maps past their tested contrast (Section~\ref{sec:map}); we report it because it is the only part of our data that reaches beyond the one-scale regime, and it moves in the direction an escape would need.
+
+\emph{What this establishes.} Over the resolved range of the one-scale regime the computed first-stage solution satisfies the hypotheses of \cite{CSTY09,KNSS09,SS09}, with the constants above; a finite computation can establish membership in the excluded class only in that sense, since the hypotheses are bounds up to $T$. What it does not establish is any statement about the behaviour beyond that range, and the one place our data do reach beyond it, the transition, shows the operative quantities rising. The honest summary is that the scenario shows no departure over the range where it is a one-scale collapse, and that the data neither exhibit nor exclude the growth that an escape would need.
+
+\subsection{Hou's escape and the log-weighted criteria}
+\label{sec:escape}
+
+The quantity Hou names as the escape is the global supremum of $|r u^r|$ in his generalized rescaled model \cite[Secs. 1.5 and 5.4.4]{H24}, reported to grow like $\log(1/(T - t))$ over amplifications from $\sn{1}{15}$ to $\sn{1}{30}$. His three-dimensional Navier-Stokes paper \cite{H23b} reports no value of it, and our range of amplifications has no counterpart in his: the comparison is structurally unavailable, and our data are inconclusive on it. We note only that a logarithmic law has an arbitrary offset, so the size of the rise it would produce over our range is not determined by the law alone, and that our measured core values are non-monotone over that range.
+
+The log-weighted circulation criteria that appear in the same discussion, $\max |\log r|^{3/2} |\Gamma|$ and $\max (\log r)^2 |\Gamma|$ over $r < 0.1$, grow steadily in our run (163 to 223 and 314 to 486 over the earlier part of the continuation), as they must for a core of constant circulation collapsing toward the axis, since the weight itself grows. They are regularity criteria \cite{W16,LZ17}: their growth is necessary for a singularity, not evidence of one, and they are not measurements of the hypothesis of any exclusion theorem.
+
+\subsection{A criterion that can be measured directly}
+\label{sec:zhang}
+
+A criterion posted while this paper was being written can be evaluated on our data, and we report the measurement because it goes against the scenario. Zhang \cite{Z26} proves that an unforced axisymmetric Leray-Hopf solution with bounded smooth data and bounded initial swirl times radius is regular provided the radial velocity satisfies a one-sided Type I lower bound, $u^r \ge -K/\sqrt{T-t}$. Violating that bound is therefore necessary for blowup in that class. We measure the smallest admissible constant, $K(t) = -\inf_x u^r \sqrt{T-t}$, on nineteen snapshots of the continuation. It stays between 5.05 and 6.29 over 4.58 units of $\log(1/(T-t))$ while the amplification rises 170-fold, with a least-squares slope of $-0.21$ per log-unit, that is slightly falling. The radial velocity itself grows ninefold over that range, from $-711$ to $-6496$: the flow becomes far more strongly inward, but at exactly the Type I rate and not faster. The infimum is attained in the core, on the inflow face of the front at 1.01 to 1.24 core radii, never on the axis and never in the outer region, on a feature spanning tens to hundreds of cells in each direction; the meridional Type I constant of Section~\ref{sec:consts} is this same inward jet. Three independent front-following maps agree to between 1 and 7 percent at matched instants and the two radial resolutions agree to four figures; perturbing the fitted singular time by its uncertainty leaves the sign of the trend unchanged, and only a perturbation a hundred times that size turns it positive, and even then $K$ reaches 8.7 rather than diverging. Two caveats attach: the criterion is a preprint and unrefereed, and our domain is a bounded periodic cylinder rather than $\mathbb{R}^3$, so the state is the natural analogue of the theorem's class rather than literally in it. Subject to those, the scenario does not escape through the quantity that criterion names.
+
+\subsection{What the local $L^3$ norm does and does not say}
+\label{sec:l3say}
+
+The decrease of Section~\ref{sec:l3} contradicts no theorem as stated. The global conditions (a singularity requires the whole-space $L^3$ norm to blow up \cite{ESS03,S12}) say nothing about shrinking balls; Barker and Prange's logarithmic lower bound \cite{BP21} concerns balls of radius $(T - t)^{(1 - \delta)/2}$ with a doubly exponentially small constant; the at-scale theorems (Barker and Prange \cite[Thm. 2]{BP20}; Kang, Miura and Tsai \cite{KMT21}) are lower bounds by a small universal constant, and the measured 22, which is $\sn{4.4}{4}$ in the dimensionless units of those theorems, satisfies them by a wide margin. A Type I profile predicts the scaled norm to approach a constant, and a mild decrease toward a plateau is consistent with that. The sentence the data support is that the critical norm's content at the collapse scale is not growing, which is the opposite of the trend a singularity drives into the global critical norm: evidence against, not proof.
+
+\section{Discussion}
+\label{sec:disc}
+
+\subsection{The continuum obstruction}
+\label{sec:obstruction}
+
+Constructions of log-corrected (Type II) singularities in parabolic and dispersive problems typically proceed from a stationary or self-similar profile of a limiting problem, its linearized spectrum with finitely many unstable directions, and a modulation argument; the compressible implosion programme of Merle, Raphael, Rodnianski and Szeftel \cite{MRRS22a,MRRS22b} is the model. For Navier-Stokes the limiting problem is Euler, viscosity being exactly marginal under the Leray scaling, and for the interior scenario this framing exists only as an exclusion programme \cite{BP20,BP21,S23}, never as a construction. Table~\ref{tab:spectral} measures the growth that such a construction would have to control about this state, and what it finds is not a finite list of unstable directions but a continuum: a short-wave family on the front, present at every azimuthal wavenumber tested, meeting the conservative criterion from 4 percent of the remaining time on the viscous state and 6 to 8 percent on the Euler state, and reaching 3.0 to 4.3 times that threshold by the last resolved point (a lower bound: the coarse axial twin of Section~\ref{sec:table} gives a factor 1.37 to 1.55 less). We identify that band with the essential spectrum of Lifschitz and Hameiri \cite{LH91}, Friedlander and Vishik \cite{FV91} and Vishik \cite{V96}, whose radius Vishik \cite{V96} identifies with the maximal Lyapunov exponent of the bicharacteristic amplitude cocycle; the identification is not something the measurement exhibits, the short end of the band being set by the grid (Section~\ref{sec:res}). Chen and Hou reconcile it with their stable boundary profile by working in a low-regularity weighted norm in which the outgoing transport damps short waves, declining the high-regularity estimate whose coercivity they call unclear \cite[Part I, Sec. 2.7.2]{CH25a}. A construction on the interior profile must either find such a norm or cut the continuum off with viscosity, and Section~\ref{sec:cross} says what viscosity does here: over a factor twenty it moves the crossing from 4 to 17 percent of the remaining time and removes it at no value tested.
+
+A second obstruction is structural and explains why a self-similar description of this state resists both the one-scale and the two-scale ansatz. In the rescaled equations the aspect ratio of the two scales appears inside the elliptic operator, multiplying its radial part. A profile, being independent of the rescaled time, therefore requires that ratio to be constant, which forces the two similarity rates to be equal, which is to say one scale. We therefore see no route to a genuine two-scale fixed point of the unmodified equations, and state that as an observation about the rescaled equations rather than as a non-existence proof; a two-scale ansatz is available only if some extra degree of freedom pins the ratio, which is the role played by the space dimension treated as an unknown in \cite{H24}. Marching the dynamically rescaled two-scale equations from our own collapsing state, the rates neither converge nor drift steadily nor diverge: they make one excursion and return, at two resolutions agreeing to two percent. We record one reason the problem is hard to truncate. Deleting the vorticity outside the core removes at most four percent of the vorticity norm and a seventh of a percent of its source, yet moves the streamfunction on the swirl core by tens of percent, because the squared aspect ratio is of order $10^{-4}$ and the rescaled elliptic operator is therefore nearly one-dimensional in the axial variable, giving distant vorticity a long lever arm on the core. The collapse's own anisotropy makes its elliptic problem nonlocal, and no truncation that excludes the outer region is admissible.
+
+\subsection{The unforced constructions of September 2026}
+\label{sec:oai}
+
+The same continuum is the engine of the constructions of \cite{OAI26a,OAI26b}, which amplify short waves on a background flow by the criteria of Lifschitz and Hameiri and of Friedlander and Vishik, and design the core to supply enough shear at its outer edge to amplify pulses placed there. In \cite{OAI26b} the mechanism runs unforced, on Euler, by iterating the amplification on successively shorter intervals, giving a gradient blowup with bounded velocity rather than a self-similar profile. So the family we identify as an obstruction to a self-similar unforced scenario is, used the other way, a route to a non-self-similar one, and our measurements bear on that route: an iteration of this kind compounds against the collapse when the rate in collapse units exceeds the conservative threshold, which on this state it does at every azimuthal wavenumber and by a factor of 3.0 to 4.3 at the last resolved point, itself a lower bound at the axial resolution we can run. We do not extrapolate that margin beyond the range over which it was measured.
+
+What the measurement does not supply is the construction. Compounding is necessary for such an iteration and not sufficient: the iteration requires the shear amplified at one stage to be handed to the next, and that requirement is the whole of the gap between a forced construction and an unforced one. The force of \cite{OAI26a} is small in location rather than in norm -- it vanishes to infinite order at the singular point and is identically zero beyond a fixed scale -- and the flow already supplies the divergent part of its own force through the pulses' Reynolds stress; what remains external is that an exponentially small force seeds each pulse. In \cite{OAI26b} every seed of the iteration is placed in the initial datum at time zero, designed backwards and lying dormant until its stage activates, and what one stage hands to the next is the amplifier -- the shear, its frame and a coupling constant -- never the seed. Self-generation of seeds is neither claimed nor proved there. The question is not new: an iterated handoff of this kind was proposed for Navier-Stokes \cite{FH04} and shown not to work in the proposed form \cite{LL06}, the construction satisfying the equations only along a single trajectory and so being unusable as the background for the next iteration. It remains open for Euler and for positive viscosity, and these constructions avoid it rather than resolving it.
+
+\subsection{What remains open}
+\label{sec:open}
+
+One line of pressure on the interior scenario is not ours and cuts against it. Every axisymmetric singularity must be faster than the scale-invariant rate \cite{CSTY08}, so its velocity exponent exceeds the Leray value; under the Euler scaling at an exponent above that value the swirl circulation carries a factor tending to zero, so the zoomed limit has no swirl \cite{S24}; and axisymmetric Navier-Stokes without swirl is globally regular \cite{L68,UY68}. The three steps do not compose into a theorem -- excluding the limit needs a decay hypothesis that is not proved, and holds only inside a parameter window -- but a reader who grants the decay hypothesis should conclude that the interior axisymmetric route is closed, and nothing we measure gives that reader a reason to reconsider.
+
+It is worth saying where the measured exponents put this scenario on the one axis the exclusion literature parametrizes. With $R$ and $Z$ both scaling as $\sqrt{T-t}$ (Section~\ref{sec:consts}) and the amplitude exponent $p = 1.0 \pm 0.05$ of Section~\ref{sec:fit}, the swirl velocity $u^\theta \sim R\,A$ goes as $(T-t)^{-1/2}$: the collapse sits at the circulation-conserving Leray rate, to within the $\pm 0.05$ of the fitted exponent. That value is the extreme the bounds allow and not a point inside them. It is also the rate that the vortex-dynamics literature writes down directly: Moffatt's Leray scaling for a collapsing vortex pair, $u = \Gamma^{1/2}(t_*-t)^{-1/2}U(X)$, takes the conserved vortex strength itself as the amplitude \cite[eq.~(7.1)]{M00}, which is this exponent with circulation as its reason. Deng, Hou and Yu \cite{DHY06} note that Kelvin's theorem makes it the worst case for the velocity, and Constantin, Ignatova and Vicol \cite{CIV26} prove, for a nontrivial $C^2$ axisymmetric globally self-similar Euler profile with their decay hypotheses, that the zoom exponent is at least $1/2$, which is the same statement. The sharper reading is Chae and Shvydkoy's \cite{CS13}: for a locally self-similar Euler profile in $L^p \cap C^1_{\mathrm{loc}}$ with $3 \le p \le \infty$, the range that includes this exponent at $p = 3$ is excluded outright. So the rate we measure is the one that exact self-similarity in $L^3$ forbids, and the scenario's survival depends on its not being exactly self-similar -- which is what Section~\ref{sec:obstruction} finds independently, the aspect ratio drifting and the rescaled rates never balancing. The escape and the exponent are the same fact seen twice.
+
+The most accurate self-similar profile for the axisymmetric Euler equations now available sits at the same place. Ganeshram, Duruisseaux and Anandkumar compute a single-scale profile, self-similar in $\mathring r/(T-t)^{1/2}$ and $(\mathring z - \mathring z_c(t))/(T-t)^{1/2}$ with the centre travelling along the symmetry axis, that is $\lambda = 1/2$ in their notation, the same rate as ours; they adopt that exponent for the certified profile, motivating it by the invariance of circulation and by \cite{CIV26}, and separately optimize the exponent jointly with the profile and find it converges near the same value \cite{GDA26}. Our measurement is of a different object -- a viscous continuation of a specific solution, not a profile -- and is a measurement rather than a construction, but it lands on the same exponent, and for the same stated reason.
+
+Discretely self-similar and aperiodic Type I singularities are excluded only near the continuous case \cite{CW17a}, and in the axisymmetric swirl class every Type I singularity is excluded, so that loophole lives in the non-axisymmetric class, where the relevant computation -- a periodic or aperiodic orbit of the rescaled equations in three dimensions -- has never been attempted for a blowup problem; the closest precedent is Gundlach's computation of the Choptuik spacetime as a periodic orbit in similarity time \cite{G95}.
+
+On the rigorous side of our own results, Theorem 2 certifies an unstable eigenvalue of the continuous columnar operator. Three things it does not do should be said once more here: it does not exclude other eigenvalues from the disc, it does not assert simplicity, and it says nothing about the front, the two-dimensional collapse or Navier-Stokes regularity, the columnar model being a parallel-flow approximation on an explicit polynomial field with an artificial wall. An enclosure for the two-dimensional operator is not reachable by the same route, because that operator has no isolated eigenvalue at the resolutions we can run (Section~\ref{sec:frozen}). Extending Theorem 2 to other wavenumbers is a matter of compute rather than of mathematics: nothing in the pipeline is wavenumber-independent, and each new $(m, k, \nu)$ needs its own certified Stokes spectrum, Galerkin matrix, strip norms and constants.
+
+\subsection{Predictions for a three-dimensional computation}
+\label{sec:pred}
+
+No non-axisymmetric computation of Hou's data exists. The first one will test the following statements, which are the content of this paper reduced to numbers that a single run at $\nu = \sn{5}{-4}$, started from the axisymmetric solution at vorticity amplification 144 with a small random perturbation, can confirm or refute. A caveat first: our own symmetry-breaking run was repeated from an identical state on a grid with half the radial points, and the two agree to better than one percent on the collapse amplitude, on the maximum of the azimuthal velocity and on the ratio of the second azimuthal harmonic to the first, and to within half a percent at the last common time; the check does not speak to the axial direction, both runs carrying the same axial resolution, and the axial curvature width of the emerging structure is a small number of cells, so any statement here about axial contraction rates should be read as a statement about the grid until an axially refined pair is run.
+
+\begin{enumerate}
+\item The $m = 1$ energy in a thin band on the front grows, in the collapsing frame, faster than the conservative threshold from 4.3 percent of the remaining time ($\sigma (T-t) = 0.91$ at 6.7 percent, 1.29 at 11.4 percent), with $m = 0$ and $m = 2$ following at 4.7 and 4.2 percent, and all three exceed the collapse rate itself, at 7.5 ($m = 1$), 15.2 ($m = 0$) and 6.9 ($m = 2$) percent -- the $m = 1$ crossing moving to 17.2 percent at the coarser axial resolution, which makes it the weakest prediction here. The long-wave $m = 1$ direction crosses at 10.8 percent and reaches 1.18 by 34 percent. What is to be tested is the factor of 3.0 to 4.3 by which these families exceed the threshold at the last resolved point -- a lower bound, the coarse axial twin giving 1.37 to 1.55 less -- and which wavenumbers carry them.
+\item The growth stays a distributed deformation of the ring, not a sub-vortex: the three-dimensional vorticity maximum reaches 1.7 times the axisymmetric one while the axisymmetric amplitude stays on its own law, 9 percent above the Type I line; the second harmonic stays at about two percent of the first; the mode's energy peaks on the ring at 0.98 of the swirl maximum's radius and 0.91 of its height with half-widths of 0.7 to 0.8 collapse lengths; no compact off-axis maximum forms at the viscous scale.
+\item For a seed of relative size $\epsilon$ the symmetry breaking becomes order one after an amplification of at most $\epsilon^{-1/\lambda_{\mathrm{SW}}}$ with $\lambda_{\mathrm{SW}}$ between 0.68 and 1.65 on the viscous state, so a one percent seed reaches order one after an amplification of at most about 16 to $\sn{9}{2}$ of the amplitude at which it was introduced.
+\item Applying $\nu = \sn{5}{-3}$ at the same state moves the crossing to 14.5 percent and the collapse rate to 19.2 percent (1.37 at 24 percent); the tenfold viscosity moves the crossing, it does not remove it.
+\item Any resolved axisymmetric continuation of the $\nu = \sn{5}{-4}$ solution gives $\sup_x |u|\,|x'| = 72 \pm 1$ with no trend over 3.3 units of $\log(1/(T-t))$, a core value $|u|\,r$ at the swirl maximum of 20.5 to 23.7, the circulation maximum 64.7 to 64.9, the meridional Type I constant 5.3 to 6.5, an amplitude exponent $1.0 \pm 0.05$ jointly with a fitted singular time $0.0022865 \pm \sn{1}{-7}$ (the pair being correlated as in Section~\ref{sec:fit}), a front of thickness 1.0 to 1.7 Burgers lengths fitting a Gaussian to 5 percent, and $\omega (T-t)$ rising through 242 with a decreasing exponent.
+\item On one map with the core window fixed in collapse units, the core-restricted $|r u^r|$ either stays within its present band of 15 to 19 or grows beyond x331; a resolved continuation to the label x1000 adds 1.1 units of $\log(1/(T-t))$ and decides between the two at the 10 percent level, which the present data cannot. Across the transition of Section~\ref{sec:map} the quantity rose from 16.5 to 21.0 in 0.24 log-units, above that band.
+\end{enumerate}
+
+A three-dimensional run in which the symmetry-broken state continues to collapse with its amplitude on the Type I law, or an axisymmetric continuation in which the core meridional quantities grow steadily beyond the resolved range, would refute the corresponding statement and with it this paper's reading of the scenario.
+
+\section*{Acknowledgements}
+The scenario and initial data studied here are those of T. Y. Hou \cite{H23a,H23b}. All computations were run on a personal workstation.
+
+This work was carried out with extensive assistance from AI systems (Anthropic's Claude models, used through Claude Code). They were used to search and read the literature, to derive and check calculations, to write and run the numerical code, and to draft and revise the manuscript, including an internal adversarial review in which separate AI agents attempted to refute each result. The author directed the research, made the decisions recorded in it, and takes full responsibility for its content. No AI system is listed as an author.
+
+\section*{Declarations}
+
+\emph{Funding.} This work received no funding.
+
+\emph{Competing interests.} The author declares no competing interests.
+
+\emph{Data and code availability.} All solvers, logs, snapshots at the reported times, the verification scripts and their tests, the extraction scripts for the figures and tables, the comma-separated data behind Figures 1 to 3, the Galerkin eigenvector $w$ of Theorem 2, and the four notes supporting its proof are in the repository accompanying this paper, \url{https://github.com/RavensStats/hou-front-stability}. The snapshots are archived at Zenodo, DOI [to be inserted on acceptance]. The dated record of results, corrections and retractions made during the work, including the readings retracted in Section~\ref{sec:res}, is included there as supplementary material. The block store for the verified computation of Section~\ref{sec:stageb} is 5.8 GB and is not deposited; the repository gives the recipe and the hashes needed to rebuild it, at about 24 core-hours.
+
+\begin{thebibliography}{WLGB23}
+
+\bibitem[B25]{B25} T. Barker, Quantitative classification of potential Navier-Stokes singularities beyond the blow-up time, arXiv:2510.20757 (2025); version 3 of 11 August 2026, which is the version paraphrased here.
+
+\bibitem[BP20]{BP20} T. Barker, C. Prange, Localized smoothing for the Navier-Stokes equations and concentration of critical norms near singularities, Arch. Ration. Mech. Anal. 236 (2020), 1487-1541. [arXiv:1812.09115]
+\bibitem[BP21]{BP21} T. Barker, C. Prange, Quantitative regularity for the Navier-Stokes equations via spatial concentration, Comm. Math. Phys. 385 (2021), 717-792. [arXiv:2003.06717]
+\bibitem[BG05]{BG05} P. Billant, F. Gallaire, Generalized Rayleigh criterion for non-axisymmetric centrifugal instabilities, J. Fluid Mech. 542 (2005), 365-379.
+\bibitem[BG13]{BG13} P. Billant, F. Gallaire, A unified criterion for the centrifugal instabilities of vortices and swirling jets, J. Fluid Mech. 734 (2013), 5-35.
+\bibitem[CH25]{CH25} J. Chen, T. Y. Hou, Singularity formation in 3D Euler equations with smooth initial data and boundary, Proc. Natl. Acad. Sci. USA 122 (2025), no. 27, e2500940122.
+
+\bibitem[CW17a]{CW17a} D. Chae, J. Wolf, Removing discretely self-similar singularities for the 3D Navier-Stokes equations, Comm. Partial Differential Equations 42 (2017), 1359-1374. [arXiv:1610.09464]
+\bibitem[AB26]{AB26} L. Alpoge, T. Buckmaster, Finite-time blowup for forced Euler, Boussinesq and incompressible porous media, manuscripts at cims.nyu.edu/\~{}tristanb, 8 September 2026 (with M. P. Coiculescu for the porous-media case; not on arXiv), with Lean formalizations at github.com/tristanbuckmaster/fluid\_lean.
+
+\bibitem[CM23]{CM23} D. Cordoba, L. Martinez-Zoroa, Blow-up for the incompressible 3D-Euler equations with uniform $C^{1,\frac12-\varepsilon} \cap L^2$ force, arXiv:2309.08495 (2023), to appear in Duke Math. J.
+
+\bibitem[F00]{F00} C. L. Fefferman, Existence and smoothness of the Navier-Stokes equation, Clay Mathematics Institute Millennium Prize Problem description, 2000.
+\bibitem[OAI26a]{OAI26a} OpenAI, Finite time blowup for Navier-Stokes, \url{openai.com/index/navier-stokes-solution}, 8 September 2026; self-published, not peer reviewed, with Lean formalizations at \url{github.com/openai/NavierStokesAndEuler} which record themselves as self-assessed.
+
+\bibitem[OAI26b]{OAI26b} OpenAI, Finite time blowup for the Euler equation, \url{openai.com/index/navier-stokes-solution}, 8 September 2026, with Lean formalizations at \url{github.com/openai/NavierStokesAndEuler}; two versions of 45 and 57 pp. circulate, with word-identical abstract and Theorem 1.1.
+\bibitem[S23]{S23} G. Seregin, Remarks on Type II blowups of solutions to the Navier-Stokes equations, arXiv:2304.04045 (2023).
+\bibitem[S24]{S24} G. Seregin, A note on potential Type II blowups of axisymmetric solutions to the Navier-Stokes equations, arXiv:2402.13229 (2024).
+\bibitem[L68]{L68} O. A. Ladyzhenskaya, On unique solvability `in the large' of the three-dimensional Cauchy problem for the Navier-Stokes equations with axial symmetry, Zap. Nauchn. Sem. LOMI 7 (1968), 155-177.
+\bibitem[UY68]{UY68} M. R. Ukhovskii, V. I. Yudovich, Axially symmetric flows of ideal and viscous fluids filling the whole space, J. Appl. Math. Mech. 32 (1968), 52-61.
+
+\bibitem[CKN82]{CKN82} L. Caffarelli, R. Kohn, L. Nirenberg, Partial regularity of suitable weak solutions of the Navier-Stokes equations, Comm. Pure Appl. Math. 35 (1982), 771-831.
+\bibitem[CSTY08]{CSTY08} C.-C. Chen, R. M. Strain, H.-T. Yau, T.-P. Tsai, Lower bound on the blow-up rate of the axisymmetric Navier-Stokes equations, Int. Math. Res. Not. 2008, art. rnn016, 31 pp. [arXiv:math/0701796]
+
+\bibitem[CSTY09]{CSTY09} C.-C. Chen, R. M. Strain, T.-P. Tsai, H.-T. Yau, Lower bounds on the blow-up rate of the axisymmetric Navier-Stokes equations II, Comm. Partial Differential Equations 34 (2009), 203-232. [arXiv:0709.4230]
+\bibitem[ESS03]{ESS03} L. Escauriaza, G. Seregin, V. Sverak, $L_{3,\infty}$-solutions of the Navier-Stokes equations and backward uniqueness, Russian Math. Surveys 58 (2003), 211-250.
+
+\bibitem[FV91]{FV91} S. Friedlander, M. M. Vishik, Instability criteria for the flow of an inviscid incompressible fluid, Phys. Rev. Lett. 66 (1991), 2204-2206.
+\bibitem[GS20]{GS20} T. Gallay, D. Smets, Spectral stability of inviscid columnar vortices, Anal. PDE 13 (2020), 1777-1832.
+\bibitem[G95]{G95} C. Gundlach, The Choptuik spacetime as an eigenvalue problem, Phys. Rev. Lett. 75 (1995), 3214-3217. [arXiv:gr-qc/9507054]
+\bibitem[H23a]{H23a} T. Y. Hou, Potential singularity of the 3D Euler equations in the interior domain, Found. Comput. Math. 23 (2023), 2203-2249. [arXiv:2107.05870]
+\bibitem[H23b]{H23b} T. Y. Hou, Potentially singular behavior of the 3D Navier-Stokes equations, Found. Comput. Math. 23 (2023), 2251-2299. [arXiv:2107.06509]
+\bibitem[H24]{H24} T. Y. Hou, Nearly self-similar blowup of generalized axisymmetric Navier-Stokes equations, arXiv:2405.10916 (2024).
+
+\bibitem[HL06]{HL06} T. Y. Hou, R. Li, Dynamic depletion of vortex stretching and non-blowup of the 3-D incompressible Euler equations, J. Nonlinear Sci. 16 (2006), 639-664.
+\bibitem[HL08]{HL08} T. Y. Hou, R. Li, Blowup or no blowup? The interplay between theory and numerics, Physica D 237 (2008), 1937-1944.
+\bibitem[KMT21]{KMT21} K. Kang, H. Miura, T.-P. Tsai, Regular sets and an epsilon-regularity theorem in terms of initial data for the Navier-Stokes equations, Pure Appl. Anal. 3 (2021), 567-594. [arXiv:2006.13145]
+\bibitem[KNSS09]{KNSS09} G. Koch, N. Nadirashvili, G. Seregin, V. Sverak, Liouville theorems for the Navier-Stokes equations and applications, Acta Math. 203 (2009), 83-105. [arXiv:0709.3599]
+\bibitem[LS01]{LS01} R. B. Lehoucq, A. G. Salinger, Large-scale eigenvalue calculations for stability analysis of steady flows on massively parallel computers, Int. J. Numer. Methods Fluids 36 (2001), 309-327.
+\bibitem[LS83]{LS83} S. Leibovich, K. Stewartson, A sufficient condition for the instability of columnar vortices, J. Fluid Mech. 126 (1983), 335-356.
+\bibitem[LH91]{LH91} A. Lifschitz, E. Hameiri, Local stability conditions in fluid dynamics, Phys. Fluids A 3 (1991), 2644-2651.
+\bibitem[LVV21]{LVV21} L. Lafleche, A. F. Vasseur, M. Vishik, Instability for axisymmetric blow-up solutions to incompressible Euler equations, J. Math. Pures Appl. 155 (2021), 140-154. [arXiv:2009.12603]
+\bibitem[Z26]{Z26} Q. S. Zhang, On partial type I solutions to the axially symmetric Navier-Stokes equations, arXiv:2604.07785 (2026), preprint.
+
+\bibitem[L82]{L82} T. S. Lundgren, Strained spiral vortex model for turbulent fine structure, Phys. Fluids 25 (1982), 2193-2203.
+\bibitem[LH14a]{LH14a} G. Luo, T. Y. Hou, Potentially singular solutions of the 3D axisymmetric Euler equations, Proc. Natl. Acad. Sci. USA 111 (2014), 12968-12973.
+\bibitem[LH14b]{LH14b} G. Luo, T. Y. Hou, Toward the finite-time blowup of the 3D axisymmetric Euler equations: a numerical investigation, Multiscale Model. Simul. 12 (2014), 1722-1776.
+\bibitem[MR96]{MR96} K. Meerbergen, D. Roose, Matrix transformations for computing rightmost eigenvalues of large sparse non-symmetric eigenvalue problems, IMA J. Numer. Anal. 16 (1996), 297-346.
+\bibitem[MP92]{MP92} E. W. Mayer, K. G. Powell, Viscous and inviscid instabilities of a trailing vortex, J. Fluid Mech. 245 (1992), 91-114.
+
+\bibitem[FH04]{FH04} B. R. Fabijonas, D. D. Holm, Multi-frequency Craik-Criminale solutions of the Navier-Stokes equations, J. Fluid Mech. 506 (2004), 207-215. [arXiv:nlin/0304049]
+
+\bibitem[LL06]{LL06} S. Le Dizes, S. Leblanc, Note on ``Multi-frequency Craik-Criminale solutions of the Navier-Stokes equations'' by B. R. Fabijonas and D. D. Holm, J. Fluid Mech. 550 (2006), 43-50.
+
+\bibitem[R58]{R58} N. Rott, On the viscous core of a line vortex, Z. Angew. Math. Phys. 9 (1958), 543-553.
+\bibitem[S12]{S12} G. Seregin, A certain necessary condition of potential blow up for Navier-Stokes equations, Comm. Math. Phys. 312 (2012), 833-845. [arXiv:1104.3615]
+\bibitem[SS09]{SS09} G. Seregin, V. Sverak, On Type I singularities of the local axi-symmetric solutions of the Navier-Stokes equations, Comm. Partial Differential Equations 34 (2009), 171-201. [arXiv:0804.1803]
+\bibitem[SW60]{SW60} J. T. Stuart, On the non-linear mechanics of wave disturbances in stable and unstable parallel flows. Part 1, J. Fluid Mech. 9 (1960), 353-370; J. Watson, Part 2, J. Fluid Mech. 9 (1960), 371-389.
+\bibitem[VV20]{VV20} A. Vasseur, M. Vishik, Blow-up solutions to 3D Euler are hydrodynamically unstable, Comm. Math. Phys. 378 (2020), 557-568. [arXiv:1908.05766]
+\bibitem[V96]{V96} M. M. Vishik, Spectrum of small oscillations of an ideal fluid and Lyapunov exponents, J. Math. Pures Appl. 75 (1996), 531-557.
+
+\bibitem[WLGB23]{WLGB23} Y. Wang, C.-Y. Lai, J. Gomez-Serrano, T. Buckmaster, Asymptotic self-similar blow-up profile for three-dimensional axisymmetric Euler equations using neural networks, Phys. Rev. Lett. 130 (2023), 244002. [arXiv:2201.06780]
+\bibitem[W25]{W25} Y. Wang, M. Bennani, J. Martens, S. Racaniere, S. Blackwell, A. Matthews, S. Nikolov, G. Cao-Labora, D. S. Park, M. Arjovsky, D. Worrall, C. Qin, F. Alet, B. Kozlovskii, N. Tomasev, A. Davies, P. Kohli, T. Buckmaster, B. Georgiev, J. Gomez-Serrano, R. Jiang, C.-Y. Lai, Discovery of unstable singularities, arXiv:2509.14185 (2025).
+
+\bibitem[BLMTW10]{BLMTW10} B. M. Brown, M. Langer, M. Marletta, C. Tretter, M. Wagenhofer, Eigenvalue enclosures and exclosures for non-self-adjoint problems in hydrodynamics, LMS J. Comput. Math. 13 (2010), 65-81.
+
+\bibitem[DGGA26]{DGGA26} V. Duruisseaux, A. Ganeshram, R. J. George, A. Anandkumar, Stability framework for the singularity of the Euler equations on $\mathbb{R}^3$, arXiv:2609.10860 [math.AP] (2026); its conclusions are conditional on rigorous certification of its estimates and constants.
+
+\bibitem[DS26]{DS26} J. Dahne, V. Sverak, Non-uniqueness for the complex Ginzburg-Landau equation, arXiv:2609.08985 [math.AP] (2026).
+
+\bibitem[CFM96]{CFM96} P. Constantin, C. Fefferman, A. J. Majda, Geometric constraints on potentially singular solutions for the 3-D Euler equations, Comm. Partial Differential Equations 21 (1996), 559-571.
+
+\bibitem[M00]{M00} H. K. Moffatt, The interaction of skewed vortex pairs: a model for blow-up of the Navier-Stokes equations, J. Fluid Mech. 409 (2000), 51-68.
+
+\bibitem[MK19]{MK19} H. K. Moffatt, Y. Kimura, Towards a finite-time singularity of the Navier-Stokes equations. Part 1. Derivation and analysis of dynamical system, J. Fluid Mech. 861 (2019), 930-967; Part 2. Vortex reconnection and singularity evasion, J. Fluid Mech. 870 (2019), R1, and Corrigendum, J. Fluid Mech. 887 (2020), E2; Part 3. Maximal vorticity amplification, J. Fluid Mech. 967 (2023), R1.
+
+\bibitem[YH20]{YH20} J. Yao, F. Hussain, On singularity formation via viscous vortex reconnection, J. Fluid Mech. 888 (2020), R2.
+
+\bibitem[GDA26]{GDA26} A. Ganeshram, V. Duruisseaux, A. Anandkumar, Stable singularity of the Euler equations on $\mathbb{R}^3$, arXiv:2609.10867 [math.AP] (2026).
+
+\bibitem[CH25a]{CH25a} J. Chen, T. Y. Hou, Stable nearly self-similar blowup of the 2D Boussinesq and 3D Euler equations with smooth data I: Analysis, arXiv:2210.07191v4 (2022), preprint.
+
+\bibitem[CH25b]{CH25b} J. Chen, T. Y. Hou, Stable nearly self-similar blowup of the 2D Boussinesq and 3D Euler equations with smooth data II: Rigorous numerics, Multiscale Model. Simul. 23 (2025), 25-130. [arXiv:2305.05660]
+
+\bibitem[W16]{W16} D. Wei, Regularity criterion to the axially symmetric Navier-Stokes equations, J. Math. Anal. Appl. 435 (2016), 402-413. [arXiv:1508.03318]
+
+\bibitem[LZ17]{LZ17} Z. Lei, Q. S. Zhang, Criticality of the axially symmetric Navier-Stokes equations, Pacific J. Math. 289 (2017), 169-187. [arXiv:1505.02628]
+
+\bibitem[HL07]{HL07} T. Y. Hou, R. Li, Computing nearly singular solutions using pseudo-spectral methods, J. Comput. Phys. 226 (2007), 379-397. [arXiv:math/0701337]
+
+\bibitem[R10]{R10} S. M. Rump, Verification methods: rigorous results using floating-point arithmetic, Acta Numerica 19 (2010), 287-449.
+
+\bibitem[NPW19]{NPW19} M. T. Nakao, M. Plum, Y. Watanabe, Numerical Verification Methods and Computer-Assisted Proofs for Partial Differential Equations, Springer Series in Computational Mathematics 53, Springer, Singapore, 2019. doi 10.1007/978-981-13-7669-6
+
+\bibitem[MRRS22a]{MRRS22a} F. Merle, P. Raphael, I. Rodnianski, J. Szeftel, On the implosion of a compressible fluid I: Smooth self-similar inviscid profiles, Ann. of Math. 196 (2022), 567-778.
+
+\bibitem[MRRS22b]{MRRS22b} F. Merle, P. Raphael, I. Rodnianski, J. Szeftel, On the implosion of a compressible fluid II: Singularity formation, Ann. of Math. 196 (2022), 779-889.
+
+\bibitem[CIV26]{CIV26} P. Constantin, M. Ignatova, V. Vicol, On putative self-similarity for incompressible 3D Euler, arXiv:2602.17570v3 (2026), preprint; the axisymmetric hypothesis is worded differently in v1, so the version matters.
+
+\bibitem[CS13]{CS13} D. Chae, R. Shvydkoy, On formation of a locally self-similar collapse in the incompressible Euler equations, Arch. Ration. Mech. Anal. 209 (2013), 999-1017. [arXiv:1201.6009]
+
+\bibitem[DHY06]{DHY06} J. Deng, T. Y. Hou, X. Yu, Improved geometric conditions for non-blowup of the 3D incompressible Euler equation, Comm. Partial Differential Equations 31 (2006), 293-306.
+
+\bibitem[AO25]{AO25} D. Albritton, W. Ozanski, Linear and nonlinear instability of vortex columns, J. Eur. Math. Soc., published online 11 December 2025. doi 10.4171/JEMS/1749. [arXiv:2310.20674]
+
+\bibitem[HWY26]{HWY26} T. Y. Hou, Y. Wang, C. Yang, Nonuniqueness of Leray-Hopf solutions to the unforced incompressible 3D Navier-Stokes equation, arXiv:2509.25116 (2025), revised 19 March 2026.
+
+\bibitem[SSS04]{SSS04} G. A. Seregin, T. N. Shilkin, V. A. Solonnikov, Boundary partial regularity for the Navier-Stokes equations, Zap. Nauchn. Sem. POMI 310 (2004), 158-190.
+
+\bibitem[LP04]{LP04} J.-R. Lahmann, M. Plum, A computer-assisted instability proof for the Orr-Sommerfeld equation with Blasius profile, ZAMM Z. Angew. Math. Mech. 84 (2004), 188-204. doi 10.1002/zamm.200310093
+
+\bibitem[WPN09]{WPN09} Y. Watanabe, M. Plum, M. T. Nakao, A computer-assisted instability proof for the Orr-Sommerfeld problem with Poiseuille flow, ZAMM Z. Angew. Math. Mech. 89 (2009), 5-18. doi 10.1002/zamm.200700158
+
+\bibitem[R06]{R06} S. M. Rump, Verification of positive definiteness, BIT Numer. Math. 46 (2006), 433-452. doi 10.1007/s10543-006-0056-1
+
+\bibitem[H02]{H02} N. J. Higham, Accuracy and Stability of Numerical Algorithms, 2nd ed., SIAM, Philadelphia, 2002 (Thm. 10.3, p. 197, and Thm. 10.5, p. 198; Lemma 8.4, p. 142, for order-independence; Lemma 3.1 and eqs. (3.4), (3.13)). doi 10.1137/1.9780898718027
+
+\bibitem[HJ91]{HJ91} R. A. Horn, C. R. Johnson, Topics in Matrix Analysis, Cambridge University Press, 1991 (Thm. 3.3.16, p. 178; part (c), eq. (3.3.19), is the perturbation form used here).
+
+\bibitem[T13]{T13} L. N. Trefethen, Approximation Theory and Approximation Practice, SIAM, Philadelphia, 2013 (Thm. 19.3, p. 146; the Gauss half of the estimate, on a Bernstein ellipse. Same number and page in the Extended Edition, 2019).
+
+\bibitem[K80]{K80} T. Kato, Perturbation Theory for Linear Operators, 2nd ed., Grundlehren der mathematischen Wissenschaften 132, Springer, Berlin, 1980 (Thm. VI-2.1, first representation theorem, p. 322; Thm. III-6.29 in III-Sec. 6.8 "Operators with compact resolvent", p. 187, for compact resolvent implies discrete spectrum; III-Sec. 5.6 "Commutativity and decomposition", p. 171, and V-Sec. 3.9 "Reduction of symmetric operators", pp. 277-278, for the mode reduction).
+
+\bibitem[AF03]{AF03} R. A. Adams, J. J. F. Fournier, Sobolev Spaces, 2nd ed., Pure and Applied Mathematics 140, Academic Press, Amsterdam, 2003 (Rellich-Kondrachov, Thm. 6.3).
+
+\bibitem[J17]{J17} F. Johansson, Arb: efficient arbitrary-precision midpoint-radius interval arithmetic, IEEE Trans. Comput. 66 (2017), 1281-1292. doi 10.1109/TC.2017.2690633 [arXiv:1611.02831]
+
+\bibitem[JM18]{JM18} F. Johansson, M. Mezzarobba, Fast and rigorous arbitrary-precision computation of Gauss-Legendre quadrature nodes and weights, SIAM J. Sci. Comput. 40 (2018), C726-C747. doi 10.1137/18M1170133
+
+\bibitem[DLMF]{DLMF} NIST Digital Library of Mathematical Functions, F. W. J. Olver et al., eds., \url{https://dlmf.nist.gov/}; eq. (10.8.1) at \url{https://dlmf.nist.gov/10.8.E1} and eq. (10.31.1) at \url{https://dlmf.nist.gov/10.31.E1}, both checked 2026-09-12.
+
+\end{thebibliography}
+
+\end{document}

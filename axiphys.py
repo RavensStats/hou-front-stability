@@ -33,6 +33,45 @@ def _unband(ab):
     return A
 
 
+# ---------------------------------------------------------------------------
+# Optional forcing of the swirl equation (AXPF_*).  Everything below is inert
+# unless AXPF_EPS is set to a non-zero value: with AXPF_EPS = 0 (the default)
+# self.force stays None, rhs() is untouched and every existing run is
+# bit-identical to the unforced code.
+# ---------------------------------------------------------------------------
+
+def _bump(s):
+    """C^infinity bump B(s) = exp(1 - 1/(1 - s^2)) on |s| < 1 and 0 outside; B(0) = 1.
+    Genuinely compactly supported (all derivatives vanish at |s| = 1)."""
+    s = np.asarray(s, dtype=float); out = np.zeros_like(s); m = np.abs(s) < 1.0
+    out[m] = np.exp(1.0 - 1.0 / (1.0 - s[m] ** 2))
+    return out
+
+
+def _theta(s):
+    """C^infinity transition, 0 for s <= 0 and 1 for s >= 1, from psi(s) = exp(-1/s):
+    theta = psi(s) / (psi(s) + psi(1 - s)).  Scalar."""
+    s = float(s)
+    if s <= 0.0:
+        return 0.0
+    if s >= 1.0:
+        return 1.0
+    a = np.exp(-1.0 / s); b = np.exp(-1.0 / (1.0 - s))
+    return float(a / (a + b))
+
+
+def _hwhm(x, prof, i, amax):
+    """Half width at half maximum of prof about index i: half the distance between the
+    outermost neighbours on each side still at or above amax/2 (0 if the peak is one cell)."""
+    n = len(prof); lo = i
+    while lo > 0 and prof[lo - 1] >= 0.5 * amax:
+        lo -= 1
+    hi = i
+    while hi < n - 1 and prof[hi + 1] >= 0.5 * amax:
+        hi += 1
+    return 0.5 * float(x[hi] - x[lo])
+
+
 class AxiPhys:
     def __init__(self, n_r=256, n_z=256, nu=0.0, a=3.0, dim=3.0, Lr=1.0, Lz=0.5, q2=1.0):
         self.n_r, self.n_z, self.nu, self.dim = n_r, n_z, float(nu), float(dim)
@@ -43,6 +82,7 @@ class AxiPhys:
         self.eta, self.h = eta, eta[1] - eta[0]
         self.a = a
         self.moving = os.environ.get("AXP_MOVING", "0") == "1"
+        self.force = None; self.fpar = None; self._fprev = None; self._fsign = None   # AXPF_* swirl forcing: None = off (the default)
         self.params = None                        # (R_c, w) of the Gaussian-density map when moving
         self.set_map(None)
         # z: interior nodes of [0, 1/2], z_j = j/(2 n_z), j = 1..n_z-1 (DST-I)
@@ -334,7 +374,81 @@ class AxiPhys:
                 lap = self.d_rr(F) + self.dim * inv_r * self.d_r(F) + self.d_zz(F)
                 lap[0, :] = (1.0 + self.dim) * self.d_rr(F)[0, :] + self.d_zz(F)[0, :]
                 dF += self.nu * (float(os.environ.get("AXP_NU2", "1")) if F is Om else 1.0) * lap      # AXP_NU2: multiplier of the viscosity on omega1 (Hou 2405.10916 Sec. 5 two-viscosity model: 10)
+        if self.force is not None:                       # AXPF_*: external force on the swirl equation, held fixed over the RK step
+            dU = dU + self.force
         return dU, dO, Ps, ur, uz
+
+    def swirl_force(self, U, Om, Ps=None, t=0.0):
+        """Set self.force, the external force on the swirl (u1) equation.  OFF by default.
+
+            f(r, z, t) = eps * S(t) * chi(r, z; t) * P_ref(t)
+
+        chi   C^infinity and compactly supported, centred on the current maximum of |u1|:
+              chi = [B((r - r_c)/a_r) + B((r + r_c)/a_r)]
+                    x [B((z - z_c)/a_z) - B((z + z_c)/a_z) - B((z - 2Lz + z_c)/a_z) + B((z - 2Lz - z_c)/a_z)]
+              with B(s) = exp(1 - 1/(1 - s^2)) on |s| < 1 (all derivatives vanish at the edge, so the
+              support really is the rectangle |r - r_c| < a_r, |z - z_c| < a_z and its images).  The
+              images make chi EVEN in r about the axis and ODD in z about z = 0 and z = Lz, i.e. in the
+              same parity class as u1, so the sine-spectral discretization is consistent; on the grid
+              they are numerically zero (a_z << z_c is the usual case).  chi is then divided by its own
+              maximum, so max chi = 1 EXACTLY and the amplitude below is the value at the bump centre.
+        a_r, a_z  = AXPF_WIDTH (default 3) times the measured core scales: the half width at half
+              maximum of |u1| through the maximum, in r and in z, floored at three grid cells.
+              (r_c, z_c, a_r, a_z) are low-passed with rate AXPF_RELAX (default 0.05) per step so the
+              force follows the collapsing core along a continuous path instead of hopping with argmax.
+        sgn   = the sign of u1 at the core, fixed once when the force first turns on, so that f
+              always augments the swirl rather than opposing it and never flips discontinuously.
+        P_ref = max over the support of chi of |2 u1 psi1_z|, the SWIRL PRODUCTION term of the very
+              equation being forced.  This is the normalization: eps is dimensionless and eps = 0.1
+              means "the force at the bump centre, on the plateau of S, is ten percent of the largest
+              value of the production term it augments".
+        S(t)  = theta((t - T0)/tr) * theta((T1 - t)/tr), theta the C^infinity 0-to-1 transition and
+              tr = AXPF_RAMP (default 0.15) x (T1 - T0): C^infinity, identically 1 on the plateau and
+              identically 0 outside (T0, T1) = (AXPF_T0, AXPF_T1).  So f is compactly supported in
+              space and in time, which is the form Fefferman's condition (5) asks of an admissible force.
+
+        Called once per time step from main() and held fixed across the four RK stages (a staircase in
+        t of width dt ~ 1e-10, far below every scale of S), so the realized f is an explicit function
+        of (r, z, t) with the stated support; it is NOT certified C^infinity in t, because the tracked
+        core path is only as smooth as the low-passed argmax.  Ps may be passed in (the stream function
+        from the previous step) to avoid an extra Poisson solve; it is recomputed if None."""
+        eps = float(os.environ.get("AXPF_EPS", "0"))
+        if eps == 0.0:
+            self.force = None; self.fpar = None; return
+        fT0 = float(os.environ.get("AXPF_T0", "-1e300")); fT1 = float(os.environ.get("AXPF_T1", "1e300"))
+        tr = max(float(os.environ.get("AXPF_RAMP", "0.15")), 1e-12) * (fT1 - fT0)
+        S = _theta((t - fT0) / tr) * _theta((fT1 - t) / tr)
+        if S <= 0.0:
+            self.force = None; self.fpar = (0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0); return
+        A = np.abs(U); i, j = np.unravel_index(int(np.argmax(A)), A.shape); amax = float(A[i, j])
+        mult = float(os.environ.get("AXPF_WIDTH", "3.0"))
+        p = (float(self.r[i]), float(self.z[j]),
+             max(mult * _hwhm(self.r, A[:, j], i, amax), 3.0 * float(np.diff(self.r).min())),
+             max(mult * _hwhm(self.z, A[i, :], j, amax), 3.0 * float(np.diff(self.z).min())))
+        lam = float(os.environ.get("AXPF_RELAX", "0.05"))
+        if self._fprev is not None:
+            p = tuple(q + lam * (pn - q) for q, pn in zip(self._fprev, p))
+        self._fprev = p
+        r_c, z_c, a_r, a_z = p
+        Lz2 = 2.0 * self.Lz
+        cr = _bump((self.r - r_c) / a_r) + _bump((self.r + r_c) / a_r)
+        cz = (_bump((self.z - z_c) / a_z) - _bump((self.z + z_c) / a_z)
+              - _bump((self.z - Lz2 + z_c) / a_z) + _bump((self.z - Lz2 - z_c) / a_z))
+        chi = cr[:, None] * cz[None, :]
+        cmax = float(np.abs(chi).max())
+        if cmax <= 0.0:                                   # the bump fell off the grid: no force this step
+            self.force = None; self.fpar = (0.0, r_c, z_c, a_r, a_z, 0.0, 0.0); return
+        chi = chi / cmax
+        if self._fsign is None:                           # the force AUGMENTS the swirl: its sign is that of
+            self._fsign = 1.0 if U[i, j] >= 0.0 else -1.0  # u1 at the core, fixed once at the start of the window
+        chi = self._fsign * chi
+        if Ps is None:
+            Ps = self.poisson(Om)
+        prod = np.abs(2.0 * U * self.d_z(Ps))             # the swirl production term of the u1 equation
+        supp = chi != 0.0
+        P_ref = float(prod[supp].max())
+        self.force = (eps * S * P_ref) * chi
+        self.fpar = (eps * S, r_c, z_c, a_r, a_z, P_ref, float(np.abs(self.force).max()))
 
     def initial(self):
         r = self.r[:, None]; z = self.z[None, :]
@@ -408,7 +522,16 @@ def main(n_r, n_z, t_end, nu=0.0):
     t, it, t0 = t_start, 0, time.time()
     w0 = None; wtot0 = None; next_print = t_start; bkm = 0.0; t_last = t_start
     dr_min = float(np.diff(P.r).min()); dz = float(np.diff(P.z).min())
+    fon = float(os.environ.get("AXPF_EPS", "0")) != 0.0      # AXPF_*: swirl forcing, off by default
+    if fon:
+        print(f"  FORCING ON: eps {os.environ['AXPF_EPS']} of the peak swirl production on a C^inf bump"
+              f" following the |u1| maximum, widths {os.environ.get('AXPF_WIDTH','3.0')} x the core HWHM,"
+              f" time window ({os.environ.get('AXPF_T0')}, {os.environ.get('AXPF_T1')}) with ramp"
+              f" {os.environ.get('AXPF_RAMP','0.15')} of it, centre relax {os.environ.get('AXPF_RELAX','0.05')}/step", flush=True)
+    Ps_prev = None
     while t < t_end:
+        if fon:
+            P.swirl_force(U, Om, Ps_prev, t)
         dU, dO, Ps, ur, uz = P.rhs(U, Om)
         vmax = max(np.abs(ur).max(), np.abs(uz).max(), 1e-12)
         dt = min(float(os.environ.get("AXP_CFL", "0.4")) * min(dr_min, dz) / vmax, float(os.environ.get("AXP_DTMAX", "2e-6")))   # lit 84: RK4 + spectral allows ~0.8-0.9 dz/v
@@ -424,6 +547,7 @@ def main(n_r, n_z, t_end, nu=0.0):
         if nu > 0 and float(os.environ.get("AXP_ALPHA", "1")) < 1.0:                       # T9: fractional dissipation, explicit split step (dt nu lam_max^alpha << 1)
             al = float(os.environ.get("AXP_ALPHA", "1")); U = U + dt * nu * P.frac_lap(U, al); Om = Om + dt * nu * float(os.environ.get("AXP_NU2", "1")) * P.frac_lap(Om, al)
         t += dt; it += 1
+        Ps_prev = Ps                                 # lagged by one step; only used to normalize the force
         if filt:
             U = P.filter_r(P.filter_z(U)); Om = P.filter_r(P.filter_z(Om))
         if P.moving and rezone_every and it % rezone_every == 0:
@@ -434,6 +558,7 @@ def main(n_r, n_z, t_end, nu=0.0):
                 tz = zfront_params(P, U, Om, P.zmap[2]); relax = float(os.environ.get("AXP_RELAX", "0.5"))
                 zpf = (P.zmap[0] + relax * (tz[0] - P.zmap[0]), P.zmap[1] + relax * (tz[1] - P.zmap[1]), P.zmap[2])
                 U, Om = rezone_z(P, [U, Om], zpf); dz = float(np.diff(P.z).min())
+            Ps_prev = None
         if t >= next_print or t >= t_end:
             wth = np.abs(P.r[:, None] * Om).max()
             if w0 is None and wth > 0:
@@ -450,6 +575,14 @@ def main(n_r, n_z, t_end, nu=0.0):
             Kz = float(np.trapezoid(np.trapezoid(uz ** 2 * wgt, P.z, axis=1), P.r)); K = float(np.trapezoid(np.trapezoid(u2 * wgt, P.z, axis=1), P.r))
             extra = f"  |om1| {np.abs(Om).max():.3e}  Kz/K {Kz / max(K, 1e-300):.4f}  Gmax {Gmax:.4e}"
             if P.moving: extra += f"  map ({P.params[0]:.4f},{P.params[1]:.4f}) dr_min {dr_min:.1e}"
+            if fon:
+                if P.fpar is None or P.fpar[0] == 0.0:
+                    extra += "  F off (S(t) = 0)"
+                else:
+                    e_eff, r_c, z_c, a_r, a_z, P_ref, fmax = P.fpar
+                    extra += (f"  F eps_eff {e_eff:.4f} |f| {fmax:.4e} Pref {P_ref:.4e}"
+                              f" supp r {max(r_c - a_r, 0.0):.5f}-{r_c + a_r:.5f} z {max(z_c - a_z, 0.0):.5f}-{z_c + a_z:.5f}"
+                              f" (c {r_c:.5f},{z_c:.5f}; a {a_r:.2e},{a_z:.2e})")
             print(f"  t {t:.6f} it {it} dt {dt:.2e}  |u1| {np.abs(U).max():.4e} at (r={P.r[i]:.4f}, z={P.z[j]:.4f})  |omega| {wth:.4e} (x{wth/(w0 or 1):.3g})"
                   f"  |omega|tot {wtot:.3e}  L{dd:.0f}u {L5:.3e}  BKM {bkm:.3e}{extra}  |psi1| {np.abs(Ps).max():.3e}  vmax {vmax:.3e}  ({time.time()-t0:.0f}s)", flush=True)
             next_print = t + float(os.environ.get("AXP_EVERY", "1e-4"))

@@ -56,7 +56,7 @@ Computer-assisted certificate, exact version.  The columnar vortex (V(r), W(r)) 
 
 ## lscheck.py
 
-Leibovich-Stewartson (JFM 126 1983) and Howard-Gupta (JFM 14 1962) criteria on an axisymmetric snapshot (lit 183): LS: non-axisymmetric short-wave instability where Phi = 2 V Om [D(rV) D(Om) + D(W^2)] < 0  (V = u_theta = r u1, Om = u1, W = u_z, D = d/dr) HG: axisymmetric stability where (1/r^3) D(Gamma^2) - (1/4)(DW)^2 > 0  (Gamma = r V = r^2 u1)
+Leibovich-Stewartson (JFM 126 1983) and Howard-Gupta (JFM 14 1962) criteria on an axisymmetric snapshot (lit 183): LS: non-axisymmetric short-wave instability where Phi = V DOm [DOm D(rV) + (DW)^2] < 0  (V = u_theta = r u1, Om = u1, W = u_z, D = d/dr) HG: axisymmetric stability where (1/r^3) D(Gamma^2) - (1/4)(DW)^2 > 0  (Gamma = r V = r^2 u1)
 
 ## knssq.py
 
