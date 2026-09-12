@@ -50,13 +50,32 @@ python burgfit.py 0.0022865 "nsz5_snap_t0.002285299.npz"
 
 Expected: standard deviation 0.58 sqrt(nu (T - t)), implied strain 2.9 in Type I units, residual 5 percent.
 
-## 5. The exact instability certificate (Section 3.5)
+## 5. The Leibovich-Stewartson condition -- RETRACTED certificate, and what replaces it
+
+The exact certificate that earlier versions of this section reproduced is **retracted**. The criterion
+had been misstated (a non-negative prefactor `2 V Om` in place of `V DOm`, and `D(W^2)` in place of
+`(DW)^2`); see `RECORD.md` and the header of `lscert.py`. Corrected, the quantity is not certifiable
+on the polynomial fit, and these scripts now say so.
 
 ```
 python lscert2.py axiphys_513_512_nsz_t0.00226.npz 20 2.0
 ```
 
-Expected: `CERTIFIED ... on [1.009 R, 1.094 R]` by Sturm root counting (about 40 minutes; degree 40 is not recommended, its Sturm sequence did not finish in 13 hours).
+Expected: **NOT certified.** That is the correct result, not a failure of the script. The corrected
+criterion carries `Om'` in the prefactor as well as the bracket, and the degree-20 fit's first
+derivative is wrong by up to a factor of two near the swirl maximum, which is where the annulus of
+interest lies.
+
+What survives is the grid evaluation, which is what the paper now reports:
+
+```
+python lscheck.py axiphys_513_512_nsz_t0.00226.npz
+python ls_recheck.py axiphys_513_512_nsz_t0.00226.npz
+```
+
+Expected: `Phi` negative in a band just outside the swirl maximum, its minimum at
+`(r, z) = (0.0140, 0.0040)` against the swirl maximum at `(0.0138, 0.0037)`. `ls_recheck.py` prints
+the misstated and the correct form side by side, which is how the error was established.
 
 ## 6. The certified columnar eigenvalue (Section 3.6)
 
