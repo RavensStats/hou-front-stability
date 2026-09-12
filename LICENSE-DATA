@@ -3,5 +3,5 @@ and the text files (README.md, RECORD.md, REPRODUCE.md, CONTRIBUTING.md,
 docs/*.md and notes/*.md) are licensed under the
 Creative Commons Attribution 4.0 International License (CC BY 4.0),
 https://creativecommons.org/licenses/by/4.0/ . Attribution: cite the
-accompanying paper (arXiv id to be added) and this repository. The code
+accompanying paper (arXiv id to be added), this repository and the data deposit doi:10.5281/zenodo.22729202. The code
 (*.py) is under the MIT License in LICENSE.

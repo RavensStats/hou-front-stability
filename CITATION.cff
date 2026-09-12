@@ -1,6 +1,10 @@
 cff-version: 1.2.0
 title: "Three-dimensional and axisymmetric stability of Hou's interior Navier-Stokes scenario: codes, data and record"
-message: "If you use these codes, snapshots or the spectral table, please cite the accompanying paper (arXiv id to be added) and this repository."
+message: "If you use these codes, snapshots or the spectral table, please cite the accompanying paper (arXiv id to be added), this repository, and the data deposit doi:10.5281/zenodo.22729202."
+identifiers:
+  - type: doi
+    value: "10.5281/zenodo.22729202"
+    description: "Zenodo concept DOI (all versions) for the codes and snapshots"
 type: software
 authors:
   - family-names: "Mullen"

@@ -15,7 +15,7 @@ What is here:
 - `logs/` -- the run and certificate logs (the Krawczyk enclosures at N = 60, 100, 150 and at the other parameters; the module tests; the columnar spectra; the defect and the inverse-norm preview; the tangent-linear and frozen-base stability runs behind Table 2). The Sturm-certificate logs are retained as the record of a retracted result.
 - `tests/` -- standalone tests (`python tests/test_ivmat.py`).
 - `REPRODUCE.md` -- commands and expected numbers for the headline results (an afternoon).
-- `DATA_MANIFEST.md` / `.sha256` -- the 41 snapshot files (637 MB) the paper uses, with sizes and hashes; the files themselves are deposited on Zenodo (DOI to be added) rather than in this repository. Every entry was re-verified against the files on 2026-09-12: all 41 present, all hashes matching.
+- `DATA_MANIFEST.md` / `.sha256` -- the 41 snapshot files (637 MB) the paper uses, with sizes and hashes; the files themselves are deposited on Zenodo, doi:10.5281/zenodo.22729202, rather than in this repository. Every entry was re-verified against the files on 2026-09-12: all 41 present, all hashes matching.
 - `docs/USAGE.md` -- every script's arguments and environment variables. `CONTRIBUTING.md` -- how to report issues and add a snapshot reader.
 - `joss/` -- a draft Journal of Open Source Software paper. Not submitted, and it carries the earlier title.
 - `RECORD.md` -- the corrections and retractions that touched published numbers, in date order, extracted from the working record.
