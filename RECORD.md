@@ -15,4 +15,40 @@ Extracted from the author's dated working record (available on request). Each li
 - CORRECTION (2026-09-05 19:45): the fresh z-mapped run f513 (CFL 0.8, no filter, rezone every 200) went numerically unstable between t = 0.00212 and 0.00221 (periodic save at 0.0022106: u1 1.5e12, two-grid sawtooth ratios 2.1 / 2.3, dt collapsed); the 19:05 'ahead of the fixed map' reading at 0.00212 must be treated as possibly contaminated by the onset of that instability (its snapshot's grid-scale content is recorded below). The lossy-history hypothesis is therefore NOT yet tested. Relaunched from t = 0 as f513c with CFL 0.4, the Hou-Li filter, rezone every 200 and output every 1.1e-5 (checkp...
 - ADDITION (2026-09-08 10:50): the continuation's range was bounded from above. At about 400 times the initial amplitude (constant nu = 5e-4) the one-scale collapse ends: the primary front stalls and a second structure nearer the symmetry plane takes over, A(T - t) stops being constant, and the core-restricted |r u^r| rises from 16.5 to 20.7 across the transition (three axial maps agree to 0.2-3 percent; cmp789.py). Every number in the paper was measured before the transition (144 to 395 times); the draft now states the range explicitly (5.2, 6.0, 7.5) and the note, the comment and the correspondence carry the same sentence. Not a retraction; a boundary on the range of validity that the earlier drafts did not state.
 
+- RETRACTION (2026-09-12, the Leibovich-Stewartson criterion and its certificate): the criterion was
+  written, in the paper and in lscert.py, lscert2.py and lscheck.py, as
+  Phi = 2 V Om [D(rV) D(Om) + D(W^2)]. It is wrong twice. Leibovich & Stewartson, JFM 126 (1983)
+  335-356, give Phi = V DOm [DOm D(rV) + (DW)^2]. The prefactor 2 V Om = 2V^2/r is non-negative and
+  so cannot invert the test where Om decreases outward -- which is exactly what makes LS weaker than
+  Rayleigh -- and D(W^2) = 2 W W' is dimensionally inhomogeneous with the term beside it. The Sturm /
+  interval certificate built on it is RETRACTED: recomputed correctly, Phi on the degree-20 fit is
+  negative only at the outer edge of the fit and interval arithmetic does not certify it, because the
+  correct criterion carries Om' in the prefactor as well as the bracket and the fit's first derivative
+  is wrong by up to a factor of two near the swirl maximum. What survives is the grid evaluation: with
+  the criterion corrected, Phi is still negative in a band just outside the swirl maximum on all three
+  states, and the paper's coordinates are updated to the recomputed ones. All three scripts now carry
+  retraction headers and compute the correct expression.
+- CORRECTION (2026-09-12, the figure data shipped in this repository): the CSVs in figdata/ carried
+  sigma normalized by the runs' placeholder T_est = 0.002278 rather than by the fitted singular time
+  T = 0.0022865 that the paper uses. The first row of the NS m = 1 series read (0.015, -0.051) where
+  the paper reports -0.079 at fraction 0.010. Regenerated, with the convention in a header line and
+  sigma_raw and t columns added so a reader can redo the normalization.
+- ADDITION (2026-09-12, a resolution twin for the headline co-evolving run): the nu = 5e-4, m = 1
+  short-wave run was repeated at half the axial resolution. Remark 1's threshold crossing is
+  reproduced to 0.1 percentage points (4.4 against 4.5 percent), but the late magnitudes are a factor
+  1.37 to 1.55 apart, so the values quoted at 23.9 to 34.2 percent are now stated as lower bounds that
+  rise with axial resolution rather than as converged rates. Not a retraction; a limit on what the
+  late numbers support, which earlier drafts did not state.
+- CORRECTIONS (2026-09-12, from three independent audits and a literature sweep): the front's velocity
+  jump grows by a factor 1.6, not 6 -- the 6 was max|omega|'s factor attached to the wrong quantity;
+  the transition spans 0.47 log-units, not 0.24; the meridional Type I constant is 5.3 to 6.5, not
+  6 to 8; omega(T-t) ends at 242, not 118; the nonlinear depletion bound is 0.02 percent out to 23.9
+  percent and only 0.15 percent out to 34.6, not 0.03 percent out to 34; the title no longer asserts
+  instability; and several attributions were corrected, including one, of the sup|u|^2 (T-t)
+  diagnostic to Constantin-Fefferman-Majda, that had been introduced days earlier from a manuscript
+  since withdrawn.
+
+A note on the entries above this line: several were extracted mechanically from the dated working
+record and are cut mid-sentence. The full blocks are in that record, which is available on request.
+
 Key retractions in the underlying research programme (before the paper's scope was fixed), kept for transparency: rounds 73, 81, 82 of the working record retracted earlier claims about self-similar profiles; the 'x200 seeded-run transfer' was retracted as a grid event; the 'necessary concentration absent' overclaim was corrected to 'evidence against, not proof'; the attribution 'Hou-Huang' for arXiv:2107.05870/06509 was corrected to Hou alone; the calendar labels in the record between 2026-09-06 and 2026-09-07 were one day ahead of the clock; the degree-20 polynomial field's columnar eigenvalue was found to be a fit artefact (the certified field is the front column's, which is faithful); three wording overclaims about the certificate were corrected after an adversarial audit.
