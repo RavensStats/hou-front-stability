@@ -3,12 +3,14 @@ title: "Three-dimensional and axisymmetric stability of Hou's interior Navier-St
 message: "If you use these codes, snapshots or the spectral table, please cite the accompanying paper (arXiv id to be added) and this repository."
 type: software
 authors:
-  - family-names: "[surname]"
-    given-names: "[given names]"
-repository-code: "https://github.com/RavensStats/Millennium-Prize"
+  - family-names: "Mullen"
+    given-names: "Andrew"
+    orcid: "https://orcid.org/0009-0001-8581-4286"
+    affiliation: "Independent researcher"
+repository-code: "https://github.com/RavensStats/hou-front-stability"
 license: MIT
-license-url: "https://github.com/RavensStats/Millennium-Prize/blob/main/LICENSE"
-date-released: "2026-09-07"
+license-url: "https://github.com/RavensStats/hou-front-stability/blob/main/LICENSE"
+date-released: "2026-09-12"
 keywords:
   - Navier-Stokes
   - singularity formation

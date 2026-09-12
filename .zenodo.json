@@ -1,0 +1,21 @@
+{
+  "title": "Three-dimensional and axisymmetric stability of Hou's interior Navier-Stokes scenario: codes, data and record",
+  "creators": [
+    {
+      "name": "Mullen, Andrew",
+      "orcid": "0009-0001-8581-4286",
+      "affiliation": "Independent researcher"
+    }
+  ],
+  "license": "MIT",
+  "upload_type": "software",
+  "keywords": [
+    "Navier-Stokes",
+    "singularity formation",
+    "axisymmetric flow with swirl",
+    "linear stability",
+    "computer-assisted proof",
+    "verified numerics"
+  ],
+  "description": "<p>Code, logs and figure data for the paper <em>A certified unstable eigenvalue of a columnar model of the front of Hou's Navier-Stokes collapse, and measured non-axisymmetric growth on the collapsing state</em>.</p><p><strong>Contents.</strong> The axisymmetric and azimuthal-mode solvers; the verified interval-arithmetic scripts behind Theorems 1 and 2, with their tests; the extraction scripts for the tables and figures; the comma-separated data behind Figures 1-3; the run logs; and the stage-B notes.</p><p><strong>Start with REPRODUCE.md</strong>, which gives the commands and the numbers they should print. DATA_MANIFEST.md carries the snapshot hashes.</p><p><strong>Not included, by size.</strong> The snapshots at the reported times are too large for the git repository and are archived here on Zenodo. The 5.8 GB stage-B block store is not deposited at all, and neither is the Galerkin eigenvector w of Theorem 2, which lives inside it; the repository gives the recipe and hashes to rebuild both, about 24 core-hours.</p><p><strong>Corrections.</strong> RECORD.md lists every correction and retraction that touched a published number. These include the withdrawal of a Leibovich-Stewartson certificate whose criterion had been misstated; the scripts that produced it carry retraction headers and now compute the criterion as published.</p>"
+}

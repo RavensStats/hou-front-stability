@@ -1,6 +1,6 @@
 The data files (*.npz snapshots, figdata/*.csv, DATA_MANIFEST.*), the figures,
-and the text files (README.md, QUEUE.md, PAPER_DRAFT.md, NOTE_KNSS.md,
-COMMENT_FOCM.md, REPRODUCE.md, FUTURE_WORK.docx) are licensed under the
+and the text files (README.md, RECORD.md, REPRODUCE.md, CONTRIBUTING.md,
+docs/*.md and notes/*.md) are licensed under the
 Creative Commons Attribution 4.0 International License (CC BY 4.0),
 https://creativecommons.org/licenses/by/4.0/ . Attribution: cite the
 accompanying paper (arXiv id to be added) and this repository. The code
