@@ -8,8 +8,8 @@ tags:
   - linear stability
   - computer-assisted proof
 authors:
-  - name: "[author]"
-    orcid: "[0000-0000-0000-0000]"
+  - name: "Andrew Mullen"
+    orcid: "0009-0001-8581-4286"
     affiliation: 1
 affiliations:
   - name: "[affiliation]"
